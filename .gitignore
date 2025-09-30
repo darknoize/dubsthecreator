@@ -1,0 +1,17 @@
+# Test images (not to be committed)
+test-images/
+
+# Common development files
+*.log
+.DS_Store
+node_modules/
+dist/
+build/
+.env
+.env.local
+.vscode/
+.idea/
+
+# Temporary files
+tmp/
+temp/
