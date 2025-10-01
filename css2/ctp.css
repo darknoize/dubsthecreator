@@ -1,0 +1,458 @@
+/*
+
+	1 - POST
+
+		1.1 - Post data
+		1.2 - Post info
+
+	2 - FORMATS
+
+		2.1 - Gallery
+		2.2 - Audio
+		2.3 - Video
+
+	3 - HOVERS
+
+	4 - ELEMENTS
+
+*/
+
+/*===============================================
+
+	P O S T
+	Styles for post page
+
+===============================================*/
+
+	/*-------------------------------------------
+		1.1 - Post data
+	-------------------------------------------*/
+
+	/* N/A*/
+
+
+	/*-------------------------------------------
+		1.2 - Post info
+	-------------------------------------------*/
+
+	/* N/A*/
+
+
+/*===============================================
+
+	F O R M A T S
+	Styles for project formats
+
+===============================================*/
+
+.project-wrapper {
+	padding: 100px 0;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+}
+
+	.single .project-wrapper {
+		padding: 50px 0;
+	}
+
+.project-wrapper-color {
+	color: #FFF;
+	margin: 0 -50px;
+	padding: 100px 50px;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+	.opera .project-wrapper-color {
+		background-position: 0 0;
+	}
+	
+		.project-wrapper-color a:not(.project-thumb),
+		.project-wrapper-color a:not(.project-thumb):hover {
+			color: #FFF;
+			text-decoration: underline;
+		}
+	
+		.single .project-wrapper-color {
+			padding-top: 50px;
+			padding-bottom: 50px;
+		}
+	
+			.project-wrapper-color h1,
+			.project-wrapper-color h2,
+			.project-wrapper-color h3,
+			.project-wrapper-color h4,
+			.project-wrapper-color h5,
+			.project-wrapper-color h6 {
+				color: #FFF;
+			}
+		
+			.project-wrapper-color p {
+				opacity: 0.65;
+			}
+		
+			.project-wrapper a.more-link {
+				margin: 0.75em 0 0;
+				padding: 1em 1.5em 1em 40px;
+				background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/16/glyphs/white/portfolio.png');
+				background-position: 15px 50%;
+				background-repeat: no-repeat;
+				background-size: 16px 16px;
+			}
+		
+				.hidpi .project-wrapper a.more-link {
+					background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/portfolio.png');
+				}
+		
+			.project-wrapper-color a.more-link {
+				margin: 0.75em 0 0;
+				padding: 1em 1.5em 1em 40px;
+				background: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/16/glyphs/white/portfolio.png') 15px 50% no-repeat;
+				background-size: 16px 16px;
+				box-shadow: 1px 1px 0 rgba(255,255,255,0.25) inset, -1px -1px 0 rgba(255,255,255,0.25) inset;
+				transition: box-shadow 250ms linear;
+			}
+		
+				.project-wrapper-color a.more-link:hover {
+					background-color: transparent !important;
+					box-shadow: 2px 2px 0 rgba(255,255,255,1) inset, -2px -2px 0 rgba(255,255,255,1) inset;
+					transition: box-shadow 150ms linear;
+				}
+		
+				.hidpi .project-wrapper-color a.more-link {
+					background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/portfolio.png');
+				}
+		
+			.project-thumb img {
+				display: table; /* needed*/
+				z-index: 1; /* needed*/
+			}
+			
+			.project-thumb p {
+				line-height: 1.3em;
+				padding: 0 1em;
+			}
+
+
+	/*-------------------------------------------
+		2.1 - Gallery
+	-------------------------------------------*/
+
+	.projects-format-gallery-holder {
+		display: inline-block; /* firefox */
+		width: 888px;
+		margin-bottom: -50px;
+	}
+
+		/* If sidebar by right or none */
+		.sidebar-position-right .projects-format-gallery-holder,
+		.sidebar-position-none .projects-format-gallery-holder {
+			float: left;
+		}
+	
+		/* If sidebar by left */
+		.sidebar-position-left .projects-format-gallery-holder {
+			float: right;
+		}
+	
+			/* Thumb 1 */
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper {
+				width: 576px;
+				margin-right: 0;
+			}
+	
+				.projects-format-gallery-holder > div.projects-gallery-a-wrapper a.project-thumb {
+					display: block;
+					height: 410px;
+				}
+
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single {
+				width: 888px;
+				margin-right: 0;
+			}
+	
+				.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single a.project-thumb {
+					display: block;
+					height: 632px;
+				}
+
+			/* Thumbs 2,3 */
+			.projects-format-gallery-holder > div.projects-gallery-b-wrapper {
+				width: 262px;
+				margin-right: 0;
+				margin-left: 50px;
+			}
+	
+			/* Thumbs 4,5,6... */
+			.projects-format-gallery-holder > div {
+				width: 262px;
+				float: left;
+				display: block;
+				margin-bottom: 50px;
+				margin-right: 51px;
+			}
+	
+			.projects-format-gallery-holder > div.first {
+				clear: left;
+			}
+	
+			.projects-format-gallery-holder > div.last {
+				clear: right;
+				margin-right: 0;
+			}
+		
+				.projects-format-gallery-holder a.project-thumb {
+					display: block;
+					width: 100%;
+					height: 180px;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: 100% auto;
+					transition: background-size 250ms linear;
+					-webkit-transition: background-size 250ms linear;
+				}
+	
+					.projects-format-gallery-holder a.project-thumb:hover {
+						background-size: 125% auto;
+						transition: background-size 250ms linear;
+						-webkit-transition: background-size 250ms linear;
+					}
+	
+						.ie .projects-format-gallery-holder a.project-thumb:hover,
+						.opera .projects-format-gallery-holder a.project-thumb:hover {
+							background-size: 100% auto;
+						}
+	
+						.projects-format-gallery-holder a.project-thumb p {
+							padding: 0 2em;
+						}
+
+
+	/*--- Hover -----------------------------*/
+
+	.projects-format-gallery-holder i {
+		display: inline-block;
+		width: 32px;
+		height: 32px;
+		background: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/zoom.png') center center no-repeat;
+	}
+
+		.hidpi .projects-format-gallery-holder i {
+			background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/zoom.png');
+			background-size: 32px 32px;
+		}
+
+		.projects-gallery-a-wrapper i {
+		}
+
+	.projects-format-gallery-holder p {
+		margin: 50px 0 0;
+		opacity: 1;
+	}
+
+		.projects-gallery-a-wrapper p {
+		}
+
+
+	/*-------------------------------------------
+		2.2 - Audio
+	-------------------------------------------*/
+
+	.projects-format-audio-holder {
+		display: inline-block; /* firefox */
+		float: right;
+		width: 888px;
+	}
+
+		/* If sidebar by right or none */
+		.sidebar-position-right .projects-format-audio-holder,
+		.sidebar-position-none .projects-format-audio-holder {
+			float: left;
+		}
+	
+		/* If sidebar by left */
+		.sidebar-position-left .projects-format-audio-holder {
+			float: right;
+		}
+
+			.projects-format-audio-holder .mejs-audio {
+				margin: 0 !important;
+			}
+
+
+	/*-------------------------------------------
+		2.3 - Video
+	-------------------------------------------*/
+
+	.projects-format-video-holder {
+		display: inline-block; /* firefox */
+		float: right;
+		width: 888px;
+	}
+
+		/* If sidebar by right or none */
+		.sidebar-position-right .projects-format-video-holder,
+		.sidebar-position-none .projects-format-video-holder {
+			float: left;
+		}
+	
+		/* If sidebar by left */
+		.sidebar-position-left .projects-format-video-holder {
+			float: right;
+		}
+
+			.projects-format-video-holder .mejs-video {
+				margin: 0 !important;
+			}
+
+
+/*===============================================
+
+	H O V E R S
+	Common styles for project hovers
+
+===============================================*/
+
+	.st-hover {
+		position: relative;
+		z-index: 2;
+		opacity: 0;
+	}
+
+		.st-hover-bg {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0.75;
+		}
+
+		.st-hover-data {
+			text-align: center;
+			color: #FFF;
+			width: 100%;
+			height: 100%;
+		}
+
+
+/*===============================================
+
+	A R C H I V E
+	Styles for Archive page
+
+===============================================*/
+
+	#projects-term {
+		text-align: center;
+		margin-bottom: -1px;
+		padding: 50px;
+		background: url('file:///Macintosh HD/Users/dubbledubs/Documents/PORTFOLIO/WILL WEEMS - DUBS THE CREATOR - NEW POTFOLIO/images/line.png') left bottom repeat-x;
+	}
+
+		.projects-term-title {
+			margin-bottom: 0.25em;
+		}
+
+			.projects-term-title h1 {
+				padding: 0;
+			}
+
+				.projects-term-title h1:before {
+					content: ' ';
+					display: inline-block;
+					width: 50px;
+					height: 50px;
+					margin: 0 0.3em -0.3em 0;
+					background: #E0735E center center no-repeat;
+					background-size: 32px 32px;
+					border-radius: 2px;
+				}
+
+					/* Portfolio */
+					.page-template-template-projects-php .projects-term-title h1:before {
+						background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/portfolio.png'); }
+
+						.page-template-template-projects-php.hidpi .projects-term-title h1:before {
+							background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/portfolio.png'); }
+
+					/* Category */
+					.tax-st_category .projects-term-title h1:before {
+						background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/folder.png'); }
+
+						.tax-st_category.hidpi .projects-term-title h1:before {
+							background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/folder.png'); }
+
+					/* Tag */
+					.tax-st_tag .projects-term-title h1:before {
+						background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/tag.png'); }
+
+						.tax-st_tag.hidpi .projects-term-title h1:before {
+							background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/tag.png'); }
+
+					/* Gallery */
+					.term-gallery .projects-term-title h1:before,
+					.term-post-format-gallery .projects-term-title h1:before {
+						background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/gallery.png'); }
+
+						.term-gallery.hidpi .projects-term-title h1:before,
+						.term-post-format-gallery.hidpi .projects-term-title h1:before {
+							background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/gallery.png'); }
+
+					/* Audio */
+					.term-audio .projects-term-title h1:before,
+					.term-post-format-audio .projects-term-title h1:before {
+						background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/audio.png'); }
+
+						.term-audio.hidpi .projects-term-title h1:before,
+						.term-post-format-audio.hidpi .projects-term-title h1:before {
+							background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/audio.png'); }
+
+					/* Video */
+					.term-video .projects-term-title h1:before,
+					.term-post-format-video .projects-term-title h1:before {
+						background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/video.png'); }
+
+						.term-video.hidpi .projects-term-title h1:before,
+						.term-post-format-video.hidpi .projects-term-title h1:before {
+							background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/64/glyphs/white/video.png'); }
+
+		#projects-term .title-sub {
+		}
+	
+		#projects-term .title-end {
+		}
+	
+		.projects-term-description {
+			padding: 1.5em 0 0;
+		}
+
+			.projects-term-description p {
+				margin-bottom: 0;
+			}
+
+
+/*===============================================
+
+	E L E M E N T S
+	Special elements for CTPs only
+
+===============================================*/
+
+	#projects-load-more {
+		font-size: 1.3em;
+		text-align: center;
+		padding: 100px 0;
+	}
+
+		#projects-load-more a {
+			margin: 0;
+			background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/16/glyphs/white/portfolio.png');
+		}
+
+			.hidpi #projects-load-more a {
+				background-image: url('file:///Macintosh HD/Users/dubbledubs/plugins/stkit/assets/images/icons/32/glyphs/white/portfolio.png');
+			}
+
+		#projects-load-more span {
+			display: inline-block;
+			line-height: 1em;
+			padding: 1em;
+		}

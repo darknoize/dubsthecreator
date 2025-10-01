@@ -1,0 +1,1809 @@
+@media only screen and ( min-width: 1320px ) {
+/*===============================================
+
+	M O N I T O R
+	1320px/unlimited
+
+===============================================*//**/
+
+/**/}
+
+
+@media only screen and ( min-width: 960px ) and ( max-width: 1319px ) {
+/*===============================================
+
+	T A B L E T   /   L A P T O P
+	960px/1319px
+
+===============================================*//**/
+
+/*
+
+	1 - LAYOUT
+
+		- Header
+		- Content
+		- Footer
+
+	2 - MENU
+
+		- Secondary
+
+	3 - SIDEBARS
+
+		- Sidebar
+		- Footer
+
+	4 - FORMATS / PROJECTS
+
+		- Format Gallery
+		- Format Audio
+		- Format Video
+
+*/
+
+	/*===========================================
+		L A Y O U T
+	===========================================*/
+
+	/*--- Header ------------------------------*/
+
+	#header-holder {
+		width: 935px;
+	}
+
+		#logo {
+			width: 235px;
+		}
+		
+			#logo h2,
+			#logo h2 a,
+			#logo h2 img {
+				max-width: 200px;
+			}
+
+	/*--- Content -----------------------------*/
+
+	#content-layout {
+		width: 985px;
+	}
+
+		#content-holder {
+			width: 935px;
+		}
+	
+			div.post-single {
+				width: 524px;
+			}
+	
+			.sidebar-position-right #content-box {
+				width: 695px;
+			}
+	
+				.sidebar-position-right #content-box > div {
+					padding-right: 26px;
+				}
+	
+			.sidebar-position-left #content-box {
+				width: 695px;
+			}
+			
+				.sidebar-position-left #content-box > div {
+					padding-left: 26px;
+				}
+	
+			.sidebar-position-none div.post-single {
+				width: 790px;
+			}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-layout {
+		width: 985px;
+	}
+
+		#footer-holder,
+		#copyrights-box {
+			width: 935px;
+		}
+
+
+	/*===========================================
+		M E N U
+	===========================================*/
+
+	/*--- Primary -----------------------------*/
+
+	#menu-1-box > div {
+		width: 350px;
+	}
+
+	/*--- Secondary ---------------------------*/
+
+	#menu-2-box > div {
+		width: 350px;
+	}
+
+
+	/*===========================================
+		S I D E B A R S
+	===========================================*/
+
+	/*--- Sidebar -----------------------------*/
+
+	#sidebar {
+		width: 240px;
+	}
+
+		.sidebar-position-right .sidebar,
+		.sidebar-position-none .sidebar {
+			margin-left: 25px;
+		}
+
+		.sidebar-position-left .sidebar {
+			margin-right: 25px;
+		}
+
+	/*--- Homepage Sidebar --------------------*/
+
+	#sidebar-homepage-a {
+		width: 935px;
+		padding: 0 25px 25px;
+	}
+
+		.sidebar-homepage-a p span {
+			display: inline;
+		}
+
+	#sidebar-homepage-b {
+		width: 935px;
+		padding: 25px;
+	}
+
+		#sidebar-homepage-b .widget {
+			padding: 25px 0;
+		}
+
+	/*--- Project Sidebar ---------------------*/
+
+	.projects-sidebar {
+		width: 240px;
+	}
+
+	/*--- Footer ------------------------------*/
+
+	.sidebar-footer > div {
+		margin-right: 25px;
+	}
+
+		/*- 1/3 + 1/3 + 1/3 -*/
+	
+		.footer-box-v1 .sidebar-footer {
+			width: 320px;
+		}
+	
+		.footer-box-v1 .sidebar-footer.last {
+			width: 295px;
+		}
+
+		/*- 1/4 + 1/4 + 1/2 -*/
+	
+		.footer-box-v2 .sidebar-footer {
+			width: 240px;
+		}
+		
+		.footer-box-v2 .sidebar-footer.last {
+			width: 455px;
+		}
+
+		/*- 1/4 + 1/2 + 1/4 -*/
+	
+		.footer-box-v3 .sidebar-footer {
+			width: 480px;
+		}
+		
+		.footer-box-v3 .sidebar-footer:first-child {
+			width: 240px;
+		}
+	
+		.footer-box-v3 .sidebar-footer.last {
+			width: 215px;
+		}
+
+	/*- 1/2 + 1/4 + 1/4 -*/
+
+	.footer-box-v4 .sidebar-footer {
+		width: 240px;
+	}
+	
+	.footer-box-v4 .sidebar-footer:first-child {
+		width: 480px;
+	}
+
+	.footer-box-v4 .sidebar-footer.last {
+		width: 215px;
+	}
+
+	/*- 1/4 + 1/4 + 1/4 + 1/4 -*/
+
+	.footer-box-v5 .sidebar-footer {
+		width: 240px;
+	}
+	
+	.footer-box-v5 .sidebar-footer.last {
+		width: 215px;
+	}
+
+	/*- 2/3 + 1/3 -*/
+
+	.footer-box-v6 .sidebar-footer {
+		width: 295px;
+	}
+
+	.footer-box-v6 .sidebar-footer:first-child {
+		width: 640px;
+	}
+
+
+	/*===========================================
+		F O R M A T S / PROJECTS
+	===========================================*/
+
+	.project-wrapper {
+		padding: 50px 0;
+	}
+
+		.single .project-wrapper {
+			padding: 25px 0;
+		}
+
+	.project-wrapper-color {
+		margin: 0 -25px;
+		padding: 50px 25px;
+	}
+
+		.single .project-wrapper-color {
+			padding: 25px;
+		}
+
+	/*--- Format Gallery ----------------------*/
+
+	.projects-format-gallery-holder {
+		width: 695px;
+		margin-bottom: -25px;
+	}
+
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper {
+			width: 455px;
+		}
+
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper a.project-thumb {
+				height: 319px;
+			}
+
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single {
+			width: 695px;
+		}
+
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single a.project-thumb {
+				height: 494px;
+			}
+
+		.projects-format-gallery-holder > div.projects-gallery-b-wrapper {
+			width: 215px;
+			margin-left: 25px;
+		}
+
+		.projects-format-gallery-holder > div {
+			width: 215px;
+			margin-bottom: 25px;
+			margin-right: 25px;
+		}
+	
+			.projects-format-gallery-holder a.project-thumb {
+				height: 147px;
+			}
+
+	/*--- Format Audio ------------------------*/
+
+	.projects-format-audio-holder {
+		width: 695px;
+	}
+
+	/*--- Format Video ------------------------*/
+
+	.projects-format-video-holder {
+		width: 695px;
+	}
+
+	/*--- Elements ----------------------------*/
+
+	#projects-load-more {
+		padding: 50px 0;
+	}
+
+/**/}
+
+
+@media only screen and ( min-width: 640px ) and ( max-width: 959px ) {
+/*===============================================
+
+	T A B L E T   V
+	640px/959px
+
+===============================================*//**/
+
+/*
+
+	1 - LAYOUT
+
+		- Header
+		- Content
+		- Footer
+
+	2 - MENU
+
+		- Primary
+		- Secondary
+
+	3 - SIDEBARS
+
+		- Sidebar
+		- Footer
+
+	4 - FORMATS / PROJECTS
+
+		- Format Gallery
+		- Format Audio
+		- Format Video
+
+	5 - POST
+
+	6 - SHORTCODES
+
+	7 - WIDGETS
+
+		- Get In Touch
+
+	8 - SPECIAL
+
+		- Mediaelement
+
+*/
+
+	/*===========================================
+		L A Y O U T
+	===========================================*/
+
+	body, div, td {
+		font-size: 1em;
+	}
+
+	/*--- Header ------------------------------*/
+
+	#header-holder {
+		width: 590px;
+	}
+
+		#logo {
+			padding: 50px 0;
+		}
+
+	/*--- Content -----------------------------*/
+
+	#content-layout {
+		width: 590px;
+	}
+
+		#content-holder {
+			width: auto;
+			margin: 0 auto;
+		}
+	
+			#content-holder #content-box {
+				float: none;
+				width: auto;
+			}
+	
+				#content-box {
+					min-height: auto;
+				}
+
+					#content-holder #content-box > div {
+						padding: 50px 50px 0;
+					}
+
+			#content-holder div.post-single {
+				float: none;
+				width: auto;
+				margin: 0;
+			}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-layout {
+		width: 590px;
+	}
+
+		#footer-holder {
+			width: auto;
+			padding-top: 40px;
+			padding-left: 50px;
+		}
+
+		#copyrights-box {
+			width: 490px;
+		}
+
+
+	/*===========================================
+		M E N U
+	===========================================*/
+
+	/*--- Primary -----------------------------*/
+
+	#menu-1-box > div {
+		width: 590px;
+		height: auto;
+	}
+
+		ul.menu {
+			text-align: center;
+		}
+
+			ul.menu > li {
+				float: none;
+				display: inline-block;
+				margin: 0;
+			}
+
+	/*--- Secondary ---------------------------*/
+
+	#menu-2-box > div {
+		width: 590px;
+		height: auto;
+	}
+
+		ul.menu-2 {
+			text-align: center;
+		}
+
+			ul.menu-2 > li {
+				float: none;
+				display: inline-block;
+				margin: 0;
+			}
+
+
+	/*===========================================
+		S I D E B A R S
+	===========================================*/
+
+	/*--- Sidebar -----------------------------*/
+
+	#content-holder #sidebar {
+		float: none;
+		width: auto;
+		padding: 15px 50px 25px;
+	}
+
+		#content-holder .sidebar {
+			margin: 0;
+		}
+
+	#content-holder div.sidebar-post {
+		width: 100%;
+		margin: 50px -50px 25px;
+		padding: 25px 50px;
+		background-repeat: repeat;
+	}
+	
+		.sidebar-post,
+		.sidebar-post div {
+			font-size: inherit;
+		}
+	
+		.sidebar-post #stickyDiv {
+			position: relative !important;
+			float: right;
+			width: 195px;
+			top: auto !important;
+		}
+
+			.sidebar-post #stickyDiv > div {
+				margin: 0 0 25px;
+			}
+
+	/*--- Homepage Sidebar --------------------*/
+
+	#sidebar-homepage-a {
+		width: 540px;
+		padding: 0 25px 25px;
+	}
+
+		.sidebar-homepage-a h1 {
+			font-size: 3em;
+		}
+
+		.sidebar-homepage-a p span {
+			display: inline;
+		}
+
+	#sidebar-homepage-b {
+		width: 540px;
+		padding: 25px;
+	}
+
+		#sidebar-homepage-b .widget {
+			padding: 25px 0;
+		}
+
+	/*--- Project Sidebar ---------------------*/
+
+	.projects-sidebar {
+		float: none !important;
+		width: auto;
+		padding: 0 50px;
+	}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-box .sidebar-footer,
+	#footer-box .sidebar-footer.last {
+		width: 270px;
+	}
+
+		#footer-box .sidebar-footer > div,
+		#footer-box .sidebar-footer.last > div {
+			margin-right: 50px;
+			margin-top: 0;
+		}
+
+
+	/*===========================================
+		F O R M A T S / PROJECTS
+	===========================================*/
+
+	.project-wrapper,
+	.single .project-wrapper {
+		padding: 0 0 75px;
+	}
+
+	.project-wrapper-color,
+	.single .project-wrapper-color {
+		margin: 0;
+		padding: 0 0 75px;
+	}
+
+		.project-thumb {
+			font-size: 0.85em;
+		}
+
+	/*--- Format Gallery ----------------------*/
+
+	.projects-format-gallery-holder {
+		width: 590px;
+		margin-bottom: 50px;
+	}
+
+		/* Project 1 */
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper {
+			width: 393px;
+		}
+	
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper a.project-thumb {
+				height: 271px;
+			}
+
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single {
+			width: 590px;
+		}
+
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single a.project-thumb {
+				height: 419px;
+			}
+
+		/* Projects 2,3 */
+		.projects-format-gallery-holder > div.projects-gallery-b-wrapper {
+			width: 196px;
+			margin-left: 1px;
+		}
+
+		/* Projects 4,5,6... */
+		.projects-format-gallery-holder > div {
+			width: 196px;
+			margin-bottom: 1px;
+			margin-right: 1px;
+		}
+	
+			.projects-format-gallery-holder a.project-thumb {
+				height: 135px;
+			}
+	
+			.projects-format-gallery-holder i {
+				display: none;
+			}
+
+	/*--- Format Audio ------------------------*/
+
+	.projects-format-audio-holder {
+		width: 590px;
+		margin-bottom: 50px;
+	}
+
+	/*--- Format Video ------------------------*/
+
+	.projects-format-video-holder {
+		width: 590px;
+		margin-bottom: 50px;
+	}
+
+	/*--- Elements ----------------------------*/
+
+	#projects-load-more {
+		padding: 75px 0;
+	}
+
+
+	/*===========================================
+		P O S T
+	===========================================*/
+
+	/*--- Post data ---------------------------*/
+
+	.post-single .featured-image {
+		margin: 0 -50px 50px;
+		max-width: 590px;
+	}
+
+	/*--- Post info ---------------------------*/
+
+	.single-author-info {
+		min-height: 130px;
+		margin-bottom: 25px;
+	}
+
+		.single-author-upic {
+			float: right;
+			margin: 0 0 10px 25px;
+		}
+
+	.post-short-info {
+		float: left;
+		width: 195px;
+		margin: 0;
+		padding: 0.5em 50px 0.5em 0;
+		background-repeat: repeat-y;
+	}
+
+		#content-box .post-short-info > p,
+		#content-box .post-short-info > div {
+			background-position: left 0.35em;
+		}
+
+		.post-short-info p {
+			margin-bottom: 1em;
+		}
+
+	/*--- Prev/Next post links ----------------*/
+
+	#pre_next_post {
+		padding: 1.5em 25px;
+	}
+
+	/*===========================================
+		S H O R T C O D E S
+	===========================================*/
+
+	.column {
+		float: none;
+		width: auto !important;
+	}
+
+		.column > div {
+			margin-right: 0 !important;
+		}
+
+	.pricing-table-featured .pricing-table-title {
+		margin-top: 0;
+	}
+
+	.ico16 {
+		background-position: left 0.4em;
+	}
+
+
+	/*===========================================
+		W I D G E T S
+	===========================================*/
+
+	/*--- Get In Touch ------------------------*/
+
+	.widget-info p.widget-info-address,
+	.widget-info p.widget-info-phone,
+	.widget-info p.widget-info-email,
+	.widget-info p.widget-info-name {
+		background-position: 0 0.4em;
+	}
+
+
+	/*===========================================
+		S P E C I A L
+	===========================================*/
+
+	/*--- Mediaelement ------------------------*/
+
+	#layout .mejs-controls {
+		background-image: url('file:///Macintosh HD/Users/dubbledubs/Documents/PORTFOLIO/WILL WEEMS - DUBS THE CREATOR - NEW POTFOLIO/images/bg-black-30.png');
+	}
+
+
+/**/}
+
+
+@media only screen and ( min-width: 480px ) and ( max-width: 639px ) {
+/*===============================================
+
+	P H O N E   H
+	480px/639px
+
+===============================================*//**/
+
+/*
+
+	1 - LAYOUT
+
+		- Header
+		- Content
+		- Footer
+
+	2 - MENU
+
+		- Primary
+		- Secondary
+
+	3 - SIDEBARS
+
+		- Sidebar
+		- Footer
+
+	4 - TEMPLATES / POSTS
+
+		- Template 3
+
+	5 - FORMATS / PROJECTS
+
+		- Format Gallery
+		- Format Audio
+		- Format Video
+		- Archive
+		- Elements
+
+	6 - POST
+
+	7 - SHORTCODES
+
+	8 - WP CLASSES
+
+	9 - WIDGETS
+
+		- Get In Touch
+
+	10 - SPECIAL
+
+		- Mediaelement
+
+*/
+
+	/*===========================================
+		L A Y O U T
+	===========================================*/
+
+	body, div, td {
+		font-size: 1em;
+	}
+
+	/*--- Header ------------------------------*/
+
+	#header-holder {
+		width: auto;
+		padding: 25px 0;
+	}
+
+		#logo {
+			padding: 50px 0;
+		}
+
+	/*--- Content -----------------------------*/
+
+	#content-layout {
+		width: 430px;
+	}
+
+		#content-holder {
+			width: 430px;
+			margin: 0 auto;
+		}
+	
+			#content-holder #content-box {
+				float: none;
+				width: auto;
+			}
+	
+				#content-box {
+					min-height: auto;
+				}
+
+					#content-holder #content-box > div {
+						padding: 25px 25px 0;
+					}
+
+			#content-holder div.post-single {
+				float: none;
+				width: auto;
+				margin: 0;
+			}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-layout {
+		width: 430px;
+	}
+
+		#footer-holder {
+			width: 380px;
+			padding-top: 40px;
+		}
+	
+		#copyrights-box {
+			width: 380px;
+		}
+	
+			#copyrights-box > div {
+				width: 100%;
+				text-align: left;
+			}
+
+
+	/*===========================================
+		M E N U
+	===========================================*/
+
+	/*--- Primary -----------------------------*/
+
+	#menu-1-box > div {
+		width: 430px;
+		height: auto;
+	}
+
+		ul.menu {
+			text-align: center;
+		}
+
+			ul.menu > li {
+				float: none;
+				display: inline-block;
+				margin: 0;
+			}
+
+	/*--- Secondary ---------------------------*/
+
+	#menu-2-box > div {
+		width: 430px;
+		height: auto;
+	}
+
+		ul.menu-2 {
+			text-align: center;
+		}
+
+			ul.menu-2 > li {
+				float: none;
+				display: inline-block;
+				margin: 0;
+			}
+
+
+	/*===========================================
+		S I D E B A R S
+	===========================================*/
+
+	/*--- Sidebar -----------------------------*/
+
+	#content-holder #sidebar {
+		float: none;
+		width: auto;
+		padding: 15px 25px 25px;
+	}
+
+		#content-holder .sidebar {
+			margin: 0;
+		}
+
+	#content-holder div.sidebar-post {
+		width: 100%;
+		margin: 50px -25px 25px;
+		padding: 2em 25px 25px;
+		background-repeat: repeat;
+	}
+	
+		.sidebar-post,
+		.sidebar-post div {
+			font-size: inherit;
+		}
+	
+		.sidebar-post #stickyDiv {
+			position: relative !important;
+			float: right;
+			width: 165px;
+			top: auto !important;
+		}
+
+			.sidebar-post #stickyDiv > div {
+				margin: 0 0 25px;
+			}
+
+	/*--- Homepage Sidebar --------------------*/
+
+	#sidebar-homepage-a {
+		width: 380px;
+		padding: 0 25px 25px;
+	}
+
+		.sidebar-homepage-a h1 {
+			font-size: 3em;
+		}
+
+		.sidebar-homepage-a td,
+		.sidebar-homepage-a p {
+			color: #FFFFFF;
+			font-size: 150%;
+		}
+
+			.sidebar-homepage-a p span {
+				display: inline;
+			}
+
+	#sidebar-homepage-b {
+		width: 380px;
+		padding: 25px;
+	}
+
+		#sidebar-homepage-b .widget {
+			padding: 25px 0;
+		}
+
+	/*--- Project Sidebar ---------------------*/
+
+	.projects-sidebar {
+		float: none !important;
+		width: auto;
+		padding: 0 25px;
+	}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-box .sidebar-footer,
+	#footer-box .sidebar-footer.last {
+		width: auto;
+	}
+
+		#footer-box .sidebar-footer > div,
+		#footer-box .sidebar-footer.last > div {
+			margin-right: 0;
+			margin-top: 0;
+		}
+
+
+	/*===========================================
+		T E M P L A T E S / POSTS
+	===========================================*/
+
+	/*--- Template 3 --------------------------*/
+
+	.post-t3 img.t3 {
+		margin-bottom: 2.5em;
+	}
+
+	.t3-left {
+		float: none;
+		width: auto;
+		margin: 0;
+		padding: 2.5em 0 0;
+	}
+
+	.t3-right {
+		float: none;
+		width: auto;
+		margin: 0;
+	}
+
+
+	/*===========================================
+		F O R M A T S / PROJECTS
+	===========================================*/
+
+	.project-wrapper,
+	.single .project-wrapper {
+		padding: 0 0 50px;
+	}
+
+	.project-wrapper-color,
+	.single .project-wrapper-color {
+		margin: 0;
+		padding: 0 0 50px;
+	}
+
+		.project-thumb {
+			font-size: 0.85em;
+		}
+
+	/*--- Format Gallery ----------------------*/
+
+	.projects-format-gallery-holder {
+		width: auto;
+		margin-bottom: 25px;
+	}
+
+		/* Project 1 */
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper {
+			width: 430px;
+		}
+	
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper a.project-thumb {
+				height: 295px;
+			}
+
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single {
+			width: 430px;
+		}
+
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single a.project-thumb {
+				height: 295px;
+			}
+
+		/* Projects 2,3 */
+		.projects-format-gallery-holder > div.projects-gallery-b-wrapper {
+			width: 214px;
+			margin: 0 1px 1px 0;
+		}
+
+		/* Projects 4,5,6... */
+		.projects-format-gallery-holder > div {
+			width: 214px;
+			margin: 0 1px 1px 0;
+		}
+
+			.projects-format-gallery-holder > div.first {
+				clear: none;
+			}
+
+			.projects-format-gallery-holder > div.last {
+				margin-right: 1px;
+			}
+	
+				.projects-format-gallery-holder a.project-thumb {
+					height: 147px;
+				}
+		
+				.projects-format-gallery-holder i {
+					display: none;
+				}
+
+	/*--- Format Audio ------------------------*/
+
+	.projects-format-audio-holder {
+		width: 430px;
+		margin-bottom: 25px;
+	}
+
+	/*--- Format Video ------------------------*/
+
+	.projects-format-video-holder {
+		width: 430px;
+		margin-bottom: 25px;
+	}
+
+	/*--- Archive -----------------------------*/
+
+	#projects-term {
+		padding: 25px;
+	}
+
+	/*--- Elements ----------------------------*/
+
+	#projects-load-more {
+		padding: 50px 0;
+	}
+
+
+	/*===========================================
+		P O S T
+	===========================================*/
+
+	/*--- Archive -----------------------------*/
+
+	#term {
+		margin-bottom: 25px;
+		padding: 0 0 25px;
+	}
+
+	/*--- Post data ---------------------------*/
+
+	.post-single .featured-image {
+		margin: 0 -25px 25px;
+		max-width: 430px;
+	}
+
+	/*--- Post info ---------------------------*/
+
+	.single-author-info {
+		min-height: 130px;
+		margin-bottom: 25px;
+	}
+
+		.single-author-upic {
+			float: right;
+			margin: 0 0 10px 25px;
+		}
+
+	.post-short-info {
+		float: left;
+		width: 165px;
+		margin: 0;
+		padding: 0.5em 25px 0.5em 0;
+		background-repeat: repeat-y;
+	}
+
+		#content-box .post-short-info > p,
+		#content-box .post-short-info > div {
+			background-position: left 0.35em;
+		}
+
+		.post-short-info p {
+			margin-bottom: 1em;
+		}
+
+	/*--- Prev/Next post links ----------------*/
+
+	#pre_next_post {
+		padding: 1em 25px;
+		background-image: none;
+	}
+
+		#pre_next_post a {
+			margin: 0.5em 0;
+			max-width: none;
+		}
+
+			#pre_next_post a.n {
+				float: right;
+			}
+
+
+	/*===========================================
+		S H O R T C O D E S
+	===========================================*/
+
+	.column {
+		float: none;
+		width: auto !important;
+	}
+
+		.column > div {
+			margin-right: 0 !important;
+		}
+
+	.pricing-table-featured .pricing-table-title {
+		margin-top: 0;
+	}
+
+	.ico16 {
+		background-position: left 0.4em;
+	}
+
+	.pullquote {
+		float: none;
+		width: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	/*-------------------------------------------
+		W P   C L A S S E S
+	-------------------------------------------*/
+
+	.alignleft,
+	.alignright {
+		float: none;
+		clear: both;
+		display: table;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+
+	/*===========================================
+		W I D G E T S
+	===========================================*/
+
+	/*--- Get In Touch ------------------------*/
+
+	.widget-info p.widget-info-address,
+	.widget-info p.widget-info-phone,
+	.widget-info p.widget-info-email,
+	.widget-info p.widget-info-name {
+		background-position: 0 0.4em;
+	}
+
+
+	/*===========================================
+		S P E C I A L
+	===========================================*/
+
+	/*--- Mediaelement ------------------------*/
+
+	#layout .mejs-controls {
+		background-image: url('file:///Macintosh HD/Users/dubbledubs/Documents/PORTFOLIO/WILL WEEMS - DUBS THE CREATOR - NEW POTFOLIO/images/bg-black-30.png');
+	}
+
+
+/**/}
+
+
+@media only screen and ( max-width: 479px ) {
+/*===============================================
+
+	P H O N E   V
+	320px/479px
+
+===============================================*//**/
+
+/*
+
+	1 - LAYOUT
+
+		- Header
+		- Content
+		- Footer
+
+	2 - MENU
+
+		- Primary
+		- Secondary
+
+	3 - SIDEBARS
+
+		- Sidebar
+		- Footer
+
+	4 - TEMPLATES / POSTS
+
+		- Template 3
+
+	5 - FORMATS / PROJECTS
+
+		- Format Gallery
+		- Format Audio
+		- Format Video
+		- Archive
+		- Elements
+
+	6 - POST
+
+	7 - SHORTCODES
+
+	8 - WP CLASSES
+
+	9 - COMMENTS
+
+	10 - WIDGETS
+
+		- Get In Touch
+
+	11 - SPECIAL
+
+		- Mediaelement
+
+*/
+
+	/*===========================================
+		L A Y O U T
+	===========================================*/
+
+	body, div, td {
+		font-size: 1em;
+	}
+
+	/*--- Header ------------------------------*/
+
+	#header-holder {
+		width: auto;
+		padding: 25px 0;
+	}
+
+		#logo {
+			float: none;
+			width: auto;
+			height: auto;
+			margin: 0 auto;
+			padding: 25px 0;
+		}
+
+			#logo h2 {
+				margin: 0;
+				text-align: center;
+			}
+
+				#logo h2 img {
+					margin: 0 auto;
+				}
+
+		#hcustom {
+			float: none;
+			height: auto;
+			margin: 0 auto;
+			padding: 25px;
+		}
+
+	/*--- Content -----------------------------*/
+
+	#content-layout {
+		width: 320px;
+	}
+
+		#content-holder {
+			width: 320px;
+			margin: 0 auto;
+		}
+	
+			#content-holder #content-box {
+				float: none;
+				width: auto;
+			}
+	
+				#content-box {
+					min-height: auto;
+				}
+
+					#content-holder #content-box > div {
+						padding: 25px 10px 0;
+					}
+	
+			#content-holder div.post-single {
+				float: none;
+				width: auto;
+				margin: 0;
+			}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-layout {
+		width: 320px;
+	}
+
+		#footer-holder {
+			width: 300px;
+			padding-top: 40px;
+		}
+	
+		#copyrights-box {
+			width: 300px;
+		}
+	
+			#copyrights-box > div {
+				width: 100%;
+				text-align: left;
+			}
+
+
+	/*===========================================
+		M E N U
+	===========================================*/
+
+	/*--- Primary -----------------------------*/
+
+	#menu-1-box > div {
+		width: 320px;
+		height: auto;
+	}
+
+		ul.menu {
+			text-align: center;
+		}
+
+			ul.menu > li {
+				float: none;
+				display: table;
+				margin: 9px auto 0;
+			}
+
+	/*--- Secondary ---------------------------*/
+
+	#menu-2-box > div {
+		width: 320px;
+		height: auto;
+	}
+
+		ul.menu-2 {
+			text-align: center;
+		}
+
+			ul.menu-2 > li {
+				float: none;
+				display: table;
+				margin: 9px auto 0;
+			}
+
+
+	/*===========================================
+		S I D E B A R S
+	===========================================*/
+
+	/*--- Sidebar -----------------------------*/
+
+	#content-holder #sidebar {
+		float: none;
+		width: auto;
+		padding: 0;
+	}
+
+		#content-holder .sidebar {
+			margin: 0;
+			padding: 25px 10px;
+		}
+
+	#content-holder div.sidebar-post {
+		width: 100%;
+		margin: 50px -10px 10px;
+		padding: 2em 10px;
+		background-repeat: repeat;
+	}
+	
+		.sidebar-post,
+		.sidebar-post div {
+			font-size: inherit;
+		}
+	
+		.sidebar-post #stickyDiv {
+			position: relative !important;
+			width: 300px;
+			top: auto !important;
+		}
+
+	/*--- Homepage Sidebar --------------------*/
+
+	#sidebar-homepage-a {
+		width: 300px;
+		padding: 0 10px 25px;
+	}
+
+		.sidebar-homepage-a h1 {
+			font-size: 2em;
+		}
+
+		.sidebar-homepage-a td,
+		.sidebar-homepage-a p {
+			color: #FFFFFF;
+			font-size: 150%;
+		}
+
+			.sidebar-homepage-a p span {
+				display: inline;
+			}
+
+	#sidebar-homepage-b {
+		width: 300px;
+		padding: 10px 10px 0;
+	}
+
+		#sidebar-homepage-b .widget {
+			padding: 25px 0;
+		}
+
+	/*--- Project Sidebar ---------------------*/
+
+	.projects-sidebar {
+		width: auto;
+		padding: 0;
+	}
+
+		#content-holder .projects-sidebar .sidebar {
+			padding: 0 10px;
+		}
+
+	/*--- Footer ------------------------------*/
+
+	#footer-box .sidebar-footer,
+	#footer-box .sidebar-footer.last {
+		width: 300px;
+	}
+
+		#footer-box .sidebar-footer > div,
+		#footer-box .sidebar-footer.last > div {
+			margin-right: 0;
+			margin-top: 0;
+		}
+
+
+	/*===========================================
+		T E M P L A T E S / POSTS
+	===========================================*/
+
+	/*--- Template 3 --------------------------*/
+
+	.post-t3 img.t3 {
+		margin-bottom: 2.5em;
+	}
+
+	.t3-left {
+		float: none;
+		width: auto;
+		margin: 0;
+		padding: 2.5em 0 0;
+	}
+
+	.t3-right {
+		float: none;
+		width: auto;
+		margin: 0;
+	}
+
+
+	/*===========================================
+		F O R M A T S / PROJECTS
+	===========================================*/
+
+	.project-wrapper,
+	.single .project-wrapper {
+		padding: 0 0 50px;
+	}
+
+	.project-wrapper-color,
+	.single .project-wrapper-color {
+		margin: 0;
+		padding: 0 0 50px;
+	}
+
+		.project-thumb {
+			font-size: 0.85em;
+		}
+
+	/*--- Format Gallery ----------------------*/
+
+	.projects-format-gallery-holder {
+		float: none;
+		width: 320px;
+		margin-bottom: 25px;
+	}
+
+		/* Project 1 */
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper {
+			width: 320px;
+		}
+	
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper a.project-thumb {
+				height: 227px;
+			}
+
+		.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single {
+			width: 320px;
+		}
+
+			.projects-format-gallery-holder > div.projects-gallery-a-wrapper-single a.project-thumb {
+				height: 227px;
+			}
+
+		/* Projects 2,3 */
+		.projects-format-gallery-holder > div.projects-gallery-b-wrapper {
+			width: 159px;
+			margin: 0 1px 1px 0;
+		}
+
+		/* Projects 4,5,6... */
+		.projects-format-gallery-holder > div {
+			width: 159px;
+			margin: 0 1px 1px 0;
+		}
+
+			.projects-format-gallery-holder > div.first {
+				clear: none;
+			}
+
+			.projects-format-gallery-holder > div.last {
+				margin-right: 1px;
+			}
+
+				.projects-format-gallery-holder a.project-thumb {
+					height: 113px;
+				}
+		
+				.projects-format-gallery-holder i {
+					display: none;
+				}
+
+	/*--- Format Audio ------------------------*/
+
+	.projects-format-audio-holder {
+		float: right !important;
+		width: 320px;
+		margin: 0 0 25px -10px;
+	}
+
+	/*--- Format Video ------------------------*/
+
+	.projects-format-video-holder {
+		float: right !important;
+		width: 320px;
+		margin: 0 0 25px -10px;
+	}
+
+	/*--- Archive -----------------------------*/
+
+	#projects-term {
+		padding: 25px;
+	}
+
+	/*--- Elements ----------------------------*/
+
+	#projects-load-more {
+		padding: 50px 0;
+	}
+
+
+	/*===========================================
+		P O S T
+	===========================================*/
+
+	/*--- 404 ---------------------------------*/
+
+	#content-404.notice {
+		margin-bottom: 25px;
+		padding: 25px 92px 25px 25px;
+	}
+
+	/*--- Archive -----------------------------*/
+
+	#term {
+		margin-bottom: 10px;
+		padding: 0 0 25px;
+	}
+
+	/*--- Post data ---------------------------*/
+
+	.post-single .featured-image {
+		margin: 0 0 15px -10px;
+		max-width: 320px;
+	}
+
+	/*--- Post info ---------------------------*/
+
+	.single-author-info {
+		min-height: 130px;
+	}
+
+		.single-author-upic {
+			float: right;
+			margin: 0 0 10px 25px;
+		}
+
+		#content-box .post-short-info > p,
+		#content-box .post-short-info > div {
+			background-position: left 0.35em;
+		}
+
+		.post-short-info p {
+			margin-bottom: 1em;
+		}
+
+	/*--- Prev/Next post links ----------------*/
+
+	#pre_next_post {
+		text-align: center;
+		padding: 1em 45px;
+		background-image: none;
+	}
+
+		#pre_next_post a {
+			margin: 0.5em 0;
+			max-width: none;
+		}
+
+			#pre_next_post a.n {
+				text-align: center;
+				float: none;
+			}
+
+
+	/*===========================================
+		S H O R T C O D E S
+	===========================================*/
+
+	.column {
+		float: none;
+		width: auto !important;
+	}
+
+		.column > div {
+			margin-right: 0 !important;
+		}
+
+	.pricing-table-featured .pricing-table-title {
+		margin-top: 0;
+	}
+
+	.ico16 {
+		background-position: left 0.4em;
+	}
+
+	.notice {
+		padding: 25px;
+	}
+
+	.pullquote {
+		float: none;
+		width: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+
+	/*===========================================
+		W P   C L A S S E S
+	===========================================*/
+
+	.alignleft,
+	.alignright {
+		float: none;
+		clear: both;
+		display: table;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+
+	/*===========================================
+		C O M M E N T S
+	===========================================*/
+
+	.children {
+		margin: 0;
+	}
+
+	.comment-top-level .comment-box,
+	.comment-low-level .comment-box {
+		padding-left: 0;
+	}
+
+		.avatar-box {
+			float: right;
+			margin-left: 1em;
+		}
+
+
+	/*===========================================
+		W I D G E T S
+	===========================================*/
+
+	/*--- Get In Touch ------------------------*/
+
+	.widget-info p.widget-info-address,
+	.widget-info p.widget-info-phone,
+	.widget-info p.widget-info-email,
+	.widget-info p.widget-info-name {
+		background-position: 0 0.4em;
+	}
+
+
+	/*===========================================
+		S P E C I A L
+	===========================================*/
+
+	/*--- Mediaelement ------------------------*/
+
+	#layout .mejs-controls {
+		background-image: url('file:///Macintosh HD/Users/dubbledubs/Documents/PORTFOLIO/WILL WEEMS - DUBS THE CREATOR - NEW POTFOLIO/images/bg-black-30.png');
+	}
+
+
+/**/}
