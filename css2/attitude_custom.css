@@ -6,3 +6,14 @@ body, div, td {
   font-size: 14px; 
 }
 
+.projects-term-title h1:before {
+    content: ' ';
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 0 0.3em -0.3em -9.6px 0;
+    background: transparent;
+    background-size: 32px 32px;
+    border-radius: 2px;
+	display: none;
+}
