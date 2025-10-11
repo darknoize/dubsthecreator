@@ -1,0 +1,27 @@
+# Large image directories that shouldn't be tracked
+images/M3/
+
+# Other large directories you might want to ignore
+# images/BuzzVibe/
+# images/GameMax/
+# images/Rio-Olympics/
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup files
+*~
+*.bak
+*.backup
