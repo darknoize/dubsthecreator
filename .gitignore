@@ -1,5 +1,5 @@
 # Large image directories that shouldn't be tracked
-images/M3/
+# images/M3/ - Re-enabled for optimized WebP files
 
 # Other large directories you might want to ignore
 # images/BuzzVibe/
