@@ -30,9 +30,10 @@
 <link rel="preload" as="image" href="images/Tone/Tone-1.webp">
 <link rel="preload" as="image" href="images/Tone/Tone-2.webp">
 <link rel="preload" as="image" href="images/WebMD/webmd-7.webp">
-<link rel="preload" as="image" href="images/WebMD/webmd-8.webp">
+<link rel="preload" as="image" href="images/WebMD/WebMD-2-02.webp">
+<link rel="preload" as="image" href="images/WebMD/WebMD-09.webp">
 <link rel="preload" as="image" href="images/LexisNexis/LexisNexis-bkgrnd-7-01.webp">
-<link rel="preload" as="image" href="images/LexisNexis/LexisNexis-b-2.webp">
+<link rel="preload" as="image" href="images/LexisNexis/LexisNexis-Screen-01.webp">
 
 <link rel="stylesheet" href="css2/style.css" type="text/css" media="all">
 <link rel="stylesheet" href="css2/ctp.css" type="text/css" media="all">
@@ -361,16 +362,16 @@ div[style*="overflow-x: scroll"] {
     function preloadProjectGalleries() {
         const projectGalleries = {
             'Tone': ['Tone-1.webp', 'Tone-2.webp', 'Tone-3.webp', 'Tone-4.webp'],
-            'WebMD': ['webmd-7.webp', 'webmd-8.webp', 'webmd-9.webp', 'webmd-10.webp'],
-            'LexisNexis': ['LexisNexis-bkgrnd-7-01.webp', 'LexisNexis-b-2.webp']
+            'WebMD': ['webmd-7.webp', 'WebMD-2-02.webp', 'WebMD-09.webp', 'WebMD-10.webp', 'WebMD-2-03.webp', 'WebMD-2-04.webp', 'WebMD-2-05.webp'],
+            'LexisNexis': ['LexisNexis-bkgrnd-7-01.webp', 'LexisNexis-Screen-01.webp']
         };
         
         Object.keys(projectGalleries).forEach(project => {
             projectGalleries[project].forEach(filename => {
                 const img = new Image();
                 img.src = `images/${project}/${filename}`;
-                img.onload = () => console.log(`Preloaded: ${project}/${filename}`);
-                img.onerror = () => console.warn(`Failed to preload: ${project}/${filename}`);
+                img.onload = () => console.log(`✅ Preloaded: ${project}/${filename}`);
+                img.onerror = () => console.warn(`❌ Failed to preload: ${project}/${filename}`);
             });
         });
     }
@@ -409,11 +410,30 @@ div[style*="overflow-x: scroll"] {
         });
     }
     
+    // Force reload problematic images after a delay
+    function forceReloadProblematicImages() {
+        setTimeout(() => {
+            const problematicImages = document.querySelectorAll('img[src*="Tone/"], img[src*="WebMD/"], img[src*="LexisNexis/"]');
+            problematicImages.forEach(img => {
+                if (!img.complete || img.naturalWidth === 0) {
+                    console.log(`🔄 Force reloading: ${img.src}`);
+                    const originalSrc = img.src;
+                    img.src = '';
+                    img.src = originalSrc;
+                }
+            });
+        }, 2000); // Wait 2 seconds then check and reload if needed
+    }
+
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeImageOptimization);
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeImageOptimization();
+            forceReloadProblematicImages();
+        });
     } else {
         initializeImageOptimization();
+        forceReloadProblematicImages();
     }
 })();
 </script>
