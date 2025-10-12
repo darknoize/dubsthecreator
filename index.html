@@ -189,18 +189,17 @@ body.custom-background {
 	margin-top: 55px;
 }
 }
-
 /* Mobile Background Image Fixes */
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 768px) {
 	/* Fix for iOS background-attachment issues */
 	body.custom-background {
-		background-attachment: scroll !important;
+		background-attachment: fixed;
 		background-size: cover !important;
 	}
 	
 	/* Fix background images for all project sections on mobile */
 	div[id^="project-"] {
-		background-attachment: scroll !important;
+		background-attachment: fixed;
 		background-size: cover !important;
 		background-position: center center !important;
 		min-height: 100vh;
@@ -209,12 +208,12 @@ body.custom-background {
 	/* Specific adjustments for certain projects that need different positioning */
 	#project-3 {
 		background-position: center top !important;
-		background-attachment: scroll !important;
+		background-attachment: fixed;
 	}
 	
 	#project-6 {
 		background-position: center center !important;
-		background-attachment: scroll !important;
+		background-attachment: fixed;
 	}
 }
 
@@ -223,7 +222,44 @@ body.custom-background {
 	div[id^="project-"] {
 		background-position: center center !important;
 		background-size: cover !important;
-		background-attachment: scroll !important;
+		background-attachment: scroll;
+	}
+}
+
+/* Mobile Background Image Fixes */
+@media only screen and (max-width: 768px) {
+	/* Fix for iOS background-attachment issues */
+	body.custom-background {
+		background-attachment: scroll;
+		background-size: cover !important;
+	}
+	
+	/* Fix background images for all project sections on mobile */
+	div[id^="project-"] {
+		background-attachment: scroll;
+		background-size: cover !important;
+		background-position: center center !important;
+		min-height: 100vh;
+	}
+	
+	/* Specific adjustments for certain projects that need different positioning */
+	#project-3 {
+		background-position: center top !important;
+		background-attachment: scroll;
+	}
+	
+	#project-6 {
+		background-position: center center !important;
+		background-attachment: scroll;
+	}
+}
+
+/* Extra small screens (iPhone SE, etc.) */
+@media only screen and (max-width: 480px) {
+	div[id^="project-"] {
+		background-position: center center !important;
+		background-size: cover !important;
+		background-attachment: scroll;
 	}
 }
 
@@ -349,7 +385,7 @@ div[style*="overflow-x: scroll"] {
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
     <div id="content-layout" style="overflow: hidden;">
       <section>
-        <div id="intro-Dubs" style="display: inline-block; position: relative; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Walk-of-Fame.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: scroll; background-color: #020207; margin-bottom: 0px; padding-bottom: 0px;">
+        <div id="portfolio-dubs" style="display: inline-block; position: relative; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Walk-of-Fame.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: scroll; background-color: #020207; margin-bottom: 0px; padding-bottom: 0px;">
           <div style="background-color: rgba(0,0,0,0.4); top: 10%;"> <img class="divider" src="images/divider.png" width="100%" height="2" loading="eager" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; height: auto; padding-bottom: 100px;"> <img class="logo-sm" src="images/Dubs-Profile-02.webp" width="200" height="200" alt="Dubs The Creator"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Dubs The Creator</strong></h1>
