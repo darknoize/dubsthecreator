@@ -162,13 +162,13 @@ body.custom-background {
 @media only screen and (max-width: 768px) {
 	/* Fix for iOS background-attachment issues */
 	body.custom-background {
-		background-attachment: scroll !important;
+		background-attachment: fixed !important;
 		background-size: cover !important;
 	}
 	
 	/* Fix background images for all project sections on mobile */
 	div[id^="project-"] {
-		background-attachment: scroll !important;
+		background-attachment: fixed !important;
 		background-size: cover !important;
 		background-position: center center !important;
 		min-height: 100vh;
@@ -177,10 +177,12 @@ body.custom-background {
 	/* Specific adjustments for certain projects that need different positioning */
 	#project-3 {
 		background-position: center top !important;
+		background-attachment: fixed !important;
 	}
 	
 	#project-6 {
 		background-position: center center !important;
+		background-attachment: fixed !important;
 	}
 }
 
@@ -189,20 +191,10 @@ body.custom-background {
 	div[id^="project-"] {
 		background-position: center center !important;
 		background-size: cover !important;
+		background-attachment: fixed !important;
 	}
 }
 </style>
-<!--<style id="st-dynamic-css" type="text/css">
-#layout #id8323 .mejs-time-loaded {
-    background-color: rgb(13, 17, 23);
-}
-#layout #id3282 .mejs-time-loaded {
-    background-color: #3e3c3e;
-}
-#layout #id8987 .mejs-time-loaded {
-    background-color: #0e737f;
-}
-</style>-->
 </head>
 
 <body class="archive tax-st_category term-after-effects term-23 custom-background hidpi-on chrome hidpi" style="background-size: 100%; margin: 0px;">
