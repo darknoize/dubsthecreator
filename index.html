@@ -122,6 +122,11 @@ div[id^="project-"], div[id="portfolio-dubs"] {
     will-change: auto;
 }
 
+/* Specific positioning for portfolio-dubs section */
+#portfolio-dubs {
+    background-position: top center !important;
+}
+
 /* Optimize fixed backgrounds - disable animations and transforms */
 @media only screen and (min-width: 768px) {
     div[id^="project-"], div[id="portfolio-dubs"] {
@@ -600,8 +605,14 @@ div[style*="overflow-x: scroll"] {
             
             // Cloud-optimized background settings
             section.style.backgroundSize = 'cover';
-            section.style.backgroundPosition = 'center center';
             section.style.backgroundRepeat = 'no-repeat';
+            
+            // Special positioning for portfolio-dubs section
+            if (section.id === 'portfolio-dubs') {
+                section.style.backgroundPosition = 'top center';
+            } else {
+                section.style.backgroundPosition = 'center center';
+            }
             
             if (isDesktop && supportsFixedBackground) {
                 // Only apply fixed backgrounds on large desktops with support

@@ -4,10 +4,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dubs The Creator - Portfolio</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="dcterms.audience" content="Global">
 <meta name="vercel-site-verification" content="dubsthecreator-primary-domain" />
+
+<!-- Cloud Deployment Optimizations -->
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#020207">
+
+<!-- DNS Prefetch for Performance -->
 <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+
+<!-- Preconnect for faster loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 
 <!-- Preload Critical Images -->
 <link rel="preload" as="image" href="images/Walk-of-Fame.webp">
@@ -45,7 +59,7 @@ body.custom-background {
     background-image: url('images/Walk-of-Fame.webp');
     background-repeat: no-repeat;
     background-position: top center;
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-color: #020207;
 }
 .divider {
@@ -101,6 +115,24 @@ body.custom-background {
     100% { background-position: 200% 0; }
 }
 
+/* Disable shimmer on background containers to prevent glitchy fixed backgrounds */
+div[id^="project-"], div[id="portfolio-dubs"] {
+    animation: none !important;
+    background-attachment: inherit;
+    will-change: auto;
+}
+
+/* Optimize fixed backgrounds - disable animations and transforms */
+@media only screen and (min-width: 768px) {
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        animation: none !important;
+        transform: none !important;
+        will-change: auto !important;
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+}
+
 /* Gallery Left Alignment Fix */
 .gallery-pic {
     margin-left: 0 !important;
@@ -121,6 +153,71 @@ div[style*="overflow-x: scroll"] span {
 /* Remove extra spacing and ensure left alignment */
 span[style*="margin-right: 10px"] {
     margin-left: 0 !important;
+}
+
+/* Fixed Background Images for Desktop Only */
+@media only screen and (min-width: 768px) {
+    /* Fixed backgrounds for all project sections on desktop */
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        background-attachment: fixed !important;
+    }
+    
+    /* Ensure main body background is also fixed on desktop */
+    body.custom-background {
+        background-attachment: fixed !important;
+    }
+}
+
+/* Scrolling backgrounds for mobile devices and tablets */
+@media only screen and (max-width: 767px) {
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        background-attachment: scroll !important;
+        /* Mobile optimizations for cloud deployment */
+        background-size: cover !important;
+        background-position: center center !important;
+        -webkit-background-size: cover !important;
+        -moz-background-size: cover !important;
+        -o-background-size: cover !important;
+    }
+    
+    /* Keep main body background scrolling on mobile for performance */
+    body.custom-background {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    
+    /* Mobile gallery optimizations */
+    .gallery-pic {
+        /* Reduce shimmer intensity on mobile for battery life */
+        animation-duration: 3s !important;
+        transform: translateZ(0); /* Hardware acceleration */
+    }
+    
+    /* Optimize mobile scrolling */
+    div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
+        -webkit-overflow-scrolling: touch !important;
+        scroll-behavior: smooth !important;
+    }
+}
+
+/* Tablet optimizations (768px - 1024px) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    /* Use scroll backgrounds on tablets for better performance */
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    
+    body.custom-background {
+        background-attachment: scroll !important;
+    }
+    
+    /* Tablet-specific gallery adjustments */
+    .gallery-pic {
+        max-width: 300px !important;
+    }
 }
 
 @media only screen and (min-width: 1319px) and (max-width: 1920px) {
@@ -482,6 +579,65 @@ div[style*="overflow-x: scroll"] {
         }, 2000); // Wait 2 seconds then check and reload if needed
     }
     
+    // Cloud-optimized responsive background attachment with mobile/tablet detection
+    function applyResponsiveBackgrounds() {
+        const viewportWidth = window.innerWidth;
+        const isDesktop = viewportWidth > 1024; // Only large desktops get fixed backgrounds
+        const isTablet = viewportWidth >= 768 && viewportWidth <= 1024;
+        const isMobile = viewportWidth < 768;
+        
+        const projectSections = document.querySelectorAll('div[id^="project-"], div[id="portfolio-dubs"]');
+        const body = document.body;
+        
+        // Cloud deployment optimization: Feature detection
+        const supportsFixedBackground = !(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+        
+        projectSections.forEach(section => {
+            // Remove any conflicting animations or transforms
+            section.style.animation = 'none';
+            section.style.transform = 'none';
+            section.style.willChange = 'auto';
+            
+            // Cloud-optimized background settings
+            section.style.backgroundSize = 'cover';
+            section.style.backgroundPosition = 'center center';
+            section.style.backgroundRepeat = 'no-repeat';
+            
+            if (isDesktop && supportsFixedBackground) {
+                // Only apply fixed backgrounds on large desktops with support
+                section.style.backgroundAttachment = 'fixed';
+                section.style.backfaceVisibility = 'hidden';
+                section.style.perspective = '1000px';
+                console.log(`🖥️ Fixed background applied to ${section.id} (Desktop)`);
+            } else {
+                // Use scroll for mobile, tablet, and unsupported devices
+                section.style.backgroundAttachment = 'scroll';
+                section.style.backfaceVisibility = 'visible';
+                section.style.perspective = 'none';
+                
+                if (isMobile) {
+                    console.log(`📱 Scroll background applied to ${section.id} (Mobile)`);
+                } else if (isTablet) {
+                    console.log(`📱 Scroll background applied to ${section.id} (Tablet)`);
+                } else {
+                    console.log(`💻 Scroll background applied to ${section.id} (Unsupported device)`);
+                }
+            }
+        });
+        
+        // Apply to main body background with same logic
+        body.style.backgroundSize = 'cover';
+        body.style.backgroundPosition = 'center center';
+        
+        if (isDesktop && supportsFixedBackground) {
+            body.style.backgroundAttachment = 'fixed';
+            body.style.backfaceVisibility = 'hidden';
+        } else {
+            body.style.backgroundAttachment = 'scroll';
+            body.style.backfaceVisibility = 'visible';
+        }
+    }
+    
     // Continuously fix gallery alignment for dynamic content
     function continuousAlignmentFix() {
         // Fix alignment immediately and then periodically
@@ -504,12 +660,19 @@ div[style*="overflow-x: scroll"] {
             initializeImageOptimization();
             forceReloadProblematicImages();
             continuousAlignmentFix();
+            applyResponsiveBackgrounds();
         });
     } else {
         initializeImageOptimization();
         forceReloadProblematicImages();
         continuousAlignmentFix();
+        applyResponsiveBackgrounds();
     }
+    
+    // Apply responsive backgrounds on window resize
+    window.addEventListener('resize', () => {
+        applyResponsiveBackgrounds();
+    });
 })();
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
