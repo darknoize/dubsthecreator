@@ -123,6 +123,31 @@ span[style*="margin-right: 10px"] {
     margin-left: 0 !important;
 }
 
+/* Fixed Background Images for Desktop Only */
+@media only screen and (min-width: 768px) {
+    /* Fixed backgrounds for all project sections on desktop */
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        background-attachment: fixed !important;
+    }
+    
+    /* Ensure main body background is also fixed on desktop */
+    body.custom-background {
+        background-attachment: fixed !important;
+    }
+}
+
+/* Scrolling backgrounds for mobile devices */
+@media only screen and (max-width: 767px) {
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        background-attachment: scroll !important;
+    }
+    
+    /* Keep main body background scrolling on mobile for performance */
+    body.custom-background {
+        background-attachment: scroll !important;
+    }
+}
+
 @media only screen and (min-width: 1319px) and (max-width: 1920px) {
 #content-layout {
     width: 100%;
@@ -482,6 +507,30 @@ div[style*="overflow-x: scroll"] {
         }, 2000); // Wait 2 seconds then check and reload if needed
     }
     
+    // Apply responsive background attachment
+    function applyResponsiveBackgrounds() {
+        const isDesktop = window.innerWidth >= 768;
+        const projectSections = document.querySelectorAll('div[id^="project-"], div[id="portfolio-dubs"]');
+        const body = document.body;
+        
+        projectSections.forEach(section => {
+            if (isDesktop) {
+                section.style.backgroundAttachment = 'fixed';
+                console.log(`✅ Fixed background applied to ${section.id}`);
+            } else {
+                section.style.backgroundAttachment = 'scroll';
+                console.log(`📱 Scroll background applied to ${section.id} (mobile)`);
+            }
+        });
+        
+        // Apply to main body background
+        if (isDesktop) {
+            body.style.backgroundAttachment = 'fixed';
+        } else {
+            body.style.backgroundAttachment = 'scroll';
+        }
+    }
+    
     // Continuously fix gallery alignment for dynamic content
     function continuousAlignmentFix() {
         // Fix alignment immediately and then periodically
@@ -504,12 +553,19 @@ div[style*="overflow-x: scroll"] {
             initializeImageOptimization();
             forceReloadProblematicImages();
             continuousAlignmentFix();
+            applyResponsiveBackgrounds();
         });
     } else {
         initializeImageOptimization();
         forceReloadProblematicImages();
         continuousAlignmentFix();
+        applyResponsiveBackgrounds();
     }
+    
+    // Apply responsive backgrounds on window resize
+    window.addEventListener('resize', () => {
+        applyResponsiveBackgrounds();
+    });
 })();
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
