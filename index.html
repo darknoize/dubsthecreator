@@ -8,6 +8,14 @@
 <meta name="dcterms.audience" content="Global">
 <meta name="vercel-site-verification" content="dubsthecreator-primary-domain" />
 <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+
+<!-- Preload Critical Images -->
+<link rel="preload" as="image" href="images/Walk-of-Fame.webp">
+<link rel="preload" as="image" href="images/Dubs-Profile-02.webp">
+<link rel="preload" as="image" href="images/divider.png">
+<link rel="preload" as="image" href="images/Ping-Pay/Ping-Bkgrnd.webp">
+<link rel="preload" as="image" href="images/Tone/Tone-Bkgrnd.webp">
+
 <link rel="stylesheet" href="css2/style.css" type="text/css" media="all">
 <link rel="stylesheet" href="css2/ctp.css" type="text/css" media="all">
 <link rel="stylesheet" href="css2/style.css" type="text/css" media="screen">
@@ -58,6 +66,20 @@ body.custom-background {
 	
 .gallery-pic {
     border: 1px solid rgba(250, 250, 250, 0.5);
+    /* Add loading state */
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+}
+
+.gallery-pic.loaded {
+    background: none;
+    animation: none;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 @media only screen and (min-width: 1319px) and (max-width: 1920px) {
@@ -194,17 +216,132 @@ body.custom-background {
 		background-attachment: scroll !important;
 	}
 }
+
+/* Image Loading Optimization */
+img {
+	/* Prevent layout shift while loading */
+	max-width: 100%;
+	height: auto;
+}
+
+/* Gallery images optimization */
+.gallery-pic {
+	/* Prevent loading jank */
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: crisp-edges;
+	/* Smooth loading transition */
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.gallery-pic.loaded {
+	opacity: 1;
+}
+
+/* Optimize scrollable galleries */
+div[style*="overflow-x: scroll"] {
+	/* Enable hardware acceleration */
+	transform: translateZ(0);
+	will-change: scroll-position;
+	/* Smooth scrolling */
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+}
 </style>
 </head>
 
 <body class="archive tax-st_category term-after-effects term-23 custom-background hidpi-on chrome hidpi" style="background-size: 100%; margin: 0px;">
+
+<script>
+// Optimized Image Loading Script
+(function() {
+    'use strict';
+    
+    // Intersection Observer for lazy loading
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+                
+                // Add loaded class for smooth transition
+                img.onload = () => {
+                    img.classList.add('loaded');
+                };
+                
+                observer.unobserve(img);
+            }
+        });
+    }, {
+        rootMargin: '50px 0px',
+        threshold: 0.1
+    });
+    
+    // Preload critical images first
+    function preloadCriticalImages() {
+        const criticalImages = [
+            'images/Walk-of-Fame.webp',
+            'images/Dubs-Profile-02.webp',
+            'images/divider.png'
+        ];
+        
+        criticalImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    }
+    
+    // Initialize when DOM is ready
+    function initializeImageOptimization() {
+        preloadCriticalImages();
+        
+        // Find all gallery images and set up lazy loading
+        const galleryImages = document.querySelectorAll('.gallery-pic');
+        galleryImages.forEach(img => {
+            // Set up lazy loading for gallery images not in viewport
+            const rect = img.getBoundingClientRect();
+            if (rect.top > window.innerHeight) {
+                img.dataset.src = img.src;
+                img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InRyYW5zcGFyZW50Ii8+PC9zdmc+';
+                imageObserver.observe(img);
+            } else {
+                img.classList.add('loaded');
+            }
+        });
+        
+        // Optimize scrollable galleries
+        const scrollableGalleries = document.querySelectorAll('[style*="overflow-x: scroll"], [style*="overflow-x: auto"]');
+        scrollableGalleries.forEach(gallery => {
+            let isScrolling = false;
+            gallery.addEventListener('scroll', () => {
+                if (!isScrolling) {
+                    requestAnimationFrame(() => {
+                        isScrolling = false;
+                    });
+                    isScrolling = true;
+                }
+            });
+        });
+    }
+    
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeImageOptimization);
+    } else {
+        initializeImageOptimization();
+    }
+})();
+</script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
     <div id="content-layout" style="overflow: hidden;">
       <section>
         <div id="intro-Dubs" style="display: inline-block; position: relative; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Walk-of-Fame.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207; margin-bottom: 0px; padding-bottom: 0px;">
-          <div style="background-color: rgba(0,0,0,0.4); top: 10%;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
-            <div style="padding: 25px; height: auto; padding-bottom: 100px;"> <img class="logo-sm" src="images/Dubs-Profile-02.webp" style="" alt="Dubs The Creator"> <span class="projects-term-title">
+          <div style="background-color: rgba(0,0,0,0.4); top: 10%;"> <img class="divider" src="images/divider.png" width="100%" height="2" loading="eager" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
+            <div style="padding: 25px; height: auto; padding-bottom: 100px;"> <img class="logo-sm" src="images/Dubs-Profile-02.webp" width="200" height="200" alt="Dubs The Creator"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Dubs The Creator</strong></h1>
               </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Human-&amp;-AI-Centered Product Creator</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Designing products that balance human needs with intelligent systems.</p>
