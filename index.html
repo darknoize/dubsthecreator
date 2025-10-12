@@ -101,6 +101,28 @@ body.custom-background {
     100% { background-position: 200% 0; }
 }
 
+/* Gallery Left Alignment Fix */
+.gallery-pic {
+    margin-left: 0 !important;
+    margin-right: 10px !important;
+}
+
+/* Gallery Container Alignment */
+div[style*="overflow-x: auto"] {
+    text-align: left !important;
+}
+
+div[style*="overflow-x: scroll"] span {
+    display: inline-block !important;
+    vertical-align: top !important;
+    margin-left: 0 !important;
+}
+
+/* Remove extra spacing and ensure left alignment */
+span[style*="margin-right: 10px"] {
+    margin-left: 0 !important;
+}
+
 @media only screen and (min-width: 1319px) and (max-width: 1920px) {
 #content-layout {
     width: 100%;
@@ -381,6 +403,31 @@ div[style*="overflow-x: scroll"] {
         preloadCriticalImages();
         preloadProjectGalleries(); // Preload problematic project galleries
         
+        // Fix gallery alignment - remove auto margins and ensure left alignment
+        function fixGalleryAlignment() {
+            const galleryImages = document.querySelectorAll('.gallery-pic');
+            galleryImages.forEach(img => {
+                // Override inline styles to ensure left alignment
+                img.style.marginLeft = '0px';
+                img.style.marginRight = '10px';
+                img.style.textAlign = 'left';
+                
+                // Ensure parent spans are also left-aligned
+                const parentSpan = img.closest('span[style*="margin-right"]');
+                if (parentSpan) {
+                    parentSpan.style.marginLeft = '0px';
+                    parentSpan.style.display = 'inline-block';
+                    parentSpan.style.verticalAlign = 'top';
+                }
+            });
+            
+            // Fix gallery containers
+            const galleryContainers = document.querySelectorAll('div[style*="overflow-x: auto"], div[style*="overflow-x: scroll"]');
+            galleryContainers.forEach(container => {
+                container.style.textAlign = 'left';
+            });
+        }
+        
         // Find all gallery images and set up lazy loading
         const galleryImages = document.querySelectorAll('.gallery-pic');
         galleryImages.forEach(img => {
@@ -394,6 +441,9 @@ div[style*="overflow-x: scroll"] {
                 img.classList.add('loaded');
             }
         });
+        
+        // Apply alignment fixes
+        fixGalleryAlignment();
         
         // Optimize scrollable galleries
         const scrollableGalleries = document.querySelectorAll('[style*="overflow-x: scroll"], [style*="overflow-x: auto"]');
@@ -424,16 +474,34 @@ div[style*="overflow-x: scroll"] {
             });
         }, 2000); // Wait 2 seconds then check and reload if needed
     }
+    
+    // Continuously fix gallery alignment for dynamic content
+    function continuousAlignmentFix() {
+        // Fix alignment immediately and then periodically
+        const fixAlignment = () => {
+            const galleryImages = document.querySelectorAll('.gallery-pic');
+            galleryImages.forEach(img => {
+                img.style.marginLeft = '0px';
+                img.style.marginRight = '10px';
+                img.style.textAlign = 'left';
+            });
+        };
+        
+        fixAlignment();
+        setInterval(fixAlignment, 1000); // Reapply every second
+    }
 
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             initializeImageOptimization();
             forceReloadProblematicImages();
+            continuousAlignmentFix();
         });
     } else {
         initializeImageOptimization();
         forceReloadProblematicImages();
+        continuousAlignmentFix();
     }
 })();
 </script>
