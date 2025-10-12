@@ -157,6 +157,40 @@ body.custom-background {
 	margin-top: 55px;
 }
 }
+
+/* Mobile Background Image Fixes */
+@media only screen and (max-width: 768px) {
+	/* Fix for iOS background-attachment issues */
+	body.custom-background {
+		background-attachment: scroll !important;
+		background-size: cover !important;
+	}
+	
+	/* Fix background images for all project sections on mobile */
+	div[id^="project-"] {
+		background-attachment: scroll !important;
+		background-size: cover !important;
+		background-position: center center !important;
+		min-height: 100vh;
+	}
+	
+	/* Specific adjustments for certain projects that need different positioning */
+	#project-3 {
+		background-position: center top !important;
+	}
+	
+	#project-6 {
+		background-position: center center !important;
+	}
+}
+
+/* Extra small screens (iPhone SE, etc.) */
+@media only screen and (max-width: 480px) {
+	div[id^="project-"] {
+		background-position: center center !important;
+		background-size: cover !important;
+	}
+}
 </style>
 <!--<style id="st-dynamic-css" type="text/css">
 #layout #id8323 .mejs-time-loaded {
@@ -176,7 +210,7 @@ body.custom-background {
   <div id="content" style="margin-bottom: 0px; padding-bottom: 25px;">
     <div id="content-layout" style="overflow: hidden;">
       <section>
-        <div id="project-Dubs" style="display: inline-block; position: relative; width: 100%; text-align: center; color: #ffffff; background: image(/images/Walk-of-Fame.webp); background-image: url('images/Walk-of-Fame.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207;">
+        <div id="project-Dubs" style="display: inline-block; position: relative; width: 100%; text-align: center; color: #ffffff; background: image(/images/Walk-of-Fame.webp); background-image: url('images/Walk-of-Fame.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207; margin-bottom: 0px; padding-bottom: 0px;">
           <div style="background-color: rgba(0,0,0,0.4); top: 10%; padding-bottom: 75px;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; height: auto;"> <img class="logo-sm" src="images/Dubs-Profile-02.webp" style="" alt="Dubs The Creator"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Dubs The Creator</strong></h1>
@@ -188,13 +222,13 @@ body.custom-background {
           </div>
         </div>
       </section>
-		<div id="title" style="display: block; position: relative; height: 100px; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin-top: 0px; padding-top: "> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 32px; font-weight: 900; padding-top: 25px;"><strong>PORTFOLIO</strong></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
+				<div id="title" style="display: inline-block; position: relative; top: 0px; height: 100px; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin-top: 0px; padding-top: 0px;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 32px; font-weight: 900; padding-top: 5px;"><strong>PORTFOLIO</strong></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
 		<section>
         <div id="project-1" style="display: inline-block; position: relative; height: 100vh; width: 100%; text-align: center; color: #ffffff; background: image(/images/Ping-Pay/WebP/Ping-bkgrnd.webp); background-image: url('images/Ping-Pay/Ping-Bkgrnd.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207;">
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px;"> <img class="logo-sm" src="images/Ping-Pay/Ping-Logo-grn2.webp" style="" alt="Ping Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Ping Pay</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Integrated Payments</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Integrated Payments Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>AI-driven platform innovation across people, systems, and emerging technologies.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -211,7 +245,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px;"> <img class="logo-sm" src="images/GameMax/GameMax-Logo.webp" style="" alt="GameMax Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>GameMax</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Sports Metaverse</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 30px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Sports Metaverse Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 30px;" class="projects-term-description">
               <p>Powering global sports, community, and Web3 innovation.</p>
               </span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 30px;" class="projects-term-description">
               <h2> Website: <a href="https://www.gamemax.ai/" style="color: #36d300; text-decoration: none;" target="_blank">GameMax.AI</a></h2>
@@ -232,7 +266,7 @@ body.custom-background {
               <div class="projects-term-title">
                 <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;">The&nbsp;<strong>Tone</strong> Knows</h1>
               </div>
-              <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Frequency Detection</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Audio Technology Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Reimagining engagement through real-time audio technology.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -251,7 +285,7 @@ body.custom-background {
               <div class="projects-term-title">
                 <h1 style="color: #ffffff; font-size: 32px; line-height: 0px;"><strong>BuzzVibe</strong></h1>
               </div>
-              <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Creative Community Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Building culture through community, music, fashion, and creative collaboration.</p>
               </span>
               <table width="50%" border="0" cellspacing="10px" cellpadding="0px" style="margin-top: 15px; margin-left: auto; margin-right: auto; margin-bottom: 0px; padding: 0px;">
@@ -281,7 +315,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px; padding-bottom: 75px;"> <img class="logo-sm" src="images/Drive/Drive-Logo.webp" style="" alt="Drive Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Drive</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Automotive Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 300; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Automotive Marketing Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 300; line-height: 25px;" class="projects-term-description">
               <p>Automotive Marketing Automation &amp; Leads Generator.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -298,7 +332,7 @@ body.custom-background {
     <div style="background-color: rgba(0,0,0,0.5); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
       <div style="padding: 25px; padding-bottom: 55px;"> <img class="logo-sm" src="images/Rio-Olympics/rio-logo-3.webp" style="" alt="Rio Olympics Logo"> <span class="projects-term-title">
         <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Rio Olympics</strong></h1>
-        </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub">Cox Media Group | NBC | Olympics</span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+        </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Broadcast Media Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
         <p>International Games - Cable TV Network.</p>
         </span> </div>
       <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -317,7 +351,7 @@ body.custom-background {
               <div class="projects-term-title">
                 <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>LexisNexis</strong></h1>
               </div>
-              <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Risk Solutions Portal</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Risk Management Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>White-Label Risk Security Solutions.</p>
               </span> </div>
             <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -333,7 +367,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px; padding-top: 25px;"> <img class="logo-lrg" src="images/WebMD/WebMD-Logo7.webp" style="" alt="WeMD Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>WebMD</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Healthcare</strong> <strong>Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Healthcare Information Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Revolutionizing self-care and healthcare.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -350,7 +384,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px; padding-top: 25px;"> <img class="logo-sm" src="images/DrOz/DrOz-3.webp" style="" alt="Oz Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Dr. Oz / ShareCare</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Healthcare Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Healthcare Tracking Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Healthcare Tracking&nbsp;Pregnancy App.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -367,7 +401,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px;"> <img class="logo-lrg" src="images/Amplifi/Amplifi-Logo-sm.webp" style="" alt="GameMax Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Amplifi</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Big Data Analytics</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Data Analytics Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Data Forensics &amp; Analytics Solutions.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -383,7 +417,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px; padding-top: 25px;"> <img class="logo" src="images/ATT-Wipro/ATT-Logo2-09.webp" style="" alt="ATT Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>AT&amp;T / Wipro</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Mobile Technologies</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Mobile Technology Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>First-Gen Mobile Phones and Devices.&nbsp;</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -400,7 +434,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px; padding-top: 25px;"> <img class="logo" src="images/CardLytics/CardLytics-Logo.webp" style="" alt="ATT Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>CardLytics</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Fintech Marketing Platform&nbsp;</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Fintech Marketing Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>International Banking Offers and Rewards Programs such as <strong>BankAmeriDeals</strong>.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
@@ -417,7 +451,7 @@ body.custom-background {
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px; padding-top: 25px;"> <img class="logo" src="images/M3/M3-Logo.webp" style="" alt="M3 Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 35px;"><strong>Moxie Media Marketing (M3)</strong></h1>
-              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Marketing Content</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
+              </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Marketing Content Platform</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Content Creation and Web Development.</p>
               </span>
               <div style="height: 0px; background-color: transparent;">&nbsp;</div>
