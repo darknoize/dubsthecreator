@@ -101,6 +101,24 @@ body.custom-background {
     100% { background-position: 200% 0; }
 }
 
+/* Disable shimmer on background containers to prevent glitchy fixed backgrounds */
+div[id^="project-"], div[id="portfolio-dubs"] {
+    animation: none !important;
+    background-attachment: inherit;
+    will-change: auto;
+}
+
+/* Optimize fixed backgrounds - disable animations and transforms */
+@media only screen and (min-width: 768px) {
+    div[id^="project-"], div[id="portfolio-dubs"] {
+        animation: none !important;
+        transform: none !important;
+        will-change: auto !important;
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+}
+
 /* Gallery Left Alignment Fix */
 .gallery-pic {
     margin-left: 0 !important;
@@ -507,18 +525,27 @@ div[style*="overflow-x: scroll"] {
         }, 2000); // Wait 2 seconds then check and reload if needed
     }
     
-    // Apply responsive background attachment
+    // Apply responsive background attachment and optimize for smoothness
     function applyResponsiveBackgrounds() {
         const isDesktop = window.innerWidth >= 768;
         const projectSections = document.querySelectorAll('div[id^="project-"], div[id="portfolio-dubs"]');
         const body = document.body;
         
         projectSections.forEach(section => {
+            // Remove any conflicting animations or transforms
+            section.style.animation = 'none';
+            section.style.transform = 'none';
+            section.style.willChange = 'auto';
+            
             if (isDesktop) {
                 section.style.backgroundAttachment = 'fixed';
+                section.style.backfaceVisibility = 'hidden';
+                section.style.perspective = '1000px';
                 console.log(`✅ Fixed background applied to ${section.id}`);
             } else {
                 section.style.backgroundAttachment = 'scroll';
+                section.style.backfaceVisibility = 'visible';
+                section.style.perspective = 'none';
                 console.log(`📱 Scroll background applied to ${section.id} (mobile)`);
             }
         });
@@ -526,8 +553,10 @@ div[style*="overflow-x: scroll"] {
         // Apply to main body background
         if (isDesktop) {
             body.style.backgroundAttachment = 'fixed';
+            body.style.backfaceVisibility = 'hidden';
         } else {
             body.style.backgroundAttachment = 'scroll';
+            body.style.backfaceVisibility = 'visible';
         }
     }
     
