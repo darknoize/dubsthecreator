@@ -356,10 +356,29 @@ div[style*="overflow-x: scroll"] {
             img.src = src;
         });
     }
+
+    // Advanced preload function for problematic projects
+    function preloadProjectGalleries() {
+        const projectGalleries = {
+            'Tone': ['Tone-1.webp', 'Tone-2.webp', 'Tone-3.webp', 'Tone-4.webp'],
+            'WebMD': ['webmd-7.webp', 'webmd-8.webp', 'webmd-9.webp', 'webmd-10.webp'],
+            'LexisNexis': ['LexisNexis-bkgrnd-7-01.webp', 'LexisNexis-b-2.webp']
+        };
+        
+        Object.keys(projectGalleries).forEach(project => {
+            projectGalleries[project].forEach(filename => {
+                const img = new Image();
+                img.src = `images/${project}/${filename}`;
+                img.onload = () => console.log(`Preloaded: ${project}/${filename}`);
+                img.onerror = () => console.warn(`Failed to preload: ${project}/${filename}`);
+            });
+        });
+    }
     
     // Initialize when DOM is ready
     function initializeImageOptimization() {
         preloadCriticalImages();
+        preloadProjectGalleries(); // Preload problematic project galleries
         
         // Find all gallery images and set up lazy loading
         const galleryImages = document.querySelectorAll('.gallery-pic');
