@@ -599,6 +599,136 @@ h1 {
 h1 strong {
 		font-weight: 600 !important;
 }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: 5% auto;
+    padding: 0;
+    border: 2px solid #333;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    color: #ffffff;
+}
+
+.modal-content h2 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 0;
+    padding: 20px 25px;
+    border-radius: 10px 10px 0 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 25px;
+    line-height: 1.6;
+}
+
+.modal-body h3 {
+    color: #667eea;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-body p, .modal-body ul {
+    color: #e0e0e0;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.modal-body ul {
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 8px;
+}
+
+.modal-body strong {
+    color: #ffffff;
+}
+
+.close {
+    color: #ffffff;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1;
+}
+
+.close:hover,
+.close:focus {
+    color: #ff6b6b;
+}
+
+/* Footer link styles */
+.footer-links {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.footer-links a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 400;
+    margin: 0 8px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #667eea;
+    text-decoration: underline;
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .modal-content h2 {
+        font-size: 20px;
+        padding: 15px 20px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .close {
+        right: 15px;
+        top: 15px;
+        font-size: 28px;
+    }
+}
 </style>
 </head>
 
@@ -866,6 +996,48 @@ h1 strong {
         applyResponsiveBackgrounds();
     });
 })();
+
+// Modal functionality
+function openTermsModal() {
+    const modal = document.getElementById('termsModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+}
+
+function closeTermsModal() {
+    const modal = document.getElementById('termsModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+}
+
+// Close modal when clicking outside of it
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('termsModal');
+    const closeBtn = document.querySelector('.close');
+    
+    if (modal && closeBtn) {
+        // Close button click
+        closeBtn.addEventListener('click', closeTermsModal);
+        
+        // Click outside modal to close
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeTermsModal();
+            }
+        });
+        
+        // ESC key to close
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                closeTermsModal();
+            }
+        });
+    }
+});
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
@@ -1129,10 +1301,46 @@ h1 strong {
         </div>
       </section>
 	<section>
-			<div id="footer" style="display: inline-block; position: relative; top: 10%; height: auto; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin: 0px;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 12px; font-weight: 900; padding-top: 5px;"><strong>Dubs The Creator, © Copyright 2025. All rights reserved.</strong></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
+			<div id="footer" style="display: inline-block; position: relative; top: 10%; height: auto; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin: 0px;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 12px; font-weight: 900; padding-top: 5px;"><strong>Dubs The Creator, © Copyright 2025. All rights reserved.</strong><span class="footer-links"><a href="#" onclick="openTermsModal(); return false;">Terms & Conditions</a></span></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
     </section>
 	</div>
   </div>
 </div>
+
+<!-- Terms and Conditions Modal -->
+<div id="termsModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Terms and Conditions</h2>
+    <div class="modal-body">
+      <h3>Portfolio Disclaimer</h3>
+      <p>This portfolio website showcases the professional design work and creative projects completed by Dubs The Creator (William Weems).</p>
+      
+      <h3>No Products or Services for Sale</h3>
+      <p><strong>Important Notice:</strong> No projects, products, services, or designs displayed on this website are for sale or available for purchase. All content presented is for portfolio demonstration purposes only.</p>
+      
+      <h3>Intellectual Property</h3>
+      <p>All designs, concepts, and creative work displayed represent original work performed by William Weems (Dubs The Creator). While the portfolio showcases professional capabilities and past project involvement, individual project ownership and usage rights may vary based on original client agreements and industry standards.</p>
+      
+      <h3>Portfolio Purpose</h3>
+      <p>This website serves exclusively as a professional portfolio to demonstrate:</p>
+      <ul>
+        <li>Design capabilities and creative skills</li>
+        <li>Professional experience and project involvement</li>
+        <li>Technical expertise and artistic range</li>
+        <li>Career achievements and professional growth</li>
+      </ul>
+      
+      <h3>Contact and Inquiries</h3>
+      <p>For professional inquiries, collaboration opportunities, or questions about specific projects, please use the contact information provided on this website.</p>
+      
+      <h3>Limitation of Liability</h3>
+      <p>This portfolio is provided "as is" for informational and demonstration purposes. Dubs The Creator makes no warranties regarding the accuracy, completeness, or current availability of any projects or information displayed.</p>
+      
+      <p><strong>Last Updated:</strong> October 2025</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
