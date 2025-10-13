@@ -165,6 +165,20 @@ body.custom-background {
     background-position: top center;
     background-attachment: fixed;
     background-color: #020207;
+    /* Safari performance optimizations */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Safari-specific background fix */
+@supports (-webkit-appearance: none) and (not (overflow: -webkit-marquee)) and (not (-ms-ime-align: auto)) {
+    body.custom-background {
+        background-attachment: scroll !important;
+        background-size: cover;
+        background-position: center center;
+    }
 }
 .divider {
     width: 100%;
@@ -264,24 +278,54 @@ span[style*="margin-right: 10px"] {
     margin-left: 0 !important;
 }
 
-/* Fixed Background Images for Desktop Only */
-@media only screen and (min-width: 768px) {
-    /* Fixed backgrounds for all project sections on desktop */
-    div[id^="project-"], div[id="portfolio-dubs"] {
+/* CRITICAL: Fixed Background Images for All Non-Mobile Devices */
+@media only screen and (min-width: 481px) {
+    /* Maximum specificity selectors to override any JavaScript */
+    html body.custom-background {
         background-attachment: fixed !important;
+        background-size: cover !important;
+        background-position: center center !important;
     }
     
-    /* Ensure main body background is also fixed on desktop */
-    body.custom-background {
+    html body div[id^="project-"], 
+    html body div[id="portfolio-dubs"] {
         background-attachment: fixed !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    
+    /* Individual project sections with maximum specificity */
+    html body div[id="project-1"], html body div[id="project-2"], html body div[id="project-3"], 
+    html body div[id="project-4"], html body div[id="project-5"], html body div[id="project-6"],
+    html body div[id="project-7"], html body div[id="project-8"], html body div[id="project-9"],
+    html body div[id="project-10"], html body div[id="project-11"], html body div[id="project-12"],
+    html body div[id="project-13"], html body div[id="portfolio-dubs"] {
+        background-attachment: fixed !important;
+        background-size: cover !important;
+        background-position: center center !important;
     }
 }
 
-/* Scrolling backgrounds for mobile devices and tablets */
-@media only screen and (max-width: 767px) {
+/* UNIVERSAL FIXED BACKGROUNDS - HIGHEST PRIORITY */
+html body.custom-background,
+html body div[id^="project-"],
+html body div[id="portfolio-dubs"] {
+    background-attachment: fixed !important;
+}
+
+/* Hardware Acceleration for All Browsers */
+div[id^="project-"], div[id="portfolio-dubs"], body.custom-background {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Scrolling backgrounds for mobile phones only */
+@media only screen and (max-width: 480px) {
     div[id^="project-"], div[id="portfolio-dubs"] {
         background-attachment: scroll !important;
-        /* Mobile optimizations for cloud deployment */
+        /* Mobile phone optimizations for performance and battery */
         background-size: cover !important;
         background-position: center center !important;
         -webkit-background-size: cover !important;
@@ -289,7 +333,7 @@ span[style*="margin-right: 10px"] {
         -o-background-size: cover !important;
     }
     
-    /* Keep main body background scrolling on mobile for performance */
+    /* Keep main body background scrolling on mobile phones for performance */
     body.custom-background {
         background-attachment: scroll !important;
         background-size: cover !important;
@@ -312,18 +356,7 @@ span[style*="margin-right: 10px"] {
 
 /* Tablet optimizations (768px - 1024px) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    /* Use scroll backgrounds on tablets for better performance */
-    div[id^="project-"], div[id="portfolio-dubs"] {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-    }
-    
-    body.custom-background {
-        background-attachment: scroll !important;
-    }
-    
-    /* Tablet-specific gallery adjustments */
+    /* Tablet-specific gallery adjustments only */
     .gallery-pic {
         max-width: 300px !important;
     }
@@ -914,15 +947,15 @@ h1 strong {
     // Cloud-optimized responsive background attachment with mobile/tablet detection
     function applyResponsiveBackgrounds() {
         const viewportWidth = window.innerWidth;
-        const isDesktop = viewportWidth > 1024; // Only large desktops get fixed backgrounds
-        const isTablet = viewportWidth >= 768 && viewportWidth <= 1024;
-        const isMobile = viewportWidth < 768;
+        const isDesktop = viewportWidth >= 481; // Fixed backgrounds for anything above mobile phone sizes
+        const isMobile = viewportWidth < 481;
+        
+        console.log(`📏 Viewport width: ${viewportWidth}px, isDesktop: ${isDesktop}, isMobile: ${isMobile}`);
         
         const projectSections = document.querySelectorAll('div[id^="project-"], div[id="portfolio-dubs"]');
         const body = document.body;
         
-        // Cloud deployment optimization: Feature detection
-        const supportsFixedBackground = !(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+        console.log(`🎯 Found ${projectSections.length} project sections to update`);
         
         projectSections.forEach(section => {
             // Remove any conflicting animations or transforms
@@ -941,39 +974,19 @@ h1 strong {
                 section.style.backgroundPosition = 'center center';
             }
             
-            if (isDesktop && supportsFixedBackground) {
-                // Only apply fixed backgrounds on large desktops with support
-                section.style.backgroundAttachment = 'fixed';
-                section.style.backfaceVisibility = 'hidden';
-                section.style.perspective = '1000px';
-                console.log(`🖥️ Fixed background applied to ${section.id} (Desktop)`);
-            } else {
-                // Use scroll for mobile, tablet, and unsupported devices
-                section.style.backgroundAttachment = 'scroll';
-                section.style.backfaceVisibility = 'visible';
-                section.style.perspective = 'none';
-                
-                if (isMobile) {
-                    console.log(`📱 Scroll background applied to ${section.id} (Mobile)`);
-                } else if (isTablet) {
-                    console.log(`📱 Scroll background applied to ${section.id} (Tablet)`);
-                } else {
-                    console.log(`💻 Scroll background applied to ${section.id} (Unsupported device)`);
-                }
-            }
+            // Let CSS handle background-attachment, just optimize other properties
+            section.style.backfaceVisibility = 'hidden';
+            section.style.perspective = '1000px';
+            console.log(`🎨 Background properties optimized for ${section.id} - CSS controls attachment`)
         });
         
         // Apply to main body background with same logic
         body.style.backgroundSize = 'cover';
         body.style.backgroundPosition = 'center center';
         
-        if (isDesktop && supportsFixedBackground) {
-            body.style.backgroundAttachment = 'fixed';
-            body.style.backfaceVisibility = 'hidden';
-        } else {
-            body.style.backgroundAttachment = 'scroll';
-            body.style.backfaceVisibility = 'visible';
-        }
+        // Let CSS handle background-attachment for body too
+        body.style.backfaceVisibility = 'hidden';
+        console.log('🎨 Body background properties optimized - CSS controls attachment')
     }
     
     // Continuously fix gallery alignment for dynamic content
@@ -998,19 +1011,19 @@ h1 strong {
             initializeImageOptimization();
             forceReloadProblematicImages();
             continuousAlignmentFix();
-            applyResponsiveBackgrounds();
+            // applyResponsiveBackgrounds(); // Disabled - CSS handles backgrounds
         });
     } else {
         initializeImageOptimization();
         forceReloadProblematicImages();
         continuousAlignmentFix();
-        applyResponsiveBackgrounds();
+        // applyResponsiveBackgrounds(); // Disabled - CSS handles backgrounds
     }
     
-    // Apply responsive backgrounds on window resize
-    window.addEventListener('resize', () => {
-        applyResponsiveBackgrounds();
-    });
+    // Apply responsive backgrounds on window resize - DISABLED
+    // window.addEventListener('resize', () => {
+    //     applyResponsiveBackgrounds();
+    // });
 })();
 
 // Modal functionality
@@ -1058,6 +1071,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // Simple smooth scroll enhancement
 document.documentElement.style.scrollBehavior = 'smooth';
 console.log('✨ Smooth scroll transitions enabled');
+</script>
+
+<script>
+// Safari Background Fix - Detect Safari and disable fixed backgrounds
+document.addEventListener('DOMContentLoaded', function() {
+    // Detect Safari browser
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || 
+                    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                    (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome'));
+    
+    // Temporarily disabled Safari detection to ensure fixed backgrounds work
+    console.log('🖥️ Fixed backgrounds enabled for all browsers (Safari detection disabled)');
+});
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
