@@ -545,103 +545,16 @@ img {
 	opacity: 1;
 }
 
-/* Elegant Project-to-Project Scroll Snapping */
+/* Simple Smooth Scroll Snapping */
 html {
 	scroll-behavior: smooth;
 	scroll-snap-type: y mandatory;
 }
 
-body {
-	scroll-behavior: smooth;
-}
-
-/* Project sections with smooth snap points */
+/* Each project section snaps perfectly to screen */
 section {
 	scroll-snap-align: start;
-	scroll-snap-stop: always;
-}
-
-div[id^="project-"], div[id="portfolio-dubs"] {
-	scroll-snap-align: start;
-	scroll-snap-stop: always;
-	position: relative;
-}
-
-/* Enhanced smooth scrolling for project transitions */
-#content, #content-layout {
-	scroll-behavior: smooth;
-	scroll-snap-type: y mandatory;
-	overflow-y: auto;
-	height: 100vh;
-}
-
-/* Scroll Progress Indicator */
-.scroll-progress {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 0%;
-	height: 3px;
-	background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-	z-index: 9998;
-	transition: width 0.3s ease;
-	box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-}
-
-/* Project Navigation Indicators */
-.project-nav {
-	position: fixed;
-	right: 20px;
-	top: 50%;
-	transform: translateY(-50%);
-	z-index: 9997;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.project-nav-dot {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	background-color: rgba(255, 255, 255, 0.3);
-	border: 2px solid rgba(255, 255, 255, 0.5);
-	cursor: pointer;
-	transition: all 0.3s ease;
-	position: relative;
-}
-
-.project-nav-dot.active {
-	background-color: #667eea;
-	border-color: #ffffff;
-	box-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
-	transform: scale(1.2);
-}
-
-.project-nav-dot:hover {
-	background-color: rgba(255, 255, 255, 0.6);
-	transform: scale(1.1);
-}
-
-/* Keyboard Navigation Hint */
-.keyboard-hint {
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	background: rgba(0, 0, 0, 0.8);
-	color: white;
-	padding: 8px 16px;
-	border-radius: 20px;
-	font-size: 12px;
-	z-index: 9996;
-	opacity: 0;
-	transition: opacity 0.3s ease;
-	pointer-events: none;
-}
-
-.keyboard-hint.show {
-	opacity: 1;
+	scroll-snap-stop: normal;
 }
 
 /* Optimize scrollable galleries */
@@ -805,28 +718,7 @@ h1 strong {
     text-decoration: underline;
 }
 
-/* Mobile responsive navigation */
-@media (max-width: 768px) {
-    .project-nav {
-        right: 10px;
-        gap: 6px;
-    }
-    
-    .project-nav-dot {
-        width: 10px;
-        height: 10px;
-    }
-    
-    .keyboard-hint {
-        font-size: 11px;
-        padding: 6px 12px;
-        bottom: 15px;
-    }
-    
-    .scroll-progress {
-        height: 2px;
-    }
-}
+
 
 /* Responsive modal */
 @media (max-width: 768px) {
@@ -856,31 +748,7 @@ h1 strong {
 
 <body class="archive tax-st_category term-after-effects term-23 custom-background hidpi-on chrome hidpi" style="background-size: 100%; margin: 0px;">
 
-<!-- Scroll Progress Indicator -->
-<div class="scroll-progress"></div>
 
-<!-- Project Navigation Dots -->
-<div class="project-nav">
-	<div class="project-nav-dot active" data-project="portfolio-dubs" title="Portfolio Home"></div>
-	<div class="project-nav-dot" data-project="project-1" title="Ping Pay"></div>
-	<div class="project-nav-dot" data-project="project-2" title="GameMax"></div>
-	<div class="project-nav-dot" data-project="project-3" title="Tone"></div>
-	<div class="project-nav-dot" data-project="project-4" title="BuzzVibe"></div>
-	<div class="project-nav-dot" data-project="project-5" title="Drive"></div>
-	<div class="project-nav-dot" data-project="project-6" title="Rio Olympics"></div>
-	<div class="project-nav-dot" data-project="project-7" title="LexisNexis"></div>
-	<div class="project-nav-dot" data-project="project-8" title="WebMD"></div>
-	<div class="project-nav-dot" data-project="project-9" title="Dr. Oz"></div>
-	<div class="project-nav-dot" data-project="project-10" title="Amplifi"></div>
-	<div class="project-nav-dot" data-project="project-11" title="AT&T Wipro"></div>
-	<div class="project-nav-dot" data-project="project-12" title="CardLytics"></div>
-	<div class="project-nav-dot" data-project="project-13" title="M3"></div>
-</div>
-
-<!-- Keyboard Navigation Hint -->
-<div class="keyboard-hint">
-	Use ↑↓ arrow keys or scroll to navigate between projects
-</div>
 
 <script>
 // Optimized Image Loading Script
@@ -1187,254 +1055,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Elegant Project Navigation & Scroll Snapping System
-(function() {
-    'use strict';
-    
-    let currentProjectIndex = 0;
-    let isScrolling = false;
-    let scrollTimeout;
-    
-    // Get all project sections in order
-    const projects = [
-        'portfolio-dubs',
-        'project-1', 'project-2', 'project-3', 'project-4', 'project-5',
-        'project-6', 'project-7', 'project-8', 'project-9', 'project-10',
-        'project-11', 'project-12', 'project-13'
-    ];
-    
-    // Navigation elements
-    const progressBar = document.querySelector('.scroll-progress');
-    const navDots = document.querySelectorAll('.project-nav-dot');
-    const keyboardHint = document.querySelector('.keyboard-hint');
-    
-    // Smooth scroll to specific project
-    function scrollToProject(projectId, smooth = true) {
-        const element = document.getElementById(projectId);
-        if (element) {
-            const yOffset = 0;
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            
-            if (smooth) {
-                window.scrollTo({
-                    top: y,
-                    behavior: 'smooth'
-                });
-            } else {
-                window.scrollTo(0, y);
-            }
-            
-            // Update current project index
-            currentProjectIndex = projects.indexOf(projectId);
-            updateNavigationState();
-        }
-    }
-    
-    // Update navigation dots and progress bar
-    function updateNavigationState() {
-        // Update progress bar
-        const progress = (currentProjectIndex / (projects.length - 1)) * 100;
-        if (progressBar) {
-            progressBar.style.width = progress + '%';
-        }
-        
-        // Update navigation dots
-        navDots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentProjectIndex);
-        });
-    }
-    
-    // Get current project based on scroll position
-    function getCurrentProject() {
-        const scrollTop = window.pageYOffset;
-        const windowHeight = window.innerHeight;
-        
-        for (let i = projects.length - 1; i >= 0; i--) {
-            const element = document.getElementById(projects[i]);
-            if (element) {
-                const rect = element.getBoundingClientRect();
-                const elementTop = rect.top + scrollTop;
-                
-                if (scrollTop >= elementTop - windowHeight / 2) {
-                    return i;
-                }
-            }
-        }
-        return 0;
-    }
-    
-    // Enhanced scroll event with throttling
-    function handleScroll() {
-        if (isScrolling) return;
-        
-        isScrolling = true;
-        requestAnimationFrame(() => {
-            const newProjectIndex = getCurrentProject();
-            if (newProjectIndex !== currentProjectIndex) {
-                currentProjectIndex = newProjectIndex;
-                updateNavigationState();
-            }
-            isScrolling = false;
-        });
-        
-        // Clear previous timeout
-        clearTimeout(scrollTimeout);
-        
-        // Hide keyboard hint after scrolling
-        scrollTimeout = setTimeout(() => {
-            if (keyboardHint) {
-                keyboardHint.classList.remove('show');
-            }
-        }, 1000);
-    }
-    
-    // Keyboard navigation
-    function handleKeyboard(event) {
-        // Show keyboard hint
-        if (keyboardHint) {
-            keyboardHint.classList.add('show');
-            setTimeout(() => {
-                keyboardHint.classList.remove('show');
-            }, 2000);
-        }
-        
-        let targetIndex;
-        
-        switch(event.key) {
-            case 'ArrowUp':
-            case 'ArrowLeft':
-                event.preventDefault();
-                targetIndex = Math.max(0, currentProjectIndex - 1);
-                break;
-                
-            case 'ArrowDown':
-            case 'ArrowRight':
-                event.preventDefault();
-                targetIndex = Math.min(projects.length - 1, currentProjectIndex + 1);
-                break;
-                
-            case 'Home':
-                event.preventDefault();
-                targetIndex = 0;
-                break;
-                
-            case 'End':
-                event.preventDefault();
-                targetIndex = projects.length - 1;
-                break;
-                
-            default:
-                return;
-        }
-        
-        if (targetIndex !== undefined && targetIndex !== currentProjectIndex) {
-            scrollToProject(projects[targetIndex]);
-        }
-    }
-    
-    // Touch/swipe navigation for mobile
-    let touchStartY = 0;
-    let touchEndY = 0;
-    
-    function handleTouchStart(event) {
-        touchStartY = event.changedTouches[0].screenY;
-    }
-    
-    function handleTouchEnd(event) {
-        touchEndY = event.changedTouches[0].screenY;
-        handleSwipe();
-    }
-    
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartY - touchEndY;
-        
-        if (Math.abs(diff) > swipeThreshold) {
-            let targetIndex;
-            
-            if (diff > 0) {
-                // Swipe up - go to next project
-                targetIndex = Math.min(projects.length - 1, currentProjectIndex + 1);
-            } else {
-                // Swipe down - go to previous project
-                targetIndex = Math.max(0, currentProjectIndex - 1);
-            }
-            
-            if (targetIndex !== currentProjectIndex) {
-                scrollToProject(projects[targetIndex]);
-            }
-        }
-    }
-    
-    // Navigation dot click handlers
-    function setupNavigationDots() {
-        navDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                scrollToProject(projects[index]);
-            });
-            
-            // Add hover tooltips
-            dot.addEventListener('mouseenter', () => {
-                const title = dot.getAttribute('title');
-                if (title) {
-                    dot.style.transform = `scale(1.1)`;
-                }
-            });
-            
-            dot.addEventListener('mouseleave', () => {
-                if (!dot.classList.contains('active')) {
-                    dot.style.transform = '';
-                }
-            });
-        });
-    }
-    
-    // Initialize the navigation system
-    function initializeNavigation() {
-        // Set initial state
-        currentProjectIndex = getCurrentProject();
-        updateNavigationState();
-        
-        // Setup event listeners
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        document.addEventListener('keydown', handleKeyboard);
-        
-        // Touch navigation for mobile
-        document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchend', handleTouchEnd, { passive: true });
-        
-        // Setup navigation dots
-        setupNavigationDots();
-        
-        // Show keyboard hint briefly on load
-        setTimeout(() => {
-            if (keyboardHint) {
-                keyboardHint.classList.add('show');
-                setTimeout(() => {
-                    keyboardHint.classList.remove('show');
-                }, 3000);
-            }
-        }, 1000);
-        
-        console.log('✨ Elegant project navigation initialized');
-        console.log(`📍 Found ${projects.length} project sections`);
-    }
-    
-    // Wait for DOM to be ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeNavigation);
-    } else {
-        initializeNavigation();
-    }
-    
-    // Export for potential external use
-    window.projectNavigation = {
-        scrollToProject: scrollToProject,
-        getCurrentProject: () => projects[currentProjectIndex],
-        getCurrentIndex: () => currentProjectIndex,
-        getTotalProjects: () => projects.length
-    };
-})();
+// Simple smooth scroll enhancement
+document.documentElement.style.scrollBehavior = 'smooth';
+console.log('✨ Smooth scroll transitions enabled');
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
