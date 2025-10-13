@@ -609,28 +609,49 @@ h1 strong {
 (function() {
     'use strict';
     
-    // Intersection Observer for lazy loading
+    // Intersection Observer for lazy loading with throttling
+    let loadingQueue = [];
+    let isLoading = false;
+    
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
                 if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
+                    loadingQueue.push({img, observer});
+                    processLoadingQueue();
                 }
-                
-                // Add loaded class for smooth transition
-                img.onload = () => {
-                    img.classList.add('loaded');
-                };
-                
-                observer.unobserve(img);
             }
         });
     }, {
-        rootMargin: '50px 0px',
+        rootMargin: '100px 0px',
         threshold: 0.1
     });
+    
+    // Process loading queue to prevent simultaneous loads
+    function processLoadingQueue() {
+        if (isLoading || loadingQueue.length === 0) return;
+        
+        isLoading = true;
+        const {img, observer} = loadingQueue.shift();
+        
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        
+        img.onload = () => {
+            img.classList.add('loaded');
+            isLoading = false;
+            // Process next image after small delay
+            setTimeout(() => processLoadingQueue(), 50);
+        };
+        
+        img.onerror = () => {
+            isLoading = false;
+            setTimeout(() => processLoadingQueue(), 50);
+        };
+        
+        observer.unobserve(img);
+    }
     
     // Preload critical images first
     function preloadCriticalImages() {
@@ -646,35 +667,31 @@ h1 strong {
         });
     }
 
-    // Advanced preload function for problematic projects
-    function preloadProjectGalleries() {
-        const projectGalleries = {
-            'GameMax': ['GameMax-1.webp', 'GameMax-2.webp', 'GameMax-3.webp', 'GameMax-4.webp', 'GameMax-5.webp', 'GameMax-6.webp', 'GameMax-7.webp', 'GameMax-8.webp', 'GameMax-9.webp', 'GameMax-10.webp', 'GameMax-12.webp', 'GameMax-13.webp', 'GameMax-14.webp', 'GameMax-15.webp', 'GameMax-16.webp', 'GameMax-17.webp', 'GameMax-18.webp', 'GameMax-19.webp', 'GameMax-20.webp', 'GameMax-22.webp', 'GameMax-23.webp', 'GameMax-24.webp', 'GameMax-25.webp', 'GameMax-26.webp', 'GameMax-27.webp', 'GameMax-28.webp', 'GameMax-29.webp', 'GameMax-30.webp', 'GameMax-31.webp'],
-            'Tone': ['Tone-1.webp', 'Tone-2.webp', 'Tone-3.webp', 'Tone-4.webp', 'Tone-5.webp', 'Tone-6.webp', 'Tone-7.webp', 'Tone-8.webp', 'Tone-9.webp', 'Tone-10.webp', 'Tone-11.webp', 'Tone-12.webp', 'Tone-13.webp'],
-            'WebMD': ['webmd-7.webp', 'WebMD-2-02.webp', 'WebMD-09.webp', 'WebMD-10.webp', 'WebMD-2-03.webp', 'WebMD-2-04.webp', 'WebMD-2-05.webp'],
-            'LexisNexis': ['LexisNexis-bkgrnd-7-01.webp', 'LexisNexis-Screen-01.webp'],
-            'ATT-Wipro': ['ATT-Wipro-01.webp', 'ATT-Wipro-02.webp', 'ATT-Wipro-03.webp', 'ATT-Wipro-04.webp', 'ATT-Wipro-05.webp', 'ATT-09.webp', 'ATT-Wipro-Logos-08.webp', 'ATT-Wipro-Logos2-08.webp', 'ATT-Wipro-Logos3-08.webp'],
-            'CardLytics': ['CardLytics-1.webp', 'CardLytics-2.webp', 'CardLytics-3.webp', 'CardLytics-4.webp'],
-            'BuzzVibe': ['BuzzVibe-1.webp', 'BuzzVibe-2.webp', 'BuzzVibe-3.webp', 'BuzzVibe-4.webp', 'BuzzVibe-5.webp', 'BuzzVibe-6.webp', 'BuzzVibe-7.webp', 'BuzzVibe-8.webp', 'BuzzVibe-9.webp', 'BuzzVibe-10.webp', 'BuzzVibe-11.webp', 'BuzzVibe-12.webp', 'BuzzVibe-13.webp', 'BuzzVibe-15.webp', 'BuzzVibe-16.webp', 'BuzzVibe-17.webp', 'BuzzVibe-18.webp', 'BuzzVibe-19.webp', 'BuzzVibe-20.webp', 'BuzzVibe-21.webp', 'BuzzVibe-22.webp', 'BuzzVibe-23.webp', 'BuzzVibe-IG.webp', 'BuzzVibe-IG-2.webp'],
-            'DrOz': ['DrOz-1.webp', 'DrOz-2.webp', 'DrOz-4.webp'],
-            'Rio-Olympics': ['Rio-1b.webp', 'Rio-1.webp', 'rio-2016-1a.webp', 'rio-2016-1-aaa.webp', 'rio-2016-1c.webp', 'rio-2016-1d.webp', 'rio-2016-1e.webp', 'rio-2016-1f.webp', 'rio-2016-1b.webp', 'rio-2016-3.webp', 'rio-2016-4.webp', 'rio-2016-5.webp', 'rio-2016-6.webp', 'rio-2016-7.webp', 'rio-2016-9.webp', 'rio-2016-10.webp', 'rio-2016-12.webp', 'rio-2016-13.webp', 'rio-2016-14.webp', 'rio-2016-38.webp', 'rio-2016-40.webp', 'rio-2016-17.webp', 'rio-2016-18.webp', 'rio-2016-19.webp', 'rio-2016-20.webp', 'rio-2016-21.webp', 'rio-2016-22.webp', 'rio-2016-23.webp', 'rio-2016-24.webp', 'rio-2016-25.webp', 'rio-2016-26.webp', 'rio-2016-27.webp', 'rio-2016-28.webp', 'rio-2016-29.webp', 'rio-2016-30.webp', 'rio-2016-31.webp', 'rio-2016-32.webp', 'rio-2016-33.webp', 'rio-2016-34.webp', 'Rio-2.webp', 'Rio-3.webp', 'rio-2016-42.webp', 'rio-2016-43.webp', 'rio-2016-44.webp', 'rio-2016-47.webp', 'rio-2016-48.webp', 'rio-2016-60.webp', 'rio-2016-63.webp', 'rio-2016-66.webp', 'rio-2016-67.webp', 'rio-2016-72.webp', 'rio-2016-73.webp', 'rio-2016-74.webp', 'rio-2016-75.webp', 'rio-2016-76.webp', 'rio-2016-77.webp', 'rio-2016-78.webp', 'rio-2016-79.webp', 'rio-2016-80.webp', 'rio-2016-81.webp', 'rio-2016-83.webp', 'rio-2016-84.webp', 'rio-2016-86.webp'],
-            'Drive': ['Drive_16.webp', 'Drive_12.webp', 'Drive_13.webp', 'Drive_1.webp', 'Drive_2.webp', 'Drive_3.webp', 'Drive_4.webp', 'Drive_5.webp', 'Drive_6.webp', 'Drive_7.webp', 'Drive_8.webp', 'Drive_9.webp', 'Drive_13b.webp', 'Drive_14.webp', 'Drive_15.webp', 'Drive_17.webp', 'Drive_18.webp', 'Drive_19.webp', 'Drive_20.webp', 'Drive_21.webp', 'Drive_22.webp', 'Drive_23.webp', 'Drive_24.webp']
-        };
+    // Preload only critical/visible gallery images - NOT ALL IMAGES
+    function preloadCriticalGalleryImages() {
+        // Only preload first few images of visible sections - not all images
+        const criticalGalleryImages = [
+            'images/Rio-Olympics/Rio-1b.webp',
+            'images/Rio-Olympics/Rio-1.webp',
+            'images/GameMax/GameMax-1.webp',
+            'images/GameMax/GameMax-2.webp',
+            'images/Tone/Tone-1.webp',
+            'images/Tone/Tone-2.webp'
+        ];
         
-        Object.keys(projectGalleries).forEach(project => {
-            projectGalleries[project].forEach(filename => {
+        // Stagger the loading to avoid simultaneous requests
+        criticalGalleryImages.forEach((src, index) => {
+            setTimeout(() => {
                 const img = new Image();
-                img.src = `images/${project}/${filename}`;
-                img.onload = () => console.log(`✅ Preloaded: ${project}/${filename}`);
-                img.onerror = () => console.warn(`❌ Failed to preload: ${project}/${filename}`);
-            });
+                img.src = src;
+            }, index * 100); // 100ms delay between each image
         });
     }
     
     // Initialize when DOM is ready
     function initializeImageOptimization() {
         preloadCriticalImages();
-        preloadProjectGalleries(); // Preload problematic project galleries
+        preloadCriticalGalleryImages(); // Only preload critical gallery images, not all
         
         // Fix gallery alignment - remove auto margins and ensure left alignment
         function fixGalleryAlignment() {
