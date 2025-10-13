@@ -531,6 +531,13 @@ img {
 	/* Smooth loading transition */
 	opacity: 0;
 	transition: opacity 0.3s ease-in-out;
+	/* Safari-specific optimizations with fallbacks */
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000px;
+	perspective: 1000px;
 }
 
 .gallery-pic.loaded {
@@ -545,6 +552,51 @@ div[style*="overflow-x: scroll"] {
 	/* Smooth scrolling */
 	scroll-behavior: smooth;
 	-webkit-overflow-scrolling: touch;
+}
+
+/* Safari-specific optimizations */
+@supports (-webkit-appearance: none) {
+	/* Safari performance improvements */
+	body {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+	
+	/* Fix Safari background attachment issues */
+	div[id^="project-"], div[id="portfolio-dubs"] {
+		-webkit-background-size: cover;
+		background-size: cover;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
+		will-change: transform;
+	}
+	
+	/* Safari scroll performance - Apply to specific elements only */
+	div[id^="project-"], .gallery-pic, img {
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+	}
+	
+	/* Fix Safari input zoom */
+	input, textarea, select {
+		font-size: 16px !important;
+	}
+}
+
+	strong {
+		font-weight: 500;
+}
+
+h1 {
+	font-weight: 400;
+	letter-spacing: 2px;
+}
+	
+h1 strong {
+		font-weight: 600 !important;
 }
 </style>
 </head>
