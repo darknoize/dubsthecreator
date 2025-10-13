@@ -598,6 +598,18 @@ div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
 	/* Fix for Windows PC scrolling */
 	overflow-x: auto !important;
 	overflow-y: hidden !important;
+	/* Add padding to prevent scrollbar from covering images */
+	padding-bottom: 10px !important;
+	box-sizing: border-box !important;
+}
+
+/* Fix gallery container heights to prevent image cropping */
+div[style*="height: 252px"] {
+	height: 270px !important; /* Increased to accommodate scrollbar */
+}
+
+div[style*="height: 255px"] {
+	height: 275px !important; /* Increased to accommodate scrollbar */
 }
 
 /* Gallery image container styling */
@@ -605,6 +617,7 @@ span[style*="height: 252px"] {
 	display: inline-block;
 	flex-shrink: 0;
 	vertical-align: top;
+	height: 260px !important; /* Increased to prevent cropping */
 }
 
 /* Enhanced gallery image styling */
@@ -612,6 +625,10 @@ span[style*="height: 252px"] {
 	border-radius: 8px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+	height: 250px !important;
+	width: auto !important;
+	object-fit: cover;
+	margin-bottom: 10px; /* Add space for scrollbar */
 }
 
 .gallery-pic:hover {
@@ -1153,6 +1170,25 @@ document.documentElement.style.scrollBehavior = 'smooth';
             }, { passive: true });
         });
         
+        // Fix gallery container heights to prevent image cropping
+        const galleryContainers = document.querySelectorAll('div[style*="height: 252px"], div[style*="height: 255px"]');
+        galleryContainers.forEach(container => {
+            const currentHeight = container.style.height;
+            if (currentHeight.includes('252px')) {
+                container.style.height = '270px';
+            } else if (currentHeight.includes('255px')) {
+                container.style.height = '275px';
+            }
+            container.style.paddingBottom = '10px';
+            container.style.boxSizing = 'border-box';
+        });
+        
+        // Fix image container heights
+        const imageContainers = document.querySelectorAll('span[style*="height: 252px"]');
+        imageContainers.forEach(container => {
+            container.style.height = '260px';
+        });
+        
         // Fix flex containers in galleries
         const flexGalleries = document.querySelectorAll('div[style*="display: flex"]');
         flexGalleries.forEach(gallery => {
@@ -1165,6 +1201,8 @@ document.documentElement.style.scrollBehavior = 'smooth';
             if (parent && parent.style.overflowX) {
                 parent.style.overflowX = 'auto';
                 parent.style.overflowY = 'hidden';
+                parent.style.height = '275px';
+                parent.style.paddingBottom = '10px';
             }
         });
         
