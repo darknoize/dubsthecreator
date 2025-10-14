@@ -657,41 +657,66 @@ div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
 	box-sizing: border-box !important;
 }
 
-/* Fix gallery container heights to prevent image cropping and accommodate hover scaling */
-div[style*="height: 252px"] {
-	height: 337px !important; /* Original 252px + 30px hover padding + 55px spacing */
-	padding-top: 10px !important; /* Add 10px top padding to prevent hover cropping */
+/* Universal gallery container styling - Rio Olympics flex style for ALL galleries */
+div[style*="height: 252px"], div[style*="height: 255px"] {
+	height: 280px !important; /* Consistent height for hover accommodation */
+	display: flex !important; /* Flex layout like Rio Olympics */
+	align-items: center !important; /* Perfect vertical centering */
+	gap: 10px !important; /* Consistent 10px gap like Rio Olympics */
+	padding: 15px 0 !important; /* Equal padding for hover space */
 	box-sizing: border-box !important;
+	overflow: visible !important; /* Allow hover scaling to show */
+	flex-wrap: nowrap !important; /* Keep horizontal scrolling */
 }
 
-div[style*="height: 255px"] {
-	height: 340px !important; /* Original 255px + 30px hover padding + 55px spacing */
-}
-
-/* Keep original heights for flex-based galleries (like Rio Olympics) */
-div[style*="display: flex; gap: 10px"][style*="height: 252px"] {
-	height: 252px !important; /* Flex galleries work fine with original height */
-	padding-top: 0 !important; /* No extra padding needed for flex */
-}
-
-/* Gallery image container styling with hover accommodation */
+/* Universal span styling - Rio Olympics style for ALL gallery image containers */
 span[style*="height: 252px"] {
-	display: inline-block;
-	flex-shrink: 0;
-	vertical-align: top;
-	height: 275px !important; /* Reduced since container now has padding */
-	padding-top: 5px !important; /* Reduced since container has 10px */
-	padding-bottom: 15px !important;
+	display: inline-flex !important; /* Consistent flex display like Rio Olympics */
+	align-items: center !important; /* Perfect vertical centering */
+	justify-content: center !important; /* Perfect horizontal centering */
+	flex-shrink: 0 !important; /* Prevent shrinking during scroll */
+	height: 252px !important; /* Consistent height like Rio Olympics */
+	margin-right: 0 !important; /* Remove margin - gap handles spacing */
+	padding: 0 !important; /* No padding needed with flex centering */
 	box-sizing: border-box !important;
+	overflow: visible !important; /* Allow hover scaling to show */
 }
 
-/* Special handling for flex-based galleries (like Rio Olympics) - no extra padding needed */
-div[style*="display: flex; gap: 10px"] span[style*="height: 252px"] {
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-	height: 252px !important; /* Keep original height for flex galleries */
-	align-items: center;
-	justify-content: center;
+/* Safari-specific image fixes */
+@supports (-webkit-appearance: none) {
+	img {
+		image-rendering: -webkit-optimize-contrast;
+		-webkit-backface-visibility: hidden;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
+	}
+	
+	/* Force Safari to properly render WebP images */
+	img[src$=".webp"] {
+		will-change: auto;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+	
+	/* Safari gallery image optimization */
+	.gallery-pic {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+	}
+}
+
+/* Prevent Safari from showing broken image icons */
+img {
+	min-height: 1px;
+	min-width: 1px;
+}
+
+/* Safari WebP loading state management */
+img[src$=".webp"] {
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out;
 }
 
 /* Enhanced gallery image styling */
@@ -705,11 +730,18 @@ div[style*="display: flex; gap: 10px"] span[style*="height: 252px"] {
 	margin-bottom: 10px; /* Add space for scrollbar */
 }
 
+/* Perfect centering for all gallery images */
+.gallery-pic {
+	display: block !important;
+	margin: auto !important; /* Center the image perfectly */
+	transition: transform 0.3s ease, box-shadow 0.3s ease !important; /* Smooth hover transition */
+}
+
 .gallery-pic:hover {
-	transform: scale(1.05);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-	z-index: 10;
-	position: relative;
+	transform: scale(1.05) !important; /* Scale from center */
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+	z-index: 10 !important;
+	position: relative !important;
 }
 
 /* Safari-specific optimizations */
@@ -1337,8 +1369,95 @@ document.documentElement.style.scrollBehavior = 'smooth';
     let loadedCount = 0;
     const totalImages = criticalImages.length;
     
+    let safariPreloadCache = new Map();
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    // Safari-compatible preload function with enhanced error handling
+    function preloadImageSafari(src, timeout = 15000) {
+        return new Promise((resolve) => {
+            // Check if already cached
+            if (safariPreloadCache.has(src)) {
+                loadedCount++;
+                console.log(`🔄 From cache ${src} (${loadedCount}/${totalImages})`);
+                resolve(safariPreloadCache.get(src));
+                return;
+            }
+            
+            const img = new Image();
+            let resolved = false;
+            
+            // Timeout handler for Safari (longer timeout for WebP)
+            const timeoutId = setTimeout(() => {
+                if (!resolved) {
+                    resolved = true;
+                    console.warn(`⏰ Timeout loading ${src}`);
+                    loadedCount++;
+                    resolve(null);
+                }
+            }, timeout);
+            
+            img.onload = () => {
+                if (!resolved) {
+                    resolved = true;
+                    clearTimeout(timeoutId);
+                    loadedCount++;
+                    safariPreloadCache.set(src, img);
+                    console.log(`✅ Loaded ${src} (${loadedCount}/${totalImages})`);
+                    resolve(img);
+                }
+            };
+            
+            img.onerror = () => {
+                if (!resolved) {
+                    resolved = true;
+                    clearTimeout(timeoutId);
+                    console.warn(`❌ Failed to load ${src}`);
+                    loadedCount++;
+                    
+                    // Safari retry mechanism
+                    if (isSafari && !src.includes('?retry')) {
+                        console.log(`🔄 Retrying ${src} for Safari...`);
+                        setTimeout(() => {
+                            preloadImageSafari(src + '?retry=' + Date.now(), 10000)
+                                .then(resolve);
+                        }, 100);
+                        return;
+                    }
+                    resolve(null);
+                }
+            };
+            
+            // Safari-specific settings
+            if (isSafari) {
+                img.decoding = 'async';
+                img.crossOrigin = 'anonymous';
+                
+                // Force Safari to not cache failed requests
+                if (!src.includes('?')) {
+                    img.src = src + '?' + Date.now();
+                } else {
+                    img.src = src;
+                }
+                
+                // Safari WebP compatibility check
+                if (src.includes('.webp')) {
+                    // Safari 14+ has WebP support but may be inconsistent
+                    setTimeout(() => {
+                        if (!resolved && (!img.complete || img.naturalHeight === 0)) {
+                            console.log(`🔧 Force refreshing ${src} in Safari...`);
+                            img.src = img.src.split('?')[0] + '?safari=' + Date.now();
+                        }
+                    }, 2000);
+                }
+            } else {
+                img.src = src;
+            }
+        });
+    }
+    
+    // Standard preload for non-Safari browsers
     function preloadImage(src) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const img = new Image();
             
             img.onload = () => {
@@ -1350,25 +1469,65 @@ document.documentElement.style.scrollBehavior = 'smooth';
             img.onerror = () => {
                 console.warn(`⚠️ Failed to preload ${src}`);
                 loadedCount++;
-                resolve(null); // Don't reject, just continue
+                resolve(null);
             };
             
             img.src = src;
         });
     }
     
-    // Preload all critical images
-    Promise.all(criticalImages.map(preloadImage))
+    // Choose preload method based on browser
+    const preloadMethod = isSafari ? preloadImageSafari : preloadImage;
+    
+    // Batch preload with Safari-optimized concurrency
+    function batchPreload(images, batchSize = isSafari ? 4 : 8) {
+        const batches = [];
+        for (let i = 0; i < images.length; i += batchSize) {
+            batches.push(images.slice(i, i + batchSize));
+        }
+        
+        return batches.reduce((promise, batch) => {
+            return promise.then(() => {
+                return Promise.all(batch.map(src => preloadMethod(src)));
+            });
+        }, Promise.resolve());
+    }
+    
+    console.log(`🚀 Starting ${isSafari ? 'Safari-optimized' : 'standard'} image preload...`);
+    
+    // Preload critical images in batches
+    batchPreload(criticalImages)
         .then(() => {
             console.log(`🎉 Image preload complete! ${loadedCount}/${totalImages} images processed`);
             
-            // Trigger a custom event when preloading is complete
+            // Safari-specific refresh mechanism for failed images
+            if (isSafari && loadedCount < totalImages * 0.85) {
+                console.log('🔄 Safari: Low success rate, implementing refresh strategy...');
+                setTimeout(() => {
+                    document.querySelectorAll('img[src*=".webp"]').forEach(img => {
+                        if (!img.complete || img.naturalHeight === 0) {
+                            const originalSrc = img.src.split('?')[0];
+                            img.src = '';
+                            setTimeout(() => {
+                                img.src = originalSrc + '?refresh=' + Date.now();
+                            }, Math.random() * 200);
+                        }
+                    });
+                }, 1000);
+            }
+            
+            // Trigger completion event
             document.dispatchEvent(new CustomEvent('imagesPreloaded', {
-                detail: { loaded: loadedCount, total: totalImages }
+                detail: { 
+                    loaded: loadedCount, 
+                    total: totalImages,
+                    browser: isSafari ? 'Safari' : 'Other',
+                    success_rate: (loadedCount / totalImages * 100).toFixed(1) + '%'
+                }
             }));
         })
         .catch(error => {
-            console.error('💥 Error in image preload system:', error);
+            console.error('💥 Error in preload system:', error);
         });
     
     // Also preload images as they come into view (for remaining gallery images)
@@ -1405,6 +1564,73 @@ document.documentElement.style.scrollBehavior = 'smooth';
     } else {
         setupLazyPreload();
     }
+    
+    // Safari-specific: Fix broken images on page load and refresh
+    function safariImageFix() {
+        if (!isSafari) return;
+        
+        console.log('🍎 Applying Safari image fixes...');
+        
+        const fixBrokenImages = () => {
+            const allImages = document.querySelectorAll('img');
+            let fixedCount = 0;
+            
+            allImages.forEach((img, index) => {
+                // Check if image failed to load
+                if (!img.complete || img.naturalHeight === 0) {
+                    const originalSrc = img.src;
+                    if (originalSrc && !originalSrc.includes('data:')) {
+                        fixedCount++;
+                        console.log(`🔧 Safari fix: Reloading ${originalSrc}`);
+                        
+                        // Clear and reload with cache busting
+                        img.src = '';
+                        setTimeout(() => {
+                            const cacheBuster = Date.now() + index;
+                            img.src = originalSrc.split('?')[0] + '?safari=' + cacheBuster;
+                        }, Math.random() * 500);
+                    }
+                }
+            });
+            
+            if (fixedCount > 0) {
+                console.log(`🔧 Safari: Fixed ${fixedCount} broken images`);
+            }
+        };
+        
+        // Fix immediately
+        fixBrokenImages();
+        
+        // Fix again after a delay (for lazy loaded images)
+        setTimeout(fixBrokenImages, 2000);
+        setTimeout(fixBrokenImages, 5000);
+        
+        // Listen for image errors and fix them immediately
+        document.addEventListener('error', (e) => {
+            if (e.target && e.target.tagName === 'IMG') {
+                const img = e.target;
+                const originalSrc = img.src;
+                if (originalSrc && !originalSrc.includes('data:')) {
+                    console.log(`🔧 Safari: Fixing failed image ${originalSrc}`);
+                    img.src = originalSrc.split('?')[0] + '?fix=' + Date.now();
+                }
+            }
+        }, true);
+    }
+    
+    // Apply Safari fixes
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', safariImageFix);
+    } else {
+        safariImageFix();
+    }
+    
+    // Also apply fixes after window loads
+    window.addEventListener('load', () => {
+        if (isSafari) {
+            setTimeout(safariImageFix, 1000);
+        }
+    });
 })();
 
 console.log('✨ Smooth scroll transitions enabled');
@@ -1421,6 +1647,100 @@ document.addEventListener('DOMContentLoaded', function() {
     // Temporarily disabled Safari detection to ensure fixed backgrounds work
     console.log('🖥️ Fixed backgrounds enabled for all browsers (Safari detection disabled)');
 });
+</script>
+
+<script>
+// 🍎 Safari Image Recovery System - Handles broken images that persist after refresh
+(function() {
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (!isSafari) return;
+    
+    console.log('🍎 Initializing Safari Image Recovery System...');
+    
+    let retryAttempts = new Map();
+    const maxRetries = 3;
+    
+    function createImageObserver() {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.tagName === 'IMG') {
+                        monitorImage(node);
+                    } else if (node.querySelectorAll) {
+                        node.querySelectorAll('img').forEach(monitorImage);
+                    }
+                });
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        return observer;
+    }
+    
+    function monitorImage(img) {
+        if (!img.src || img.src.includes('data:')) return;
+        
+        const originalSrc = img.src.split('?')[0];
+        
+        // Check if image is broken
+        const checkImage = () => {
+            if (!img.complete || img.naturalHeight === 0) {
+                const attempts = retryAttempts.get(originalSrc) || 0;
+                
+                if (attempts < maxRetries) {
+                    console.log(`🔄 Safari: Retry ${attempts + 1}/${maxRetries} for ${originalSrc}`);
+                    
+                    retryAttempts.set(originalSrc, attempts + 1);
+                    
+                    // Progressive retry strategy
+                    const delay = Math.pow(2, attempts) * 500; // 500ms, 1s, 2s
+                    const cacheBuster = Date.now() + Math.random();
+                    
+                    setTimeout(() => {
+                        img.src = originalSrc + '?safari=' + cacheBuster;
+                    }, delay);
+                } else {
+                    console.warn(`❌ Safari: Max retries reached for ${originalSrc}`);
+                }
+            } else {
+                // Image loaded successfully
+                retryAttempts.delete(originalSrc);
+            }
+        };
+        
+        // Check immediately for broken images
+        if (img.complete) {
+            checkImage();
+        } else {
+            img.addEventListener('load', () => {
+                retryAttempts.delete(originalSrc);
+            });
+            
+            img.addEventListener('error', checkImage);
+        }
+    }
+    
+    // Monitor all existing images
+    document.querySelectorAll('img').forEach(monitorImage);
+    
+    // Monitor new images
+    createImageObserver();
+    
+    // Periodic sweep for broken images (every 15 seconds)
+    setInterval(() => {
+        document.querySelectorAll('img').forEach((img) => {
+            if (img.src && !img.src.includes('data:') && (!img.complete || img.naturalHeight === 0)) {
+                monitorImage(img);
+            }
+        });
+    }, 15000);
+    
+    console.log('🍎 Safari Image Recovery System active - monitoring for broken images');
+})();
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
