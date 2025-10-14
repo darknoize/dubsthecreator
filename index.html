@@ -701,6 +701,22 @@ span[style*="height: 252px"] {
 	}
 }
 
+/* Force fixed backgrounds for all project sections on desktop */
+div[id^="project-"], div[id="portfolio-dubs"] {
+	background-attachment: fixed !important;
+	/* Remove any conflicting properties */
+	transform: none !important;
+	-webkit-transform: none !important;
+	will-change: auto !important;
+}
+
+/* Allow scrolling backgrounds on mobile devices */
+@media (max-width: 768px) {
+	div[id^="project-"], div[id="portfolio-dubs"] {
+		background-attachment: scroll !important;
+	}
+}
+
 strong {
 	font-weight: 500;
 }
