@@ -112,7 +112,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 <link rel="preload" as="image" href="images/LexisNexis/LexisNexis-bkgrnd-7-01.webp">
 <link rel="preload" as="image" href="images/WebMD/webmd-13.webp">
 <link rel="preload" as="image" href="images/DrOz/DrOz-Bkgrnd.webp">
-<link rel="preload" as="image" href="images/Amplifi/Amplifi-bkgrnd.webp">
+<link rel="preload" as="image" href="images/Amplifi/Amplifi-bkgrnd-data.webp">
 <link rel="preload" as="image" href="images/ATT-Wipro/ATT-Wipro-01.webp">
 <link rel="preload" as="image" href="images/CardLytics/CardLytics-Bkgrnd.webp">
 <link rel="preload" as="image" href="images/M3/M3-Bkgrnd-2.webp">
@@ -181,7 +181,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 <link rel="preload" as="image" href="images/DrOz/DrOz-Bkgrnd.webp">
 <link rel="preload" as="image" href="images/CardLytics/CardLytics-Bkgrnd.webp">
 <link rel="preload" as="image" href="images/WebMD/webmd-13.webp">
-<link rel="preload" as="image" href="images/Amplifi/Amplifi-bkgrnd.webp">
+<link rel="preload" as="image" href="images/Amplifi/Amplifi-bkgrnd-data.webp">
 <link rel="preload" as="image" href="images/M3/M3-Bkgrnd-2.webp">
 <link rel="preload" as="image" href="images/Drive/Drive-Launch-Bkgrnd.webp">
 <link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-Bkgrnd.webp">
@@ -1348,8 +1348,8 @@ html {
             section.style.backgroundSize = 'cover';
             section.style.backgroundRepeat = 'no-repeat';
             
-            // Special positioning for portfolio-dubs section
-            if (section.id === 'portfolio-dubs') {
+            // Special positioning for portfolio-dubs and project-1 (Ping) sections
+            if (section.id === 'portfolio-dubs' || section.id === 'project-1') {
                 section.style.backgroundPosition = 'top center';
             } else {
                 section.style.backgroundPosition = 'center center';
@@ -2938,7 +2938,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </section>
       <section>
-        <div id="project-10" style="display: inline-block; position: relative; height: 100vh; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Amplifi/Amplifi-bkgrnd.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207;">
+        <div id="project-10" style="display: inline-block; position: relative; height: 100vh; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Amplifi/Amplifi-bkgrnd-data.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207;">
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
             <div style="padding: 25px; padding-bottom: 55px;"> <img class="logo-lrg" src="images/Amplifi/Amplifi-Logo-sm.webp" alt="Amplifi Logo"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Amplifi</strong></h1>
