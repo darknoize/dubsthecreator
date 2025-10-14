@@ -85,10 +85,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 
-<!-- Preload Critical Images -->
-<link rel="preload" as="image" href="images/Walk-of-Fame.webp">
-<link rel="preload" as="image" href="images/Dubs-Profile-02.webp">
-<link rel="preload" as="image" href="images/divider.png">
+<!-- Vercel Pro Optimized Preloading -->
+<link rel="preload" as="image" href="images/Walk-of-Fame.webp" crossorigin="anonymous">
+<link rel="preload" as="image" href="images/Dubs-Profile-02.webp" crossorigin="anonymous">
+<link rel="preload" as="image" href="images/divider.png" crossorigin="anonymous">
+
+<!-- Vercel Pro DNS Prefetch and Preconnect -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Vercel Pro Analytics -->
+<script>
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 
 <!-- Preload All Background Images for Smooth Scrolling -->
 <link rel="preload" as="image" href="images/Ping-Pay/Ping-Bkgrnd.webp">
@@ -2182,6 +2194,112 @@ console.log('✨ Smooth scroll transitions enabled');
     }, 5000);
     
     console.log('🎭 Smooth loading system active');
+})();
+
+// 🚀 Vercel Pro Performance Optimizations
+(function() {
+    console.log('🚀 Vercel Pro optimizations activating...');
+    
+    // Enable Vercel Analytics if available
+    if (window.va && typeof window.va.track === 'function') {
+        console.log('📊 Vercel Analytics detected');
+        // Track portfolio views
+        window.va.track('portfolio_view', { timestamp: Date.now() });
+    }
+    
+    // Preload critical resources with Vercel's edge network
+    function vercelPreloadCritical() {
+        const criticalResources = [
+            'images/Walk-of-Fame.webp',
+            'images/Dubs-Profile-02.webp',
+            'William%20Weems%20-%20Product%20Creator%20-%20CV.pdf'
+        ];
+        
+        criticalResources.forEach(resource => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = resource;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+        });
+        
+        console.log('🌐 Vercel edge prefetch activated for critical resources');
+    }
+    
+    // Optimize for Vercel's Image Optimization
+    function optimizeVercelImages() {
+        const images = document.querySelectorAll('img[src*=".webp"], img[src*=".jpg"], img[src*=".png"]');
+        
+        images.forEach(img => {
+            // Add loading optimization
+            if (!img.hasAttribute('loading')) {
+                const rect = img.getBoundingClientRect();
+                if (rect.top > window.innerHeight) {
+                    img.loading = 'lazy';
+                } else {
+                    img.loading = 'eager';
+                }
+            }
+            
+            // Add decoding optimization
+            if (!img.hasAttribute('decoding')) {
+                img.decoding = 'async';
+            }
+        });
+        
+        console.log(`🖼️ Optimized ${images.length} images for Vercel Pro`);
+    }
+    
+    // Performance monitoring for Vercel Pro
+    function setupVercelPerformanceMonitoring() {
+        // Web Vitals tracking
+        if ('PerformanceObserver' in window) {
+            // Track LCP (Largest Contentful Paint)
+            new PerformanceObserver((entryList) => {
+                const entries = entryList.getEntries();
+                const lastEntry = entries[entries.length - 1];
+                console.log('📈 LCP:', lastEntry.startTime.toFixed(2), 'ms');
+                
+                if (window.va && typeof window.va.track === 'function') {
+                    window.va.track('lcp_measurement', { 
+                        lcp: lastEntry.startTime,
+                        element: lastEntry.element?.tagName || 'unknown'
+                    });
+                }
+            }).observe({ entryTypes: ['largest-contentful-paint'] });
+            
+            // Track FID (First Input Delay)
+            new PerformanceObserver((entryList) => {
+                const entries = entryList.getEntries();
+                entries.forEach(entry => {
+                    console.log('⚡ FID:', entry.processingStart - entry.startTime, 'ms');
+                    
+                    if (window.va && typeof window.va.track === 'function') {
+                        window.va.track('fid_measurement', { 
+                            fid: entry.processingStart - entry.startTime 
+                        });
+                    }
+                });
+            }).observe({ entryTypes: ['first-input'] });
+        }
+        
+        console.log('📊 Vercel Pro performance monitoring active');
+    }
+    
+    // Initialize Vercel Pro optimizations
+    vercelPreloadCritical();
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            optimizeVercelImages();
+            setupVercelPerformanceMonitoring();
+        });
+    } else {
+        optimizeVercelImages();
+        setupVercelPerformanceMonitoring();
+    }
+    
+    console.log('🚀 Vercel Pro optimizations complete');
 })();
 
 // 🪟 Windows Scrollbar Enhancement for Gallery Containers
