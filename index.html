@@ -743,6 +743,45 @@ img[alt]:after {
 	display: none !important;
 }
 
+/* 🚀 Lightweight Fast-Loading System - No Animations */
+.image-loading-container {
+	position: relative;
+	display: inline-block;
+	background: transparent;
+}
+
+.image-loading-placeholder {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.02);
+	border-radius: 8px;
+	z-index: 1;
+	pointer-events: none;
+}
+
+
+}
+
+
+
+/* Gallery image loading states */
+.gallery-pic {
+	transition: opacity 0.5s ease-in-out;
+	position: relative;
+	z-index: 2;
+}
+
+.gallery-pic.loading {
+	opacity: 0;
+}
+
+.gallery-pic.loaded {
+	opacity: 1;
+}
+
 /* Safari WebP loading state management */
 img[src$=".webp"] {
 	opacity: 1;
@@ -1509,8 +1548,8 @@ document.documentElement.style.scrollBehavior = 'smooth';
     // Choose preload method based on browser
     const preloadMethod = isSafari ? preloadImageSafari : preloadImage;
     
-    // Batch preload with Safari-optimized concurrency
-    function batchPreload(images, batchSize = isSafari ? 4 : 8) {
+    // Fast batch preload with aggressive concurrency
+    function batchPreload(images, batchSize = isSafari ? 8 : 12) {
         const batches = [];
         for (let i = 0; i < images.length; i += batchSize) {
             batches.push(images.slice(i, i + batchSize));
@@ -2084,6 +2123,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create a transparent 1x1 pixel image as placeholder
     const transparentPixel = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InRyYW5zcGFyZW50Ii8+PC9zdmc+';
     
+
+
     function preventBrokenImage(img) {
         if (!img || !img.tagName || img.tagName !== 'IMG' || monitoredImages.has(img)) return;
         if (!img.src || img.src.includes('data:')) return;
@@ -2095,57 +2136,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const originalDisplay = img.style.display;
         const originalOpacity = img.style.opacity || '1';
         
+
+        
         function handleImageError() {
-            console.warn(`🚫 Preventing broken image display: ${originalSrc}`);
+            console.warn(`🚫 Fast recovery for broken image: ${originalSrc}`);
             
             // Immediately replace with transparent placeholder
-            img.style.opacity = '0';
             img.src = transparentPixel;
+            img.style.opacity = '0';
             
-            // Attempt to reload the image
+            // Fast, lightweight reload attempt
             const reloadImg = new Image();
-            let reloadAttempts = 0;
-            const maxReloadAttempts = 3;
             
-            function attemptReload() {
-                reloadAttempts++;
-                
-                reloadImg.onload = function() {
-                    console.log(`✅ Successfully recovered broken image: ${originalSrc}`);
-                    img.src = reloadImg.src;
-                    img.style.opacity = originalOpacity;
-                    img.style.transition = 'opacity 0.5s ease-in-out';
-                };
-                
-                reloadImg.onerror = function() {
-                    if (reloadAttempts < maxReloadAttempts) {
-                        console.log(`🔄 Reload attempt ${reloadAttempts}/${maxReloadAttempts} failed for: ${originalSrc}`);
-                        setTimeout(attemptReload, reloadAttempts * 1000); // Progressive delay
-                    } else {
-                        console.error(`💔 All reload attempts failed for: ${originalSrc}`);
-                        // Keep as transparent placeholder - no broken image will ever show
-                        img.style.opacity = '0';
-                        img.style.display = originalDisplay; // Maintain layout
-                    }
-                };
-                
-                // Try loading with cache-busting
-                const timestamp = Date.now();
-                const random = Math.random().toString(36).substring(7);
-                reloadImg.src = `${originalSrc}?reload=${timestamp}&r=${random}&attempt=${reloadAttempts}`;
-            }
+            reloadImg.onload = function() {
+                console.log(`✅ Fast recovery successful: ${originalSrc}`);
+                img.src = reloadImg.src;
+                img.style.opacity = originalOpacity;
+                img.style.transition = 'opacity 0.2s ease-out';
+            };
             
-            attemptReload();
+            reloadImg.onerror = function() {
+                console.warn(`❌ Fast recovery failed: ${originalSrc}`);
+                // Keep as transparent placeholder - no broken image icon
+                img.style.opacity = '0';
+                img.style.display = originalDisplay; // Maintain layout
+            };
+            
+            // Single fast reload attempt
+            const timestamp = Date.now();
+            reloadImg.src = `${originalSrc}?fix=${timestamp}`;
         }
         
         function checkImageStatus() {
-            // Comprehensive broken image detection
-            const isBroken = (
-                !img.complete ||
-                img.naturalHeight === 0 ||
-                img.naturalWidth === 0 ||
-                (img.complete && img.naturalHeight === 0 && img.naturalWidth === 0)
-            );
+            // Fast broken image detection
+            const isBroken = !img.complete || img.naturalHeight === 0 || img.naturalWidth === 0;
             
             if (isBroken && img.src !== transparentPixel) {
                 handleImageError();
@@ -2155,18 +2179,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set up error handling
         img.addEventListener('error', handleImageError, { once: false });
         
+        // Handle successful loading
+        img.addEventListener('load', function() {
+            img.style.opacity = originalOpacity;
+            img.style.transition = 'opacity 0.2s ease-out';
+        });
+        
         // Check current status
         if (img.complete) {
             checkImageStatus();
-        } else {
-            // Monitor loading
-            img.addEventListener('load', function() {
-                // Verify the image actually loaded correctly
-                setTimeout(checkImageStatus, 100);
-            });
         }
         
-        // Periodic health check
+        // Lightweight health check
         const healthCheck = setInterval(() => {
             if (!document.contains(img)) {
                 clearInterval(healthCheck);
@@ -2174,7 +2198,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             checkImageStatus();
-        }, 10000); // Check every 10 seconds
+        }, 15000); // Check every 15 seconds
     }
     
     // Monitor all existing images
@@ -2214,6 +2238,75 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(scanForImages, 30000); // Scan every 30 seconds
     
     console.log('🛡️ Universal Broken Image Prevention System active');
+    
+    // 🚀 Fast Safari Image Loading - No Loading Indicators
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    if (isSafari) {
+        console.log('🍎 Safari detected - enabling fast direct loading...');
+        
+        function enhanceSafariImage(img) {
+            if (!img || img.classList.contains('safari-enhanced')) return;
+            
+            img.classList.add('safari-enhanced');
+            
+            // Immediate aggressive preloading for Safari
+            if (!img.complete || img.naturalHeight === 0) {
+                console.log(`⚡ Fast loading Safari image: ${img.src}`);
+                
+                // Force immediate loading with multiple techniques
+                const originalSrc = img.src.split('?')[0];
+                const cacheBuster = Date.now() + Math.random();
+                
+                // Safari-specific loading optimization
+                img.loading = 'eager';
+                img.decoding = 'sync'; // Synchronous for faster display
+                
+                // Multiple loading attempts for Safari
+                const loadImage = () => {
+                    const newImg = new Image();
+                    newImg.onload = () => {
+                        if (img.src !== newImg.src) {
+                            img.src = newImg.src;
+                        }
+                        img.style.opacity = '1';
+                        console.log(`✅ Safari fast load complete: ${originalSrc}`);
+                    };
+                    
+                    newImg.onerror = () => {
+                        // Silent retry with different cache buster
+                        setTimeout(() => {
+                            const retryImg = new Image();
+                            retryImg.onload = () => img.src = retryImg.src;
+                            retryImg.src = originalSrc + '?safari=' + Date.now();
+                        }, 100);
+                    };
+                    
+                    newImg.src = originalSrc + '?fast=' + cacheBuster;
+                };
+                
+                loadImage();
+            }
+        }
+        
+        // Apply to all images immediately
+        document.querySelectorAll('img').forEach(enhanceSafariImage);
+        
+        // Apply to new images
+        const fastObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.tagName === 'IMG') {
+                        enhanceSafariImage(node);
+                    } else if (node.querySelectorAll) {
+                        node.querySelectorAll('img').forEach(enhanceSafariImage);
+                    }
+                });
+            });
+        });
+        
+        fastObserver.observe(document.body, { childList: true, subtree: true });
+    }
     
     // Expose global function for manual fixing
     window.fixAllBrokenImages = function() {
