@@ -960,6 +960,145 @@ h1 strong {
     color: #ff6b6b;
 }
 
+/* Footer styles - fills remaining space with no gaps */
+#footer {
+    margin-top: auto !important;
+    min-height: 40px;
+}
+
+/* Smooth Loading System - Prevent Background Flash */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #020207 !important; /* Solid color to prevent flash */
+    /* Hide background initially */
+    background-image: none !important;
+}
+
+body.loaded {
+    /* Show background when ready */
+    background-image: url('images/Walk-of-Fame.webp') !important;
+    transition: background-image 0.5s ease-in-out;
+}
+
+html {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    opacity: 0; /* Hide initially to prevent flash */
+    transition: opacity 0.8s ease-in-out;
+}
+
+#layout.loaded {
+    opacity: 1; /* Show when ready */
+}
+
+/* Loading overlay to cover any flashes */
+.page-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #020207;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.page-loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Initially hide section backgrounds to prevent flash */
+#portfolio-dubs {
+    background-image: none !important;
+    transition: background-image 0.5s ease-in-out;
+}
+
+#portfolio-dubs.loaded {
+    background-image: url('images/Walk-of-Fame.webp') !important;
+}
+
+/* Windows-specific scrollbar fix for gallery containers */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    /* IE10+ */
+    div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
+        -ms-overflow-style: scrollbar;
+    }
+}
+
+@supports (-ms-ime-align: auto) {
+    /* Edge */
+    div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
+        -ms-overflow-style: scrollbar;
+    }
+}
+
+/* Force scrollbars on Windows Chrome/Firefox */
+@media screen and (min-width: 0\0) {
+    div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.3) transparent;
+    }
+    
+    div[style*="overflow-x: scroll"]::-webkit-scrollbar,
+    div[style*="overflow-x: auto"]::-webkit-scrollbar {
+        height: 8px;
+        background: rgba(0,0,0,0.5);
+    }
+    
+    div[style*="overflow-x: scroll"]::-webkit-scrollbar-thumb,
+    div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.3);
+        border-radius: 4px;
+    }
+    
+    div[style*="overflow-x: scroll"]::-webkit-scrollbar-thumb:hover,
+    div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.5);
+    }
+}
+
+/* Enhanced Windows gallery scrollbar styling */
+.windows-gallery-scroll {
+    /* Force scrollbar visibility */
+    overflow-x: scroll !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.4) rgba(0,0,0,0.5);
+}
+
+.windows-gallery-scroll::-webkit-scrollbar {
+    height: 10px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+
+.windows-gallery-scroll::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+
+.windows-gallery-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.4);
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.windows-gallery-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.6);
+}
+
+.windows-gallery-scroll::-webkit-scrollbar-thumb:active {
+    background: rgba(255,255,255,0.8);
+}
+
 /* Footer link styles */
 .footer-links {
     display: inline-block;
@@ -1010,7 +1149,8 @@ h1 strong {
 
 <body class="archive tax-st_category term-after-effects term-23 custom-background hidpi-on chrome hidpi" style="background-size: 100%; margin: 0px;">
 
-
+<!-- Loading overlay to prevent background flash -->
+<div class="page-loading" id="page-loading"></div>
 
 <script>
 // Optimized Image Loading Script
@@ -1928,6 +2068,160 @@ document.documentElement.style.scrollBehavior = 'smooth';
 })();
 
 console.log('✨ Smooth scroll transitions enabled');
+
+// 🎭 Smooth Page Loading System - Prevent Background Flash
+(function() {
+    console.log('🎭 Initializing smooth loading system...');
+    
+    let criticalResourcesLoaded = false;
+    let pageContentReady = false;
+    
+    function hidePageLoading() {
+        const loadingOverlay = document.getElementById('page-loading');
+        const layout = document.getElementById('layout');
+        const portfolioSection = document.getElementById('portfolio-dubs');
+        
+        if (loadingOverlay && layout) {
+            console.log('✨ Page ready - showing content smoothly');
+            
+            // Fade out loading overlay and fade in content
+            loadingOverlay.classList.add('hidden');
+            layout.classList.add('loaded');
+            document.body.classList.add('loaded');
+            
+            // Show portfolio background after a slight delay
+            setTimeout(() => {
+                if (portfolioSection) {
+                    portfolioSection.classList.add('loaded');
+                }
+            }, 200);
+            
+            // Remove loading overlay after transition
+            setTimeout(() => {
+                if (loadingOverlay.parentNode) {
+                    loadingOverlay.remove();
+                }
+            }, 500);
+        }
+    }
+    
+    function checkIfPageReady() {
+        if (criticalResourcesLoaded && pageContentReady) {
+            hidePageLoading();
+        }
+    }
+    
+    // Wait for critical images to load
+    function waitForCriticalImages() {
+        const criticalImages = [
+            'images/Walk-of-Fame.webp',
+            'images/Dubs-Profile-02.webp'
+        ];
+        
+        let loadedCount = 0;
+        const totalCritical = criticalImages.length;
+        
+        criticalImages.forEach(src => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                console.log(`📸 Critical image loaded: ${src} (${loadedCount}/${totalCritical})`);
+                if (loadedCount >= totalCritical) {
+                    criticalResourcesLoaded = true;
+                    checkIfPageReady();
+                }
+            };
+            img.onerror = () => {
+                loadedCount++;
+                console.warn(`⚠️ Critical image failed: ${src} (${loadedCount}/${totalCritical})`);
+                if (loadedCount >= totalCritical) {
+                    criticalResourcesLoaded = true;
+                    checkIfPageReady();
+                }
+            };
+            img.src = src;
+        });
+        
+        // Fallback timeout for critical images
+        setTimeout(() => {
+            if (!criticalResourcesLoaded) {
+                console.log('⏰ Critical images timeout - showing page anyway');
+                criticalResourcesLoaded = true;
+                checkIfPageReady();
+            }
+        }, 3000);
+    }
+    
+    // Wait for DOM and initial layout
+    function waitForPageContent() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    console.log('📄 DOM content ready');
+                    pageContentReady = true;
+                    checkIfPageReady();
+                }, 100);
+            });
+        } else {
+            setTimeout(() => {
+                console.log('📄 DOM already ready');
+                pageContentReady = true;
+                checkIfPageReady();
+            }, 100);
+        }
+    }
+    
+    // Start the loading sequence
+    waitForCriticalImages();
+    waitForPageContent();
+    
+    // Emergency fallback - always show page after max 5 seconds
+    setTimeout(() => {
+        console.log('🚨 Emergency fallback - showing page');
+        hidePageLoading();
+    }, 5000);
+    
+    console.log('🎭 Smooth loading system active');
+})();
+
+// 🪟 Windows Scrollbar Enhancement for Gallery Containers
+(function() {
+    // Detect Windows OS
+    const isWindows = navigator.platform.indexOf('Win') > -1 || 
+                     navigator.userAgent.indexOf('Windows') > -1;
+    
+    if (isWindows) {
+        console.log('🪟 Windows detected - enhancing gallery scrollbars...');
+        
+        function enhanceWindowsScrollbars() {
+            // Target gallery containers with horizontal scroll
+            const galleryContainers = document.querySelectorAll(
+                'div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"]'
+            );
+            
+            galleryContainers.forEach(container => {
+                // Ensure scrollbar is visible on Windows
+                container.style.scrollbarWidth = 'thin';
+                container.style.scrollbarColor = 'rgba(255,255,255,0.4) rgba(0,0,0,0.5)';
+                
+                // Add Windows-specific class for additional styling
+                container.classList.add('windows-gallery-scroll');
+            });
+            
+            console.log(`🪟 Enhanced ${galleryContainers.length} gallery scrollbars for Windows`);
+        }
+        
+        // Apply enhancements when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', enhanceWindowsScrollbars);
+        } else {
+            enhanceWindowsScrollbars();
+        }
+        
+        // Re-apply after a delay for dynamically loaded content
+        setTimeout(enhanceWindowsScrollbars, 1000);
+    }
+})();
 </script>
 
 <script>
@@ -2332,9 +2626,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
-<div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
-  <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
-    <div id="content-layout" style="overflow: visible;">
+<div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4); min-height: 100vh; display: flex; flex-direction: column;">
+  <div id="content" style="margin-bottom: 0px; padding-bottom: 0px; min-height: 100vh; display: flex; flex-direction: column;">
+    <div id="content-layout" style="overflow: visible; flex-grow: 1;">
       <section>
 			<div id="header" style="display: inline-block; position: relative; top: 0px; height: auto; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7);"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="text-align: center; color: #ffffff; font-size: 18px;"><a href="https://www.linkedin.com/in/dubsthecreator/" style="color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="margin-right: 4px;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a> | <a href="https://profile.indeed.com/p/williamw-p5pfyqw" style="color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="margin-right: 4px;"><path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0zm5.568 8.16c-.169-.287-.359-.56-.569-.82.169-.287.359-.56.569-.82-.21-.26-.4-.533-.569-.82.169-.287.359-.56.569-.82-.21-.26-.4-.533-.569-.82.169-.287.359-.56.569-.82-.21-.26-.4-.533-.569-.82.169-.287.359-.56.569-.82-.21-.26-.4-.533-.569-.82v-.001c-.169-.287-.359-.56-.569-.82.21.26.4.533.569.82-.169.287-.359.56-.569.82.21.26.4.533.569.82-.169.287-.359.56-.569.82.21.26.4.533.569.82-.169.287-.359.56-.569.82.21.26.4.533.569.82-.169.287-.359.56-.569.82.21.26.4.533.569.82-.169.287-.359.56-.569.82.21.26.4.533.569.82-.169.287-.359.56-.569.82.21.26.4.533.569.82z"/><circle cx="12" cy="12" r="8" fill="white"/><rect x="8" y="8" width="8" height="8" fill="#2557a7"/></svg>Indeed</a> | <a href="/William Weems - Product Creator - CV.pdf" target="_blank" style="color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="margin-right: 4px;"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>Resumé</a></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
 		</section>
@@ -2592,8 +2886,16 @@ document.addEventListener('DOMContentLoaded', function() {
          </div>
         </div>
       </section>
-	<section>
-			<div id="footer" style="display: inline-block; position: relative; top: 10%; height: auto; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin: 0px;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 12px; font-weight: 900; padding-top: 5px;"><strong>Dubs The Creator, © Copyright 2025. All rights reserved.</strong><span class="footer-links"><a href="#" onclick="openTermsModal(); return false;">Terms & Conditions</a></span></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
+	<section style="margin-top: auto;">
+			<div id="footer" style="display: block; position: relative; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin: 0px; padding: 10px 0; box-sizing: border-box;"> 
+				<img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px; width: 100%;"> 
+				<h1 style="font-size: 12px; font-weight: 900; padding-top: 5px; margin: 0; padding-bottom: 5px;">
+					<strong>Dubs The Creator, © Copyright 2025. All rights reserved.</strong>
+					<span class="footer-links">
+						<a href="#" onclick="openTermsModal(); return false;">Terms & Conditions</a>
+					</span>
+				</h1> 
+			</div>
     </section>
 	</div>
   </div>
