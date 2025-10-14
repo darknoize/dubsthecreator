@@ -707,10 +707,40 @@ span[style*="height: 252px"] {
 	}
 }
 
-/* Prevent Safari from showing broken image icons */
+/* Comprehensive broken image prevention */
 img {
 	min-height: 1px;
 	min-width: 1px;
+	/* Hide broken image icon completely */
+	font-size: 0;
+	color: transparent;
+	/* Prevent broken image alt text from showing */
+	text-indent: -9999px;
+	overflow: hidden;
+	background: transparent;
+	image-rendering: -webkit-optimize-contrast;
+    image-rendering: auto;
+}
+
+/* Hide broken image icons in all browsers */
+img:before {
+	content: "";
+	display: block;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: transparent;
+}
+
+/* Specific broken image handling for WebKit browsers */
+img:not([src]), img[src=""], img[src*="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSI"] {
+	opacity: 0 !important;
+	pointer-events: none;
+}
+
+/* Ensure broken images don't break layout */
+img[alt]:after {
+	display: none !important;
 }
 
 /* Safari WebP loading state management */
@@ -1567,55 +1597,280 @@ document.documentElement.style.scrollBehavior = 'smooth';
     
     // Safari-specific: Fix broken images on page load and refresh
     function safariImageFix() {
-        if (!isSafari) return;
+            if (!images || images.length === 0) return;
+            
+            const loadPromises = images.map(src => {
+                if (preloadBuffer.has(src)) return Promise.resolve();
+                
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    const timeout = priority ? 3000 : 8000; // Shorter timeout for priority sections
+                    
+                    const timeoutId = setTimeout(() => {
+                        console.warn(`⚡ Fast scroll timeout: ${src}`);
+                        resolve();
+                    }, timeout);
+                    
+                    img.onload = () => {
+                        clearTimeout(timeoutId);
+                        preloadBuffer.add(src);
+                        console.log(`⚡ Fast preload: ${src}`);
+                        resolve();
+                    };
+                    
+                    img.onerror = () => {
+                        clearTimeout(timeoutId);
+                        console.warn(`❌ Fast preload failed: ${src}`);
+                        resolve();
+                    };
+                    
+                    // Force immediate loading for visible sections
+                    img.src = src + (src.includes('?') ? '&' : '?') + 'fastload=' + Date.now();
+                });
+            });
+            
+            return Promise.all(loadPromises);
+        }
         
-        console.log('🍎 Applying Safari image fixes...');
+        // Detect fast scrolling and preload ahead
+        let lastScrollTime = 0;
+        let scrollVelocity = 0;
+        
+        function handleScroll() {
+            const now = Date.now();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollDelta = Math.abs(scrollTop - (window.lastScrollTop || 0));
+            const timeDelta = now - lastScrollTime;
+            
+            // Calculate scroll velocity (pixels per millisecond)
+            scrollVelocity = timeDelta > 0 ? scrollDelta / timeDelta : 0;
+            
+            window.lastScrollTop = scrollTop;
+            lastScrollTime = now;
+            
+            // Fast scroll detection (> 2 pixels per millisecond)
+            const isFastScroll = scrollVelocity > 2;
+            
+            if (isFastScroll && !isScrolling) {
+                console.log(`🏃 Fast scroll detected! Velocity: ${scrollVelocity.toFixed(2)}px/ms`);
+                isScrolling = true;
+                
+                // Determine current and next sections to preload
+                const sections = Object.keys(galleryImages).map(Number);
+                const viewportMiddle = scrollTop + window.innerHeight / 2;
+                
+                let closestSection = 0;
+                let minDistance = Infinity;
+                
+                sections.forEach(sectionIndex => {
+                    const sectionEl = document.querySelector(`section:nth-of-type(${sectionIndex + 1}), div:nth-of-type(${sectionIndex + 1})`);
+                    if (sectionEl) {
+                        const sectionTop = sectionEl.offsetTop;
+                        const distance = Math.abs(viewportMiddle - sectionTop);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestSection = sectionIndex;
+                        }
+                    }
+                });
+                
+                // Preload current and next 2 sections aggressively
+                const sectionsToPreload = [closestSection, closestSection + 1, closestSection + 2]
+                    .filter(index => galleryImages[index]);
+                
+                sectionsToPreload.forEach((sectionIndex, priority) => {
+                    preloadSection(sectionIndex, priority === 0); // Priority for current section
+                });
+            }
+            
+            // Reset scrolling flag
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                isScrolling = false;
+            }, 150);
+        }
+        
+        // Enhanced intersection observer for immediate preloading
+        if ('IntersectionObserver' in window) {
+            const fastImageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        
+                        // Immediate loading for visible images
+                        if (!img.complete || img.naturalHeight === 0) {
+                            const originalSrc = img.src.split('?')[0];
+                            img.src = originalSrc + '?immediate=' + Date.now();
+                        }
+                        
+                        // Preload sibling images in the same gallery
+                        const gallery = img.closest('div[style*="height: 252px"], div[style*="height: 255px"]');
+                        if (gallery) {
+                            const siblingImages = gallery.querySelectorAll('img[src*=".webp"]');
+                            siblingImages.forEach((siblingImg, index) => {
+                                if (siblingImg !== img && !preloadBuffer.has(siblingImg.src)) {
+                                    setTimeout(() => {
+                                        const siblingPreload = new Image();
+                                        siblingPreload.onload = () => preloadBuffer.add(siblingImg.src);
+                                        siblingPreload.src = siblingImg.src.split('?')[0] + '?sibling=' + Date.now();
+                                    }, index * 100); // Stagger sibling loading
+                                }
+                            });
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '200px 0px', // Start loading 200px before coming into view
+                threshold: 0.01
+            });
+            
+            // Observe all gallery images
+            document.querySelectorAll('.gallery-pic, img[src*=".webp"]').forEach(img => {
+                fastImageObserver.observe(img);
+            });
+            
+            console.log('�️ Fast scroll image observer active');
+        }
+        
+        // Attach scroll listener
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    
+    // Setup lazy preload when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupLazyPreload);
+    } else {
+        setupLazyPreload();
+    }
+    
+    // Enhanced broken image prevention system
+    function safariImageFix() {
+        console.log('🛡️ Initializing comprehensive broken image prevention system...');
+        
+        // Create a transparent placeholder to prevent broken image icons
+        const createPlaceholder = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1;
+            canvas.height = 1;
+            const ctx = canvas.getContext('2d');
+            ctx.globalAlpha = 0;
+            ctx.fillRect(0, 0, 1, 1);
+            return canvas.toDataURL();
+        };
+        
+        const placeholderSrc = createPlaceholder();
         
         const fixBrokenImages = () => {
             const allImages = document.querySelectorAll('img');
             let fixedCount = 0;
             
             allImages.forEach((img, index) => {
-                // Check if image failed to load
-                if (!img.complete || img.naturalHeight === 0) {
-                    const originalSrc = img.src;
-                    if (originalSrc && !originalSrc.includes('data:')) {
-                        fixedCount++;
-                        console.log(`🔧 Safari fix: Reloading ${originalSrc}`);
+                // Skip images that are already placeholders or don't have a source
+                if (!img.src || img.src.includes('data:') || img.src === placeholderSrc) return;
+                
+                const originalSrc = img.src.split('?')[0];
+                
+                // Check if image failed to load or is broken
+                const isImageBroken = !img.complete || img.naturalHeight === 0 || img.naturalWidth === 0;
+                
+                if (isImageBroken) {
+                    fixedCount++;
+                    console.log(`🔧 Fixing broken image: ${originalSrc}`);
+                    
+                    // Set to placeholder immediately to prevent broken icon
+                    img.style.opacity = '0';
+                    img.src = placeholderSrc;
+                    
+                    // Reload the original image
+                    const newImg = new Image();
+                    newImg.onload = () => {
+                        console.log(`✅ Successfully reloaded: ${originalSrc}`);
+                        img.src = newImg.src;
+                        img.style.opacity = '1';
+                        img.style.transition = 'opacity 0.3s ease';
+                    };
+                    
+                    newImg.onerror = () => {
+                        console.warn(`❌ Failed to reload: ${originalSrc}`);
+                        // Try one more time with different cache buster
+                        const retryImg = new Image();
+                        retryImg.onload = () => {
+                            img.src = retryImg.src;
+                            img.style.opacity = '1';
+                            img.style.transition = 'opacity 0.3s ease';
+                        };
+                        retryImg.onerror = () => {
+                            // Final fallback - keep placeholder but log error
+                            console.error(`� Final failure for: ${originalSrc}`);
+                            img.style.opacity = '0.3'; // Slight visibility to show something is there
+                        };
                         
-                        // Clear and reload with cache busting
-                        img.src = '';
                         setTimeout(() => {
-                            const cacheBuster = Date.now() + index;
-                            img.src = originalSrc.split('?')[0] + '?safari=' + cacheBuster;
-                        }, Math.random() * 500);
-                    }
+                            retryImg.src = originalSrc + '?retry2=' + Date.now() + Math.random();
+                        }, 1000);
+                    };
+                    
+                    // Stagger reload attempts to avoid overwhelming the server
+                    setTimeout(() => {
+                        const cacheBuster = Date.now() + index + Math.random();
+                        newImg.src = originalSrc + '?' + (isSafari ? 'safari=' : 'reload=') + cacheBuster;
+                    }, index * 100 + Math.random() * 500);
                 }
             });
             
             if (fixedCount > 0) {
-                console.log(`🔧 Safari: Fixed ${fixedCount} broken images`);
+                console.log(`🔧 Fixed ${fixedCount} broken images`);
             }
         };
         
-        // Fix immediately
-        fixBrokenImages();
-        
-        // Fix again after a delay (for lazy loaded images)
-        setTimeout(fixBrokenImages, 2000);
-        setTimeout(fixBrokenImages, 5000);
-        
-        // Listen for image errors and fix them immediately
+        // Enhanced error listener that prevents broken image icons
         document.addEventListener('error', (e) => {
             if (e.target && e.target.tagName === 'IMG') {
                 const img = e.target;
                 const originalSrc = img.src;
-                if (originalSrc && !originalSrc.includes('data:')) {
-                    console.log(`🔧 Safari: Fixing failed image ${originalSrc}`);
-                    img.src = originalSrc.split('?')[0] + '?fix=' + Date.now();
+                
+                if (originalSrc && !originalSrc.includes('data:') && originalSrc !== placeholderSrc) {
+                    console.log(`� Image error detected: ${originalSrc}`);
+                    
+                    // Immediately set to placeholder to prevent broken icon
+                    img.style.opacity = '0';
+                    img.src = placeholderSrc;
+                    
+                    // Attempt to reload
+                    const retryImg = new Image();
+                    retryImg.onload = () => {
+                        img.src = retryImg.src;
+                        img.style.opacity = '1';
+                        img.style.transition = 'opacity 0.3s ease';
+                    };
+                    retryImg.onerror = () => {
+                        // Keep as placeholder - no broken icon will show
+                        console.warn(`🔄 Retry failed for: ${originalSrc}`);
+                    };
+                    
+                    setTimeout(() => {
+                        retryImg.src = originalSrc.split('?')[0] + '?errorfix=' + Date.now();
+                    }, 500);
                 }
             }
         }, true);
+        
+        // Initial fix
+        fixBrokenImages();
+        
+        // Progressive fixes with increasing intervals
+        setTimeout(fixBrokenImages, 1000);
+        setTimeout(fixBrokenImages, 3000);
+        setTimeout(fixBrokenImages, 7000);
+        setTimeout(fixBrokenImages, 15000);
     }
     
     // Apply Safari fixes
@@ -1686,30 +1941,96 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const originalSrc = img.src.split('?')[0];
         
+        // Create invisible placeholder to prevent broken image icons
+        const createInvisiblePlaceholder = () => {
+            return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InRyYW5zcGFyZW50Ii8+PC9zdmc+';
+        };
+        
         // Check if image is broken
         const checkImage = () => {
-            if (!img.complete || img.naturalHeight === 0) {
+            const isImageBroken = !img.complete || img.naturalHeight === 0 || img.naturalWidth === 0;
+            
+            if (isImageBroken && img.src !== createInvisiblePlaceholder()) {
                 const attempts = retryAttempts.get(originalSrc) || 0;
                 
                 if (attempts < maxRetries) {
-                    console.log(`🔄 Safari: Retry ${attempts + 1}/${maxRetries} for ${originalSrc}`);
+                    console.log(`🔄 Safari Recovery: Retry ${attempts + 1}/${maxRetries} for ${originalSrc}`);
                     
                     retryAttempts.set(originalSrc, attempts + 1);
                     
-                    // Progressive retry strategy
+                    // Set to invisible placeholder immediately to prevent broken icon
+                    const currentOpacity = img.style.opacity;
+                    img.style.opacity = '0.1';
+                    img.src = createInvisiblePlaceholder();
+                    
+                    // Progressive retry strategy with exponential backoff
                     const delay = Math.pow(2, attempts) * 500; // 500ms, 1s, 2s
-                    const cacheBuster = Date.now() + Math.random();
                     
                     setTimeout(() => {
-                        img.src = originalSrc + '?safari=' + cacheBuster;
+                        const retryImg = new Image();
+                        
+                        retryImg.onload = () => {
+                            console.log(`✅ Safari Recovery: Success for ${originalSrc}`);
+                            img.src = retryImg.src;
+                            img.style.opacity = currentOpacity || '1';
+                            img.style.transition = 'opacity 0.3s ease';
+                            retryAttempts.delete(originalSrc);
+                        };
+                        
+                        retryImg.onerror = () => {
+                            console.warn(`⚠️ Safari Recovery: Retry ${attempts + 1} failed for ${originalSrc}`);
+                            // Image remains as placeholder, no broken icon shown
+                            if (attempts >= maxRetries - 1) {
+                                console.error(`❌ Safari Recovery: Max retries reached for ${originalSrc}`);
+                                img.style.opacity = '0.2'; // Barely visible to indicate presence
+                            }
+                        };
+                        
+                        // Try with multiple cache-busting techniques
+                        const cacheBuster = Date.now() + Math.random() * 1000;
+                        const retryMethods = [
+                            `?safari=${cacheBuster}`,
+                            `?retry=${attempts}_${cacheBuster}`,
+                            `?t=${cacheBuster}&v=${attempts}`
+                        ];
+                        
+                        retryImg.src = originalSrc + retryMethods[attempts % retryMethods.length];
                     }, delay);
                 } else {
-                    console.warn(`❌ Safari: Max retries reached for ${originalSrc}`);
+                    // Max retries reached - keep as invisible placeholder
+                    console.warn(`💔 Safari Recovery: Giving up on ${originalSrc}`);
+                    if (img.src !== createInvisiblePlaceholder()) {
+                        img.style.opacity = '0.1';
+                        img.src = createInvisiblePlaceholder();
+                    }
                 }
-            } else {
+            } else if (!isImageBroken) {
                 // Image loaded successfully
                 retryAttempts.delete(originalSrc);
+                if (img.style.opacity === '0.1' || img.style.opacity === '0.2') {
+                    img.style.opacity = '1';
+                    img.style.transition = 'opacity 0.3s ease';
+                }
             }
+        };
+        
+        // Enhanced broken image detection
+        const detectBrokenImage = () => {
+            // Multiple checks for broken images
+            const checks = [
+                () => !img.complete,
+                () => img.naturalHeight === 0,
+                () => img.naturalWidth === 0,
+                () => img.readyState === 'uninitialized'
+            ];
+            
+            return checks.some(check => {
+                try {
+                    return check();
+                } catch (e) {
+                    return true; // Assume broken if we can't check
+                }
+            });
         };
         
         // Check immediately for broken images
@@ -1718,9 +2039,20 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             img.addEventListener('load', () => {
                 retryAttempts.delete(originalSrc);
+                if (img.style.opacity === '0.1' || img.style.opacity === '0.2') {
+                    img.style.opacity = '1';
+                    img.style.transition = 'opacity 0.3s ease';
+                }
             });
             
             img.addEventListener('error', checkImage);
+            
+            // Timeout check for images that never trigger load/error events
+            setTimeout(() => {
+                if (detectBrokenImage()) {
+                    checkImage();
+                }
+            }, 5000);
         }
     }
     
@@ -1741,6 +2073,171 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('🍎 Safari Image Recovery System active - monitoring for broken images');
 })();
+
+// 🛡️ Universal Broken Image Prevention System - Works on all browsers
+(function() {
+    console.log('🛡️ Initializing Universal Broken Image Prevention System...');
+    
+    let globalImageCache = new Map();
+    let monitoredImages = new WeakSet();
+    
+    // Create a transparent 1x1 pixel image as placeholder
+    const transparentPixel = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InRyYW5zcGFyZW50Ii8+PC9zdmc+';
+    
+    function preventBrokenImage(img) {
+        if (!img || !img.tagName || img.tagName !== 'IMG' || monitoredImages.has(img)) return;
+        if (!img.src || img.src.includes('data:')) return;
+        
+        monitoredImages.add(img);
+        const originalSrc = img.src.split('?')[0];
+        
+        // Store original styles
+        const originalDisplay = img.style.display;
+        const originalOpacity = img.style.opacity || '1';
+        
+        function handleImageError() {
+            console.warn(`🚫 Preventing broken image display: ${originalSrc}`);
+            
+            // Immediately replace with transparent placeholder
+            img.style.opacity = '0';
+            img.src = transparentPixel;
+            
+            // Attempt to reload the image
+            const reloadImg = new Image();
+            let reloadAttempts = 0;
+            const maxReloadAttempts = 3;
+            
+            function attemptReload() {
+                reloadAttempts++;
+                
+                reloadImg.onload = function() {
+                    console.log(`✅ Successfully recovered broken image: ${originalSrc}`);
+                    img.src = reloadImg.src;
+                    img.style.opacity = originalOpacity;
+                    img.style.transition = 'opacity 0.5s ease-in-out';
+                };
+                
+                reloadImg.onerror = function() {
+                    if (reloadAttempts < maxReloadAttempts) {
+                        console.log(`🔄 Reload attempt ${reloadAttempts}/${maxReloadAttempts} failed for: ${originalSrc}`);
+                        setTimeout(attemptReload, reloadAttempts * 1000); // Progressive delay
+                    } else {
+                        console.error(`💔 All reload attempts failed for: ${originalSrc}`);
+                        // Keep as transparent placeholder - no broken image will ever show
+                        img.style.opacity = '0';
+                        img.style.display = originalDisplay; // Maintain layout
+                    }
+                };
+                
+                // Try loading with cache-busting
+                const timestamp = Date.now();
+                const random = Math.random().toString(36).substring(7);
+                reloadImg.src = `${originalSrc}?reload=${timestamp}&r=${random}&attempt=${reloadAttempts}`;
+            }
+            
+            attemptReload();
+        }
+        
+        function checkImageStatus() {
+            // Comprehensive broken image detection
+            const isBroken = (
+                !img.complete ||
+                img.naturalHeight === 0 ||
+                img.naturalWidth === 0 ||
+                (img.complete && img.naturalHeight === 0 && img.naturalWidth === 0)
+            );
+            
+            if (isBroken && img.src !== transparentPixel) {
+                handleImageError();
+            }
+        }
+        
+        // Set up error handling
+        img.addEventListener('error', handleImageError, { once: false });
+        
+        // Check current status
+        if (img.complete) {
+            checkImageStatus();
+        } else {
+            // Monitor loading
+            img.addEventListener('load', function() {
+                // Verify the image actually loaded correctly
+                setTimeout(checkImageStatus, 100);
+            });
+        }
+        
+        // Periodic health check
+        const healthCheck = setInterval(() => {
+            if (!document.contains(img)) {
+                clearInterval(healthCheck);
+                monitoredImages.delete(img);
+                return;
+            }
+            checkImageStatus();
+        }, 10000); // Check every 10 seconds
+    }
+    
+    // Monitor all existing images
+    function scanForImages() {
+        document.querySelectorAll('img').forEach(preventBrokenImage);
+    }
+    
+    // Scan immediately
+    scanForImages();
+    
+    // Set up mutation observer for new images
+    const imageObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.tagName === 'IMG') {
+                    preventBrokenImage(node);
+                } else if (node.querySelectorAll) {
+                    node.querySelectorAll('img').forEach(preventBrokenImage);
+                }
+            });
+        });
+    });
+    
+    imageObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    // Global error handler for any images that slip through
+    window.addEventListener('error', (e) => {
+        if (e.target && e.target.tagName === 'IMG') {
+            preventBrokenImage(e.target);
+        }
+    }, true);
+    
+    // Periodic full scan for any missed images
+    setInterval(scanForImages, 30000); // Scan every 30 seconds
+    
+    console.log('🛡️ Universal Broken Image Prevention System active');
+    
+    // Expose global function for manual fixing
+    window.fixAllBrokenImages = function() {
+        console.log('🔧 Manual broken image fix initiated...');
+        scanForImages();
+        document.querySelectorAll('img').forEach(img => {
+            if (!img.complete || img.naturalHeight === 0) {
+                preventBrokenImage(img);
+            }
+        });
+    };
+    
+    // Auto-fix on page visibility change (when user returns to tab)
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            setTimeout(() => {
+                console.log('🔄 Page became visible - checking for broken images...');
+                scanForImages();
+            }, 500);
+        }
+    });
+})();
+
+
 </script>
 <div id="layout" style="opacity: 1; background-color: rgba(0,0,0,0.4);">
   <div id="content" style="margin-bottom: 0px; padding-bottom: 0px;height: 100vh;">
