@@ -105,12 +105,33 @@
 <link rel="preload" as="image" href="images/CardLytics/CardLytics-Bkgrnd.webp">
 <link rel="preload" as="image" href="images/M3/M3-Bkgrnd-2.webp">
 
+<!-- Preload All Project Logos -->
+<link rel="preload" as="image" href="images/Ping-Pay/Ping-Logo-grn2.webp">
+<link rel="preload" as="image" href="images/GameMax/GameMax-Logo.webp">
+<link rel="preload" as="image" href="images/Tone/Tone-Logo.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-Logo-3.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-Hollywood-IG.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-Studios-IG.webp">
+<!-- High priority BuzzVibe gallery images -->
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-1.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-2.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-3.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-4.webp">
+<link rel="preload" as="image" href="images/BuzzVibe/BuzzVibe-5.webp">
+<link rel="preload" as="image" href="images/Drive/Drive-Logo.webp">
+<link rel="preload" as="image" href="images/LexisNexis/LexisNexis-Logo.webp">
+<link rel="preload" as="image" href="images/WebMD/WebMD-Logo7.webp">
+<link rel="preload" as="image" href="images/DrOz/DrOz-3.webp">
+<link rel="preload" as="image" href="images/Amplifi/Amplifi-Logo-sm.webp">
+<link rel="preload" as="image" href="images/ATT-Wipro/ATT-Logo2-09.webp">
+<link rel="preload" as="image" href="images/CardLytics/CardLytics-Logo.webp">
+<link rel="preload" as="image" href="images/M3/M3-Logo.webp">
+
 <!-- Preload Additional Project Images -->
 <link rel="preload" as="image" href="images/Rio-Olympics/rio-logo-3.webp">
 <link rel="preload" as="image" href="images/Rio-Olympics/Rio-1b.webp">
 <link rel="preload" as="image" href="images/Rio-Olympics/Rio-1.webp">
 <link rel="preload" as="image" href="images/Rio-Olympics/rio-2016-1a.webp">
-<link rel="preload" as="image" href="images/GameMax/GameMax-Logo.webp">
 <link rel="preload" as="image" href="images/GameMax/GameMax-1.webp">
 <link rel="preload" as="image" href="images/GameMax/GameMax-2.webp">
 <link rel="preload" as="image" href="images/GameMax/GameMax-3.webp">
@@ -636,21 +657,41 @@ div[style*="overflow-x: scroll"], div[style*="overflow-x: auto"] {
 	box-sizing: border-box !important;
 }
 
-/* Fix gallery container heights to prevent image cropping */
+/* Fix gallery container heights to prevent image cropping and accommodate hover scaling */
 div[style*="height: 252px"] {
-	height: 307px !important; /* Original 252px + 55px for proper spacing (25px base + 30px padding) */
+	height: 337px !important; /* Original 252px + 30px hover padding + 55px spacing */
+	padding-top: 10px !important; /* Add 10px top padding to prevent hover cropping */
+	box-sizing: border-box !important;
 }
 
 div[style*="height: 255px"] {
-	height: 310px !important; /* Original 255px + 55px for proper spacing (25px base + 30px padding) */
+	height: 340px !important; /* Original 255px + 30px hover padding + 55px spacing */
 }
 
-/* Gallery image container styling */
+/* Keep original heights for flex-based galleries (like Rio Olympics) */
+div[style*="display: flex; gap: 10px"][style*="height: 252px"] {
+	height: 252px !important; /* Flex galleries work fine with original height */
+	padding-top: 0 !important; /* No extra padding needed for flex */
+}
+
+/* Gallery image container styling with hover accommodation */
 span[style*="height: 252px"] {
 	display: inline-block;
 	flex-shrink: 0;
 	vertical-align: top;
-	height: 260px !important; /* Increased to prevent cropping */
+	height: 275px !important; /* Reduced since container now has padding */
+	padding-top: 5px !important; /* Reduced since container has 10px */
+	padding-bottom: 15px !important;
+	box-sizing: border-box !important;
+}
+
+/* Special handling for flex-based galleries (like Rio Olympics) - no extra padding needed */
+div[style*="display: flex; gap: 10px"] span[style*="height: 252px"] {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	height: 252px !important; /* Keep original height for flex galleries */
+	align-items: center;
+	justify-content: center;
 }
 
 /* Enhanced gallery image styling */
@@ -667,6 +708,8 @@ span[style*="height: 252px"] {
 .gallery-pic:hover {
 	transform: scale(1.05);
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+	z-index: 10;
+	position: relative;
 }
 
 /* Safari-specific optimizations */
@@ -1249,6 +1292,121 @@ document.documentElement.style.scrollBehavior = 'smooth';
     window.addEventListener('load', fixGalleryScrolling);
 })();
 
+// 🖼️ Comprehensive Image Preload System - Prevent broken images on initial load
+(function() {
+    console.log('🚀 Starting comprehensive image preload system...');
+    
+    // Critical images that need to load immediately
+    const criticalImages = [
+        // Profile and background images
+        'images/Dubs-Profile-02.webp',
+        'images/Walk-of-Fame.webp',
+        
+        // All project logos (already in HTML preload but adding JS fallback)
+        'images/Ping-Pay/Ping-Logo-grn2.webp',
+        'images/GameMax/GameMax-Logo.webp', 
+        'images/Tone/Tone-Logo.webp',
+        'images/BuzzVibe/BuzzVibe-Logo-3.webp', // FIXED: Using correct BuzzVibe logo
+        'images/BuzzVibe/BuzzVibe-Hollywood-IG.webp', // Critical BuzzVibe IG logos
+        'images/BuzzVibe/BuzzVibe-Studios-IG.webp',
+        'images/Drive/Drive-Logo.webp',
+        'images/LexisNexis/LexisNexis-Logo.webp',
+        'images/WebMD/WebMD-Logo7.webp',
+        'images/DrOz/DrOz-3.webp',
+        'images/Amplifi/Amplifi-Logo-sm.webp',
+        'images/ATT-Wipro/ATT-Logo2-09.webp',
+        'images/CardLytics/CardLytics-Logo.webp',
+        'images/M3/M3-Logo.webp',
+        
+        // First few gallery images for immediate sections
+        'images/Amplifi/Amplifi-28.webp',
+        'images/Amplifi/Amplifi-29.webp',
+        'images/ATT-Wipro/ATT-Wipro-01.webp',
+        'images/ATT-Wipro/ATT-Wipro-02.webp',
+        // Critical BuzzVibe gallery images (first 8 that show immediately)
+        'images/BuzzVibe/BuzzVibe-1.webp',
+        'images/BuzzVibe/BuzzVibe-2.webp',
+        'images/BuzzVibe/BuzzVibe-3.webp',
+        'images/BuzzVibe/BuzzVibe-4.webp',
+        'images/BuzzVibe/BuzzVibe-5.webp',
+        'images/BuzzVibe/BuzzVibe-6.webp',
+        'images/BuzzVibe/BuzzVibe-7.webp',
+        'images/BuzzVibe/BuzzVibe-8.webp'
+    ];
+    
+    let loadedCount = 0;
+    const totalImages = criticalImages.length;
+    
+    function preloadImage(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                loadedCount++;
+                console.log(`✅ Loaded ${src} (${loadedCount}/${totalImages})`);
+                resolve(img);
+            };
+            
+            img.onerror = () => {
+                console.warn(`⚠️ Failed to preload ${src}`);
+                loadedCount++;
+                resolve(null); // Don't reject, just continue
+            };
+            
+            img.src = src;
+        });
+    }
+    
+    // Preload all critical images
+    Promise.all(criticalImages.map(preloadImage))
+        .then(() => {
+            console.log(`🎉 Image preload complete! ${loadedCount}/${totalImages} images processed`);
+            
+            // Trigger a custom event when preloading is complete
+            document.dispatchEvent(new CustomEvent('imagesPreloaded', {
+                detail: { loaded: loadedCount, total: totalImages }
+            }));
+        })
+        .catch(error => {
+            console.error('💥 Error in image preload system:', error);
+        });
+    
+    // Also preload images as they come into view (for remaining gallery images)
+    function setupLazyPreload() {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src && !img.src) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px', // Start loading 50px before image comes into view
+                threshold: 0.01
+            });
+            
+            // Observe all images with data-src attribute
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+            
+            console.log('👀 Lazy preload observer setup complete');
+        }
+    }
+    
+    // Setup lazy preload when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupLazyPreload);
+    } else {
+        setupLazyPreload();
+    }
+})();
+
 console.log('✨ Smooth scroll transitions enabled');
 </script>
 
@@ -1273,18 +1431,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	   <section>
         <div id="portfolio-dubs" style="display: inline-block; position: relative; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Walk-of-Fame.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207; margin-bottom: 0px; padding-bottom: 0px;">
           <div style="background-color: rgba(0,0,0,0.4); top: 10%;"> <img class="divider" src="images/divider.png" width="100%" height="2" loading="eager" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
-            <div style="padding: 25px; height: auto; padding-bottom: 100px;"> <img class="logo-sm" src="images/Dubs-Profile-02.webp" width="200" height="200" alt="Dubs The Creator"> <span class="projects-term-title">
+            <div style="padding: 25px; height: auto; padding-bottom: 50px;"> <img class="logo-sm" src="images/Dubs-Profile-02.webp" width="200" height="200" alt="Dubs The Creator"> <span class="projects-term-title">
               <h1 style="color: #ffffff; font-size: 32px; line-height: 25px;"><strong>Dubs The Creator</strong></h1>
               </span> <span style="color: #ffffff; font-size: 22px; line-height: 25px; text-align: center;" class="title-sub"><strong>Human-&amp;-AI-Centered Product Creator</strong></span> <span style="color: #ffffff; font-size: 20px; font-weight: 200; line-height: 25px;" class="projects-term-description">
               <p>Using AI to create real-world solutions for humans.</p>
               </span>
             </div>
+            <!-- Portfolio Title Section -->
+            <div id="title" style="display: inline-block; position: relative; top: 0px; height: 100px; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7); margin-top: 20px;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 32px; font-weight: 900; padding-top: 5px;"><strong>PORTFOLIO</strong></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
           </div>
         </div>
       </section>
-	  <section>
-			<div id="title" style="display: inline-block; position: relative; top: 0px; height: 100px; width: 100%; text-align: center; color: #ffffff; background-color: rgba(0,0,0,0.7);"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> <h1 style="font-size: 32px; font-weight: 900; padding-top: 5px;"><strong>PORTFOLIO</strong></h1> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;"> </div>
-		</section>
 		<section>
         <div id="project-1" style="display: inline-block; position: relative; height: 100vh; width: 100%; text-align: center; color: #ffffff; background-image: url('images/Ping-Pay/Ping-Bkgrnd.webp'); background-size: cover; background-repeat: no-repeat; background-position: top center; background-attachment: fixed; background-color: #020207;">
           <div style="background-color: rgba(0,0,0,0.4); padding-bottom: 75px; height: 100vh;"> <img class="divider" src="images/divider.png" style="opacity: .5; margin: 0px; padding: 0px; display: block; position: absolute; top: 0; height: 2px;">
