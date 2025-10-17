@@ -1,10 +1,20 @@
-# Large image directories that shouldn't be tracked
-# images/M3/ - Re-enabled for optimized WebP files
+# Performance Optimization - Exclude large directories from Git tracking
+node_modules/
+dist/
+build/
+.cache/
+tmp/
+logs/
+*.log
 
-# Other large directories you might want to ignore
+# Large image directories (uncomment if causing performance issues)
+# images/M3/
 # images/BuzzVibe/
 # images/GameMax/
 # images/Rio-Olympics/
+# images/Amplifi/
+# images/ATT-Wipro/
+# images/CardLytics/
 
 # System files
 .DS_Store
@@ -15,14 +25,22 @@
 ehthumbs.db
 Thumbs.db
 
-# IDE files
-.vscode/
+# IDE files and settings
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
 .idea/
 *.swp
 *.swo
 
-# Backup files
+# Backup and temporary files
 *~
 *.bak
 *.backup
+*.tmp
 .vercel
+
+# OS generated files
+*.pid
+*.seed
+*.pid.lock
