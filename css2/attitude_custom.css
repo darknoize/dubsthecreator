@@ -17,3 +17,43 @@ body, div, td {
     border-radius: 2px;
 	display: none;
 }
+
+/* PICEUS SVG responsive border applied to text blocks */
+/* Targets block-level text elements site-wide. Adjust selectors if you want narrower scope. */
+p, h1, h2, h3, h4, h5, h6, blockquote, li, .projects-term-description, .projects-term-title {
+  position: relative; /* create stacking context for pseudo-element */
+  z-index: 1;
+  padding: 1rem; /* space between text and border - tweak as needed */
+  background-clip: padding-box;
+}
+
+/* Use ::before to render the SVG frame behind the element and scale to element size */
+p::before,
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before,
+blockquote::before,
+li::before,
+.projects-term-description::before,
+.projects-term-title::before {
+  content: "";
+  position: absolute;
+  top: -12px; left: -12px; right: -12px; bottom: -12px; /* expand the frame outside the padded area */
+  pointer-events: none;
+  z-index: 0; /* behind the content */
+  background-image: url('/images/backgrounds/new-border/piceus_border_glow_responsive.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%; /* stretch the svg to fit the element box */
+  background-position: center center;
+  border-radius: 28px; /* match svg rounded corners */
+}
+
+/* Small view / mobile adjustments — reduce padding so borders don't crowd the layout */
+@media (max-width: 640px) {
+  p, h1, h2, h3, h4, h5, h6, blockquote, li, .projects-term-description, .projects-term-title {
+    padding: 0.6rem;
+  }
+  p::before, h1::before, h2::before, h3::before, h4::before, h5::before, h6::before,
+  blockquote::before, li::before, .projects-term-description::before, .projects-term-title::before {
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
+    border-radius: 20px;
+  }
+}
