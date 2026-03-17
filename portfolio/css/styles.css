@@ -19,10 +19,10 @@ body{
   color:var(--text);
   background-color: #000000;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", Arial, sans-serif;
-  background: url('../../images/backgrounds/background-cloud.png') center/cover no-repeat;
+  background: url('../images/backgrounds/background-cloud.png') center/cover no-repeat;
 }
 .page{position:relative; min-height:100vh; overflow:hidden;}
-.bg{position:absolute; inset:0; background-image: url('../../images/backgrounds/background-cloud.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index:0;}
+.bg{position:absolute; inset:0; background-image: url('../images/backgrounds/background-cloud.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index:0;}
 .bg__wave,.bg__dots{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; display: none;}
 .bg__dots{opacity:.70;}
 .wrap{position:relative; z-index:1; max-width: calc(var(--max) + 48px); margin:0 auto; padding:24px;}
