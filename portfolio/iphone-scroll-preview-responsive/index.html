@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>iPhone Scroll Preview</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="stage">
+    <!--
+      EMBED NOTES:
+      - Drop the .iphone-shell anywhere.
+      - To make it fill a parent container, set the parent size and override CSS variables, e.g.:
+
+        <div style="width:320px;height:680px;">
+          <div class="iphone-shell" style="--phone-w:100%;--phone-h:100%;--phone-max-w:9999px;">
+            ...iphone-frame...
+          </div>
+        </div>
+
+      - Default behavior: responsive to viewport, capped by --phone-max-w.
+    -->
+    <section class="iphone-shell" aria-label="iPhone preview">
+      <div class="iphone-frame" role="group" aria-label="Scrollable screen">
+        <div class="iphone-notch" aria-hidden="true">
+          <div class="speaker"></div>
+          <div class="camera"></div>
+        </div>
+
+        <!-- Scrollable viewport -->
+        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
+          <img
+            id="screenImage"
+            class="screen-image"
+            src="assets/screen.png"
+            alt="Scrollable screen mock"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Overlay controls (kept minimal) -->
+        <button class="scroll-btn up" type="button" id="btnUp" aria-label="Scroll up">▲</button>
+        <button class="scroll-btn down" type="button" id="btnDown" aria-label="Scroll down">▼</button>
+
+        <!-- iPhone home indicator -->
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+
+      <p class="hint">
+        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "projects": [
+    {
+      "slug": "piceus",
+      "title": "PICEUS",
+      "subtitle": "Machine-Native Governance Platform",
+      "summary": "Unified orchestration for regulated + decentralized ecosystems.",
+      "domains": [
+        "ai governance",
+        "digital currency",
+        "enterprise infrastructure",
+        "digital identity"
+      ],
+      "companies": [
+        "Ping Technologies",
+        "BuzzCo Holdings",
+        "BuzzCorp Technologies",
+        "GameMax",
+        "BuzzVibe"
+      ]
+    }
+  ]
+}
