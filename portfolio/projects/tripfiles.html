@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Will Weems — TripFiles</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root{
+
+  /* You can override these per-embed */
+  --phone-max-w: 460px;            /* cap on desktop */
+  --phone-w: min(92vw, var(--phone-max-w));
+  --phone-h: min(90vh, calc(var(--phone-w) * 2.1667)); /* 19.5/9 ≈ 2.1667 */
+  --bezel: clamp(10px, 2.2vw, 14px);
+  --radius: clamp(34px, 6vw, 44px);
+}
+
+/* --- Layout --- */
+.stage{
+  min-height:100%;
+  display:grid;
+  place-items:center;
+  padding:clamp(14px, 3vw, 28px);
+}
+
+.iphone-shell{
+  display:grid;
+  gap:12px;
+  place-items:center;
+  width:100%;
+}
+
+/* --- iPhone frame (RESPONSIVE) --- */
+/*
+  Embed tips:
+  - To make it fill a parent container: set the parent width, then override:
+    .iphone-shell { --phone-w: 100%; --phone-h: 100%; }
+  - To force a specific height: set --phone-h and it will compute width via aspect-ratio.
+*/
+.iphone-frame{
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-width: var(--phone-max-w);
+  aspect-ratio: 9 / 19.5;
+  border-radius: var(--radius);
+  position:relative;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  padding: var(--bezel);          /* bezel */
+}
+
+/* inner bezel */
+.iphone-frame::before{
+  content:"";
+  position:absolute;
+  inset: calc(var(--bezel) * 0.55);
+  border-radius: calc(var(--radius) - 6px);
+  border: 1px solid rgba(255,255,255,.10);
+  pointer-events:none;
+}
+
+/* Notch */
+.iphone-notch{
+  position:absolute;
+  top: var(--bezel);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  height: clamp(26px, 4.5vh, 30px);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 0 0 18px 18px;
+  backdrop-filter: blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  z-index: 5;
+}
+.speaker{
+  width: clamp(56px, 12vw, 70px);
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+}
+.camera{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(98,208,250,.35);
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+/* Scrollable screen */
+.screen-viewport{
+  position:absolute;
+  inset: var(--bezel); /* match padding */
+  border-radius: calc(var(--radius) - 10px);
+  background: #0a0f1f;
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+/* Optional: slight inner line */
+.screen-viewport::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius: calc(var(--radius) - 10px);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* The tall image */
+.screen-image{
+  display:block;
+  width:100%;
+  height:auto;
+  user-select:none;
+  -webkit-user-drag:none;
+  image-rendering:auto;
+}
+
+/* Scrollbar styling (Chromium/WebKit + Firefox) */
+.screen-viewport::-webkit-scrollbar{ width: 10px; }
+.screen-viewport::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.05);
+  border-radius: 999px;
+  margin: 14px;
+}
+.screen-viewport::-webkit-scrollbar-thumb{
+  background: rgba(98,208,250,.35);
+  border: 2px solid rgba(0,0,0,.35);
+  border-radius: 999px;
+}
+.screen-viewport{ scrollbar-width: thin; scrollbar-color: rgba(98,208,250,.35) rgba(255,255,255,.06); }
+
+/* Scroll buttons */
+.scroll-btn{
+  position:absolute;
+  right: calc(var(--bezel) + 4px);
+  z-index: 6;
+  width: clamp(32px, 6vw, 36px);
+  height: clamp(32px, 6vw, 36px);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.35);
+  color: rgba(233,238,252,.92);
+  backdrop-filter: blur(10px);
+  cursor:pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+.scroll-btn:hover{ background: rgba(0,0,0,.5); transform: translateY(-1px); }
+.scroll-btn:active{ transform: translateY(0px) scale(.98); }
+
+.scroll-btn.up{ top: calc(var(--bezel) + 56px); }
+.scroll-btn.down{ bottom: calc(var(--bezel) + 40px); }
+
+.home-indicator{
+  position:absolute;
+  left:50%;
+  bottom: calc(var(--bezel) + 4px);
+  transform:translateX(-50%);
+  width: 38%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.20);
+  z-index: 6;
+}
+
+/* Hint text */
+.hint{
+  margin:0;
+  font-size: 13px;
+  color: var(--muted);
+  text-align:center;
+  max-width: 56ch;
+}
+
+/* Utility: full-bleed embed example */
+.embed-fill{
+  width:100%;
+  height:100%;
+}
+  </style>
+</head>
+<body>
+  <main class="page stage">
+    <div class="bg" aria-hidden="true"></div>
+
+    <div class="container">
+    <header>
+      <div class="brand">
+        <span class="ring" aria-hidden="true"></span>
+        <span>WILL WEEMS</span>
+      </div>
+      <nav>
+        <a href="../index.html">Work</a>
+        <a href="#systems">Systems</a>
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <div class="filters">
+          <a href="../index.html" class="tag-lrg">All</a>
+          <a href="ai-governance.html" class="tag-lrg">AI Governance</a>
+          <a href="automotive.html" class="tag-lrg">Automotive</a>
+          <a href="gaming.html" class="tag-lrg">Gaming</a>
+          <a href="fintech.html" class="tag-lrg">FinTech</a>
+          <a href="web3-blockchain.html" class="tag-lrg">Web3 & Blockchain</a>
+          <a href="enterprise-systems.html" class="tag-lrg">Enterprise Systems</a>
+          <a href="cybersecurity.html" class="tag-lrg">Cybersecurity</a>
+          <a href="sports-tech.html" class="tag-lrg">Sports Tech</a>
+          <a href="entertainment.html" class="tag-lrg">Entertainment</a>
+          <a href="travel.html" class="tag-lrg active">Travel</a>
+          <a href="healthcare.html" class="tag-lrg">Healthcare</a>
+          <a href="education.html" class="tag-lrg">Education</a>
+          <a href="science.html" class="tag-lrg">Science</a>
+      </div>
+    </section>
+    <section class="hero">
+      <div class="kicker">All Work / Travel</div>
+      <h1>TripFiles</h1>
+      <p>Social Travel Journal & Connection Platform</p>
+    </section>
+
+    <h2 id="work" class="section-title">TripFiles Project</h2>
+
+    <div class="grid">
+      <div class="card" data-tags="travel social">
+        <div class="card__label">Travel & Social</div>
+        <div class="card__title">Travel Journals</div>
+        <p class="card__desc">Personalized travel documentation with photos, stories, and location tracking.</p>
+        <div class="card__tags">
+          <span class="tag">Travel</span>
+          <span class="tag">Social</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="travel social">
+        <div class="card__label">Travel & Social</div>
+        <div class="card__title">Social Connections</div>
+        <p class="card__desc">Connect with fellow travelers, share experiences, and build travel communities.</p>
+        <div class="card__tags">
+          <span class="tag">Travel</span>
+          <span class="tag">Social</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="travel social">
+        <div class="card__label">Travel & Social</div>
+        <div class="card__title">Travel Advice</div>
+        <p class="card__desc">Crowdsourced travel tips, recommendations, and local insights from global community.</p>
+        <div class="card__tags">
+          <span class="tag">Travel</span>
+          <span class="tag">Social</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="travel social">
+        <div class="card__label">Travel & Social</div>
+        <div class="card__title">Safety Protocols</div>
+        <p class="card__desc">Real-time safety alerts, emergency contacts, and travel security features.</p>
+        <div class="card__tags">
+          <span class="tag">Travel</span>
+          <span class="tag">Social</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="project-gallery" aria-label="Project gallery">
+        <div class="card gallery-card" data-gallery>
+          <div class="gallery-main">
+            <button class="gbtn" type="button" aria-label="Previous image" data-prev>‹</button>
+
+            <div class="gallery-viewport" aria-label="Gallery image viewport">
+              <img data-gallery-main src="assets/img/projects/tripfiles/TripFiles-01.png" alt="TripFiles project image 1" />
+            </div>
+
+            <button class="gbtn" type="button" aria-label="Next image" data-next>›</button>
+          </div>
+
+          <div class="gallery-thumbs" aria-label="Gallery thumbnails">
+            <button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/tripfiles/TripFiles-08.png" aria-label="Open image 8"><img src="assets/img/projects/tripfiles/TripFiles-08.png" alt="Thumbnail 8"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/tripfiles/TripFiles-09.png" aria-label="Open image 9"><img src="assets/img/projects/tripfiles/TripFiles-09.png" alt="Thumbnail 9"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/tripfiles/TripFiles-13.png" aria-label="Open image 5"><img src="assets/img/projects/tripfiles/TripFiles-13.png" alt="Thumbnail 5"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/tripfiles/TripFiles-10.png" aria-label="Open image 10"><img src="assets/img/projects/tripfiles/TripFiles-10.png" alt="Thumbnail 10"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/tripfiles/TripFiles-04.png" aria-label="Open image 3"><img src="assets/img/projects/tripfiles/TripFiles-04.png" alt="Thumbnail 3"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/tripfiles/TripFiles-05.png" aria-label="Open image 4"><img src="assets/img/projects/tripfiles/TripFiles-05.png" alt="Thumbnail 4"/></button>
+          </div>
+
+          <div style="margin-top:10px; color: rgba(255,255,255,0.55); font-size:13px;">
+            Tip: click the main image or any thumbnail to view full size.
+          </div>
+        </div>
+      </section>
+
+
+
+    <section id="overview">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Overview</h2>
+        <p>TripFiles Social Travel Platform</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div style="flex: 1;">
+            <div class="overview-text">
+              <p style="margin-bottom: 1em;">Created comprehensive social travel platform connecting travelers worldwide through shared experiences and safety-focused features. TripFiles enables users to document journeys, share travel advice, connect with fellow explorers, and access real-time safety protocols for confident traveling.</p>
+              <p>The platform combines personal travel journaling with social networking, creating a trusted community where travelers can share authentic experiences, get local recommendations, and stay informed about travel safety. Advanced location tracking and emergency features provide peace of mind for solo and group travelers.</p>
+            </div>
+            <div class="tech-stack-block">
+              <h3>Tech Stack</h3>
+              <ul class="tech-list">
+                <li><img src="../images/tech_icons_svg_set/react-native.svg" alt="React Native"> React Native</li>
+                <li><img src="../images/tech_icons_svg_set/firebase.svg" alt="Firebase"> Firebase</li>
+                <li><img src="../images/tech_icons_svg_set/node-js.svg" alt="Node.js"> Node.js</li>
+                <li><img src="../images/tech_icons_svg_set/mongodb.svg" alt="MongoDB"> MongoDB</li>
+                <li><img src="../images/tech_icons_svg_set/google-maps.svg" alt="Google Maps"> Google Maps API</li>
+                <li><img src="../images/tech_icons_svg_set/aws.svg" alt="AWS"> AWS</li>
+                <li><img src="../images/tech_icons_svg_set/stripe.svg" alt="Stripe"> Stripe</li>
+                <li><img src="../images/tech_icons_svg_set/twilio.svg" alt="Twilio"> Twilio</li>
+              </ul>
+            </div>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <!-- Scrollable viewport -->
+                <div class="screen-viewport" id="viewport-overview" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageOverview"
+                    class="screen-image"
+                    src="assets/img/projects/tripfiles/TripFiles-14b.png"
+                    alt="Scrollable screen mock"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- Overlay controls (kept minimal) -->
+                <button class="scroll-btn up" type="button" id="mobileScrollUpOverview" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownOverview" aria-label="Scroll down">▼</button>
+
+                <!-- iPhone home indicator -->
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcomes">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Outcomes</h2>
+        <p>Key results and achievements</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
+             <p style="margin-bottom: 1em;">Launched platform serving 50K+ active travelers across 120+ countries. Built engaged community with 85% user retention rate through authentic travel sharing. Processed 1M+ travel journal entries and safety alerts.</p>
+        <p>Recognized as leading social travel platform with 4.8-star rating. Generated $2M+ in premium features revenue. Improved traveler safety with 10K+ emergency responses facilitated. Partnered with travel insurance providers and tourism boards.</p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+      <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+        <div class="iphone-notch" aria-hidden="true">
+          <div class="speaker"></div>
+          <div class="camera"></div>
+        </div>
+
+        <!-- Scrollable viewport -->
+        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
+          <img
+            id="screenImage"
+            class="screen-image"
+            src="assets/img/projects/tripfiles/TripFiles-12.png"
+            alt="Scrollable screen mock"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Overlay controls (kept minimal) -->
+        <button class="scroll-btn up" type="button" id="mobileScrollUp" aria-label="Scroll up">▲</button>
+        <button class="scroll-btn down" type="button" id="mobileScrollDown" aria-label="Scroll down">▼</button>
+
+        <!-- iPhone home indicator -->
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+
+      <p class="hint">
+        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+      </p>
+    </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="examples" style="margin-top: 50px;">
+      <div class="card">
+        <div class="sectionTitle">
+          <h2>Examples</h2>
+          <p>Interactive Screenshots of TripFiles Features</p>
+        </div>
+        <div class="examples-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <h2>Travel Journal</h2>
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <!-- Scrollable viewport -->
+                <div class="screen-viewport" id="viewport-examples-left" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageExamplesLeft"
+                    class="screen-image"
+                    src="assets/img/projects/tripfiles/TripFiles-07.png"
+                    alt="Scrollable screen mock"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- Overlay controls (kept minimal) -->
+                <button class="scroll-btn up" type="button" id="mobileScrollUpExamplesLeft" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownExamplesLeft" aria-label="Scroll down">▼</button>
+
+                <!-- iPhone home indicator -->
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+              </p>
+            </div>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <h2>Safety Alerts</h2>
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <!-- Scrollable viewport -->
+                <div class="screen-viewport" id="viewport-examples-right" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageExamplesRight"
+                    class="screen-image"
+                    src="assets/img/projects/tripfiles/TripFiles-15.png"
+                    alt="Scrollable screen mock"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- Overlay controls (kept minimal) -->
+                <button class="scroll-btn up" type="button" id="mobileScrollUpExamplesRight" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownExamplesRight" aria-label="Scroll down">▼</button>
+
+                <!-- iPhone home indicator -->
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="footer">Static HTML concept · Separate assets (SVG) · Next.js-ready structure</div>
+
+  </div>
+
+  <div class="modal" data-modal aria-hidden="true">
+    <div class="modal-backdrop" data-modal-backdrop></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <div class="modal-top">
+        <div class="modal-title">TripFiles • Image Viewer</div>
+        <button class="modal-close" type="button" aria-label="Close" data-modal-close>✕</button>
+      </div>
+      <div class="modal-body">
+        <button class="gbtn" type="button" aria-label="Previous image" data-modal-prev>‹</button>
+        <img data-modal-img src="assets/img/projects/tripfiles/TripFiles-01.png" alt="Expanded image" />
+        <button class="gbtn" type="button" aria-label="Next image" data-modal-next>›</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/gallery.js"></script>
+  <script src="assets/js/scroll.js"></script>
+</main>
+</body>
+</html>
