@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
           // Update URL without reload
           history.pushState(null, '', href);
 
-          // Re-initialize any scripts or event listeners if needed
-          // For now, we'll assume the content doesn't need re-initialization
+          // Re-initialize gallery and scroll scripts
+          if (window.reInitScripts) window.reInitScripts();
         }
       })
       .catch(error => {
@@ -55,6 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.reload();
   });
 });
+
+
+// Re-initialize gallery and scroll scripts after AJAX navigation
+window.reInitScripts = function() {
+  // Re-run gallery.js
+  if (typeof window.galleryInit === 'function') window.galleryInit();
+  // Re-run scroll.js
+  if (typeof window.scrollInit === 'function') window.scrollInit();
+};
 
 // WW Portfolio handoff - minimal interactions
 document.addEventListener('DOMContentLoaded', () => {

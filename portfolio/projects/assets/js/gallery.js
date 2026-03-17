@@ -1,5 +1,6 @@
 // Project gallery (slideshow + modal)
-document.addEventListener('DOMContentLoaded', () => {
+window.galleryInit = function() {
+  // ...existing code...
   const root = document.querySelector('[data-gallery]');
   if (!root) return;
 
@@ -104,4 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize gallery after a short delay to ensure images are ready
   setTimeout(() => setActive(0), 100);
-});
+};
+// Run on initial load
+document.addEventListener('DOMContentLoaded', window.galleryInit);

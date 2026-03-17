@@ -1,11 +1,17 @@
 // Scroll button functionality for iPhone preview
-document.addEventListener('DOMContentLoaded', () => {
+window.scrollInit = function() {
+  // ...existing code...
+  console.log('scroll.js loaded');
+
   // Outcomes phone
   const upBtn = document.getElementById('mobileScrollUp');
   const downBtn = document.getElementById('mobileScrollDown');
   const viewport = document.getElementById('viewport');
 
+  console.log('Outcomes elements:', upBtn, downBtn, viewport);
+
   if (upBtn && downBtn && viewport) {
+    console.log('Adding listeners for outcomes');
     upBtn.addEventListener('click', () => {
       viewport.scrollBy({ top: -200, behavior: 'smooth' });
     });
@@ -101,4 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
       viewportExamplesRight.scrollBy({ top: 200, behavior: 'smooth' });
     });
   }
-});
+};
+// Run on initial load
+document.addEventListener('DOMContentLoaded', window.scrollInit);
