@@ -669,3 +669,80 @@ h1, h2, h3, h4, h5, h6 {
   .grid{grid-template-columns:1fr}
   .overview-content{grid-template-columns:1fr}
 }
+
+/* Mobile layout hardening for project detail pages */
+@media (max-width: 980px){
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    padding: 24px 14px 56px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .filters {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+  }
+
+  .overview-content,
+  .examples-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    width: 100%;
+  }
+
+  .overview-content > div,
+  .examples-content > div {
+    width: 100% !important;
+    min-width: 0;
+  }
+
+  .iphone-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .iphone-frame,
+  .iphone-frame[style] {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .screen-viewport {
+    max-width: 100%;
+  }
+
+  .modal-dialog {
+    max-width: calc(100vw - 16px);
+    margin: 8px auto;
+  }
+
+  .modal-body {
+    grid-template-columns: 36px 1fr 36px;
+    gap: 8px;
+    height: auto;
+    min-height: 60vh;
+  }
+
+  .modal-body img {
+    max-width: calc(100vw - 96px);
+    max-height: 70vh;
+  }
+}
