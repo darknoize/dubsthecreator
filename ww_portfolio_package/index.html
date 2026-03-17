@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Will Weems — Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="bg" aria-hidden="true">
+      <img class="bg__wave" src="./assets/bg-gradient-wave.svg" alt="" />
+      <img class="bg__dots" src="./assets/dot-overlay.svg" alt="" />
+    </div>
+
+    <div class="wrap">
+      <nav class="nav">
+        <div class="brand">
+          <div class="brand__mark"><div class="brand__dot"></div></div>
+          <div class="brand__name">WILL&nbsp;WEEMS</div>
+        </div>
+        <div class="nav__links">
+          <a href="#work">Work</a>
+          <a href="#systems">Systems</a>
+          <a href="#about">About</a>
+          <a href="#research">Research</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+      <div class="hairline"></div>
+
+      <header class="hero">
+        <div class="kicker">SELECTED WORK / SYSTEM DOMAINS</div>
+        <div class="h1">Machine-Native<br/>Systems Architect</div>
+        <p class="sub">Designing intelligence infrastructure across regulated and emerging domains.</p>
+
+        <div class="chips" role="tablist" aria-label="Filter projects">
+          <div class="chip" role="tab" aria-selected="true" data-chip="all">All</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="healthcare">Healthcare</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="financial systems">Financial Systems</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="digital currency">Digital Currency</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="entertainment">Entertainment</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="education">Education</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="sports">Sports</div>
+          <div class="chip" role="tab" aria-selected="false" data-chip="ai governance">AI Governance</div>
+        </div>
+      </header>
+
+      <section id="work">
+        <div class="sectionTitle">
+          <h2>Selected Work</h2>
+          <p>Click a card to open the use-case page.</p>
+        </div>
+
+        <a class="card card--featured" href="./piceus.html"
+           data-tags="ai governance, digital currency, enterprise infrastructure, digital identity">
+          <div>
+            <div class="card__label">PICEUS</div>
+            <div class="card__title">Machine-Native Governance Platform</div>
+            <p class="card__desc">Unified orchestration for regulated + decentralized ecosystems.</p>
+            <div class="card__tags">
+              <span class="tag">AI Governance</span>
+              <span class="tag">Tokenization</span>
+              <span class="tag">Enterprise Infrastructure</span>
+              <span class="tag">Digital Identity</span>
+            </div>
+            <div style="margin-top:12px;color:rgba(255,255,255,.58);font-size:13px;">
+              Includes: Ping Technologies · BuzzCo Holdings · BuzzCorp Technologies · GameMax · BuzzVibe
+            </div>
+          </div>
+          <div>
+            <img src="./assets/featured-visual.svg" alt="" style="width:100%;height:auto;border-radius:22px;" />
+          </div>
+        </a>
+
+        <div class="footer">Static HTML concept · Separate assets (SVG) · Next.js-ready structure</div>
+      </section>
+    </div>
+
+    <script src="./app.js"></script>
+  </main>
+</body>
+</html>

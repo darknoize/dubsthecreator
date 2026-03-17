@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piceus Project Gallery</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="project-gallery">
+            <h1>Piceus Project</h1>
+            <p>Description of the Piceus project goes here.</p>
+
+            <div class="gallery-container" data-gallery>
+                <div class="gallery-viewport">
+                    <img id="main-image" data-gallery-main src="../assets/img/projects/piceus/piceus_01.png" alt="Piceus Screenshot 1">
+                </div>
+
+                <div class="gallery-controls">
+                    <button id="prev-btn" class="gbtn" data-prev>&larr; Previous</button>
+                    <button id="next-btn" class="gbtn" data-next>Next &rarr;</button>
+                </div>
+
+                <div class="gallery-thumbnails">
+                    <button class="thumbbtn active" data-thumb data-full="../assets/img/projects/piceus/piceus_01.png">
+                        <img src="../assets/img/projects/piceus/piceus_01.png" alt="Thumb 1">
+                    </button>
+                    <button class="thumbbtn" data-thumb data-full="../assets/img/projects/piceus/piceus_02.png">
+                        <img src="../assets/img/projects/piceus/piceus_02.png" alt="Thumb 2">
+                    </button>
+                    <button class="thumbbtn" data-thumb data-full="../assets/img/projects/piceus/piceus_03.png">
+                        <img src="../assets/img/projects/piceus/piceus_03.png" alt="Thumb 3">
+                    </button>
+                    <button class="thumbbtn" data-thumb data-full="../assets/img/projects/piceus/piceus_04.png">
+                        <img src="../assets/img/projects/piceus/piceus_04.png" alt="Thumb 4">
+                    </button>
+                    <button class="thumbbtn" data-thumb data-full="../assets/img/projects/piceus/piceus_05.png">
+                        <img src="../assets/img/projects/piceus/piceus_05.png" alt="Thumb 5">
+                    </button>
+                    <button class="thumbbtn" data-thumb data-full="../assets/img/projects/piceus/piceus_06.png">
+                        <img src="../assets/img/projects/piceus/piceus_06.png" alt="Thumb 6">
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for full-size images -->
+    <div id="image-modal" class="modal" data-modal>
+        <div data-modal-backdrop class="modal-backdrop"></div>
+        <div class="modal-content-wrapper">
+            <span data-modal-close class="close">&times;</span>
+            <img data-modal-img class="modal-content" id="modal-image">
+            <button data-modal-prev class="modal-nav modal-prev">&larr;</button>
+            <button data-modal-next class="modal-nav modal-next">&rarr;</button>
+        </div>
+        <div id="caption"></div>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="assets/js/gallery.js"></script>
+    <script src="../assets/js/gallery.js"></script>
+</body>
+</html>
