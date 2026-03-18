@@ -5,6 +5,162 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Will Weems — CardLytics</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root{
+      --phone-max-w: 460px;
+      --phone-w: min(92vw, var(--phone-max-w));
+      --phone-h: min(90vh, calc(var(--phone-w) * 2.1667));
+      --bezel: clamp(10px, 2.2vw, 14px);
+      --radius: clamp(34px, 6vw, 44px);
+    }
+
+    .iphone-shell{
+      display:grid;
+      gap:12px;
+      place-items:center;
+      width:100%;
+    }
+
+    .iphone-frame{
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-width: var(--phone-max-w);
+      aspect-ratio: 9 / 19.5;
+      border-radius: var(--radius);
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: var(--bezel);
+    }
+
+    .iphone-frame::before{
+      content:"";
+      position:absolute;
+      inset: calc(var(--bezel) * 0.55);
+      border-radius: calc(var(--radius) - 6px);
+      border: 1px solid rgba(255,255,255,.10);
+      pointer-events:none;
+    }
+
+    .iphone-notch{
+      position:absolute;
+      top: var(--bezel);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52%;
+      height: clamp(26px, 4.5vh, 30px);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 0 0 18px 18px;
+      backdrop-filter: blur(8px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      z-index: 5;
+    }
+
+    .speaker{
+      width: clamp(56px, 12vw, 70px);
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+    }
+
+    .camera{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(98,208,250,.35);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .screen-viewport{
+      position:absolute;
+      inset: var(--bezel);
+      border-radius: calc(var(--radius) - 10px);
+      background: #0a0f1f;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-gutter: stable;
+    }
+
+    .screen-viewport::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius: calc(var(--radius) - 10px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    .screen-image{
+      display:block;
+      width:100%;
+      height:auto;
+      user-select:none;
+      -webkit-user-drag:none;
+      image-rendering:auto;
+    }
+
+    .screen-viewport::-webkit-scrollbar{ width: 10px; }
+    .screen-viewport::-webkit-scrollbar-track{
+      background: rgba(255,255,255,.05);
+      border-radius: 999px;
+      margin: 14px;
+    }
+
+    .screen-viewport::-webkit-scrollbar-thumb{
+      background: rgba(98,208,250,.35);
+      border: 2px solid rgba(0,0,0,.35);
+      border-radius: 999px;
+    }
+
+    .screen-viewport{ scrollbar-width: thin; scrollbar-color: rgba(98,208,250,.35) rgba(255,255,255,.06); }
+
+    .scroll-btn{
+      position:absolute;
+      right: calc(var(--bezel) + 4px);
+      z-index: 6;
+      width: clamp(32px, 6vw, 36px);
+      height: clamp(32px, 6vw, 36px);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      color: rgba(233,238,252,.92);
+      backdrop-filter: blur(10px);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    .scroll-btn:hover{ background: rgba(0,0,0,.5); transform: translateY(-1px); }
+    .scroll-btn:active{ transform: translateY(0px) scale(.98); }
+
+    .scroll-btn.up{ top: calc(var(--bezel) + 56px); }
+    .scroll-btn.down{ bottom: calc(var(--bezel) + 40px); }
+
+    .home-indicator{
+      position:absolute;
+      left:50%;
+      bottom: calc(var(--bezel) + 4px);
+      transform:translateX(-50%);
+      width: 38%;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.20);
+      z-index: 6;
+    }
+
+    .hint{
+      margin:0;
+      font-size: 13px;
+      color: var(--muted);
+      text-align:center;
+      max-width: 56ch;
+    }
+  </style>
 </head>
 <body>
   <main class="page">
@@ -48,27 +204,27 @@
 
     <h2 id="work" class="section-title">CardLytics Project</h2>
 
-    <!--<section class="project-gallery" aria-label="Project gallery">
+    <section class="project-gallery" aria-label="Project gallery">
         <div class="card gallery-card" data-gallery>
           <div class="gallery-main">
             <button class="gbtn" type="button" aria-label="Previous image" data-prev>‹</button>
 
             <div class="gallery-viewport" aria-label="Gallery image viewport">
-              <img data-gallery-main src="assets/img/projects/cardlytics/cardlytics_01.png" alt="CardLytics project image 1" />
+              <img data-gallery-main src="assets/img/projects/cardlytics/cardlytics.png" alt="CardLytics project image 1" />
             </div>
 
             <button class="gbtn" type="button" aria-label="Next image" data-next>›</button>
           </div>
 
           <div class="gallery-thumbs" aria-label="Gallery thumbnails">
-            <button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics_01.png" aria-label="Open image 1"><img src="assets/img/projects/cardlytics/cardlytics_01.png" alt="Thumbnail 1"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics_02.png" aria-label="Open image 2"><img src="assets/img/projects/cardlytics/cardlytics_02.png" alt="Thumbnail 2"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics_03.png" aria-label="Open image 3"><img src="assets/img/projects/cardlytics/cardlytics_03.png" alt="Thumbnail 3"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics_04.png" aria-label="Open image 4"><img src="assets/img/projects/cardlytics/cardlytics_04.png" alt="Thumbnail 4"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics_05.png" aria-label="Open image 5"><img src="assets/img/projects/cardlytics/cardlytics_05.png" alt="Thumbnail 5"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics_06.png" aria-label="Open image 6"><img src="assets/img/projects/cardlytics/cardlytics_06.png" alt="Thumbnail 6"/></button>
+            <button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-placeholder.png" aria-label="Open image 1"><img src="assets/img/projects/cardlytics/cardlytics-placeholder.png" alt="Thumbnail 1"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-2.png" aria-label="Open image 2"><img src="assets/img/projects/cardlytics/cardlytics-2.png" alt="Thumbnail 2"/></button>
           </div>
 
           <div style="margin-top:10px; color: rgba(255,255,255,0.55); font-size: 10px;">
             Tip: Tap the main image or any thumbnail to view full size. <br> Rotate your phone horizontally for a larger view of wide images.
           </div>
         </div>
-      </section>-->
+      </section>
 
     <section id="overview">
       <div class="card">
@@ -98,17 +254,51 @@
         <h2>Outcomes</h2>
         <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Key Results and Achievements</p>
       </div>
-        <p style="margin-bottom: 1em;">Deployed analytics platform processing billions of card transactions with 99.9% accuracy in fraud detection.</p>
-        <p style="margin-bottom: 1em;">Reduced false positive rates by 70% through advanced machine learning algorithms.</p>
-        <p style="margin-bottom: 1em;">Platform adopted by major banks and credit card companies worldwide.</p>
-        <p style="margin-bottom: 1em;">Achieved industry-leading performance metrics for real-time analytics.</p>
-        <p style="margin-bottom: 1em;">Established new standards for card transaction intelligence and risk management.</p>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
         <p style="margin-bottom: 1em;">Delivered a scalable fintech platform that enabled real-time transaction intelligence, improving targeting accuracy, campaign performance, and financial attribution within banking environments.</p>
         <p style="margin-bottom: 1em;">Increased operational efficiency and reduced complexity through intuitive UX and automated workflows while maintaining strict data integrity, privacy, and compliance standards.</p>
         <p style="margin-bottom: 1em;">Strengthened platform reliability and throughput under high transaction volumes, supporting global banking partners and driving measurable financial impact.</p>
         <p style="margin-bottom: 1em;">Established a durable foundation for transaction-based marketing and analytics systems embedded directly within consumer financial experiences.</p>
+        <p style="margin-bottom: 1em;">Platform adopted by major banks and credit card companies worldwide.</p>
+        <p style="margin-bottom: 1em;">Achieved industry-leading performance metrics for real-time analytics.</p>
+        <p style="margin-bottom: 1em;">Established new standards for card transaction intelligence and risk management.</p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+      <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+        <div class="iphone-notch" aria-hidden="true">
+          <div class="speaker"></div>
+          <div class="camera"></div>
+        </div>
+
+        <!-- Scrollable viewport -->
+        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
+          <img
+            id="screenImage"
+            class="screen-image"
+            src="assets/img/projects/cardlytics/cardlytics.png"
+            alt="Scrollable screen mock"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Overlay controls (kept minimal) -->
+        <button class="scroll-btn up" type="button" id="mobileScrollUp" aria-label="Scroll up">▲</button>
+        <button class="scroll-btn down" type="button" id="mobileScrollDown" aria-label="Scroll down">▼</button>
+
+        <!-- iPhone home indicator -->
+        <div class="home-indicator" aria-hidden="true"></div>
       </div>
+
+      <p class="hint" style="font-size: 10px;">
+        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+      </p>
+    </div>
+    </div>
+        </div>
     </section>
+
     <div class="grid">
       <div class="card" data-tags="fintech">
         <div class="card__label">FinTech</div>
