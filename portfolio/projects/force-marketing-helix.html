@@ -186,6 +186,28 @@
   width:100%;
   height:100%;
 }
+
+@media (max-width: 980px){
+  .overview-content[style],
+  .examples-content[style]{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+
+  .overview-content > *,
+  .examples-content > *{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0;
+  }
+
+  .overview-content .iphone-frame,
+  .examples-content .iphone-frame{
+    width:100% !important;
+    max-width:100% !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -356,56 +378,6 @@
       </div>
     </section>
 
-    <section id="outcomes">
-      <div class="card">
-        <div class="sectionTitle">
-        <h2>Outcomes</h2>
-        <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Key Results and Achievements</p>
-      </div>
-        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
-          <div class="overview-text" style="flex: 1;">
-             <p style="margin-bottom: 1em;">Delivered a unified AI platform that replaced dozens of disconnected systems with a single, scalable pipeline, significantly reducing operational cost and complexity while improving performance and data integrity.</p>
-             <p style="margin-bottom: 1em;">Enabled direct VIN-to-customer targeting and automated campaign execution across all major marketing channels, driving measurable revenue impact including multi-million-dollar gains at the dealership level and enterprise adoption across tier-one automotive brands.</p>
-             <p style="margin-bottom: 1em;">Transformed internal operations into automated, product-driven systems that improved efficiency, accountability, and scalability across teams.</p>
-             <p style="margin-bottom: 1em;">Secured major industry recognition including the NADA Automotive Innovation Award and drove high-value client acquisition, establishing the platform as a leading solution for AI-driven automotive marketing, operations, and revenue generation.</p>
-             <p style="margin-bottom: 1em;"></p>
-          </div>
-          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
-          <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
-      <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
-        <div class="iphone-notch" aria-hidden="true">
-          <div class="speaker"></div>
-          <div class="camera"></div>
-        </div>
-
-        <!-- Scrollable viewport -->
-        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
-          <img
-            id="screenImage"
-            class="screen-image"
-            src="assets/img/projects/force-helix/Drive-Helix-Web2.png"
-            alt="Scrollable screen mock"
-            draggable="false"
-          />
-        </div>
-
-        <!-- Overlay controls (kept minimal) -->
-        <button class="scroll-btn up" type="button" id="mobileScrollUp" aria-label="Scroll up">▲</button>
-        <button class="scroll-btn down" type="button" id="mobileScrollDown" aria-label="Scroll down">▼</button>
-
-        <!-- iPhone home indicator -->
-        <div class="home-indicator" aria-hidden="true"></div>
-      </div>
-
-      <p class="hint" style="font-size: 10px;">
-        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
-      </p>
-    </div>
-          </div>
-        </div>
-    </section>
-
-
     <section id="examples" style="margin-top: 50px;">
       <div class="card">
         <div class="sectionTitle">
@@ -482,6 +454,56 @@
         </div>
       </div>
     </section>
+
+    <section id="outcomes">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Outcomes</h2>
+        <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Key Results and Achievements</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
+             <p style="margin-bottom: 1em;">Delivered a unified AI platform that replaced dozens of disconnected systems with a single, scalable pipeline, significantly reducing operational cost and complexity while improving performance and data integrity.</p>
+             <p style="margin-bottom: 1em;">Enabled direct VIN-to-customer targeting and automated campaign execution across all major marketing channels, driving measurable revenue impact including multi-million-dollar gains at the dealership level and enterprise adoption across tier-one automotive brands.</p>
+             <p style="margin-bottom: 1em;">Transformed internal operations into automated, product-driven systems that improved efficiency, accountability, and scalability across teams.</p>
+             <p style="margin-bottom: 1em;">Secured major industry recognition including the NADA Automotive Innovation Award and drove high-value client acquisition, establishing the platform as a leading solution for AI-driven automotive marketing, operations, and revenue generation.</p>
+             <p style="margin-bottom: 1em;"></p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+      <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+        <div class="iphone-notch" aria-hidden="true">
+          <div class="speaker"></div>
+          <div class="camera"></div>
+        </div>
+
+        <!-- Scrollable viewport -->
+        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
+          <img
+            id="screenImage"
+            class="screen-image"
+            src="assets/img/projects/force-helix/Drive-Helix-Web2.png"
+            alt="Scrollable screen mock"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Overlay controls (kept minimal) -->
+        <button class="scroll-btn up" type="button" id="mobileScrollUp" aria-label="Scroll up">▲</button>
+        <button class="scroll-btn down" type="button" id="mobileScrollDown" aria-label="Scroll down">▼</button>
+
+        <!-- iPhone home indicator -->
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+
+      <p class="hint" style="font-size: 10px;">
+        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+      </p>
+    </div>
+          </div>
+        </div>
+    </section>
+
   </div>
 
   <div class="modal" data-modal aria-hidden="true">
