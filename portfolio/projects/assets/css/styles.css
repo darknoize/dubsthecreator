@@ -534,7 +534,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 10px !important;
     font-size: 14px !important;
     font-weight: 700 !important;
-    color: #039dfc !important;
+    color: rgba(255, 255, 255, 0.9) !important;
     text-decoration: none;
     flex-shrink: 0;
     white-space: nowrap;
