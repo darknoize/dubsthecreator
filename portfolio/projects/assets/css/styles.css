@@ -541,8 +541,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tag-lrg.active {
-    background: rgba(0,0,0,0.4) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    background: #039dfc !important;
+    border: 2px solid #039dfc !important;
     padding: 12px !important;
     border-radius: 10px !important;
     font-size: 14px !important;
