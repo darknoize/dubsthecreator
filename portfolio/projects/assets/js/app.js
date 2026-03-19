@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .replace(/\bcycle\b/gi, 'sigh-kull')
     .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
     .replace(/\bcyber\b/gi, 'sigh-burr')
-    .replace(/\becosystem\b/gi, 'Eee-ko-system')
+    .replace(/\becosystem\b/gi, 'ee-ko-system')
     .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
       /services/i.test(match) ? 'my-crow services' : 'my-crow service'
     ));
