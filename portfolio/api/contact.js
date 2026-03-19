@@ -5,6 +5,7 @@ const MAX_FILL_TIME_MS = 60 * 60 * 1000;
 
 const MAX_NAME_LENGTH = 80;
 const MAX_EMAIL_LENGTH = 150;
+const MAX_PHONE_LENGTH = 40;
 const MAX_MESSAGE_LENGTH = 2000;
 
 const rateBuckets = new Map();
@@ -12,6 +13,10 @@ const rateBuckets = new Map();
 const toTrimmedString = (value) => (typeof value === 'string' ? value.trim() : '');
 
 const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+const normalizePhone = (value) => value.replace(/[^\d+]/g, '');
+
+const isValidPhone = (value) => /^\+?[0-9]{10,15}$/.test(value);
 
 const parseBody = (rawBody) => {
   if (!rawBody) {
@@ -136,6 +141,28 @@ const sendWithResend = async ({ apiKey, fromEmail, toEmail, subject, text, reply
   }
 };
 
+const sendWithTwilio = async ({ accountSid, authToken, fromNumber, toNumber, body }) => {
+  const payload = new URLSearchParams();
+  payload.append('From', fromNumber);
+  payload.append('To', toNumber);
+  payload.append('Body', body);
+
+  const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
+  const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: payload.toString(),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Twilio rejected request: ${details}`);
+  }
+};
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -169,6 +196,7 @@ module.exports = async (req, res) => {
 
   const body = parseBody(req.body);
   const name = toTrimmedString(body.name);
+  const phone = toTrimmedString(body.phone);
   const email = toTrimmedString(body.email);
   const message = toTrimmedString(body.message);
   const honeypot = toTrimmedString(body.company);
@@ -193,8 +221,21 @@ module.exports = async (req, res) => {
     return res.status(400).json({ ok: false, error: 'Please provide a valid name.' });
   }
 
-  if (email.length < 5 || email.length > MAX_EMAIL_LENGTH || !isValidEmail(email)) {
+  if (email && (email.length > MAX_EMAIL_LENGTH || !isValidEmail(email))) {
     return res.status(400).json({ ok: false, error: 'Please provide a valid email.' });
+  }
+
+  if (phone && phone.length > MAX_PHONE_LENGTH) {
+    return res.status(400).json({ ok: false, error: 'Please provide a valid phone number.' });
+  }
+
+  const normalizedPhone = phone ? normalizePhone(phone) : '';
+  if (normalizedPhone && !isValidPhone(normalizedPhone)) {
+    return res.status(400).json({ ok: false, error: 'Please provide a valid phone number.' });
+  }
+
+  if (!email && !normalizedPhone) {
+    return res.status(400).json({ ok: false, error: 'Please provide a phone or email so Dubs can reply.' });
   }
 
   if (message.length < 10 || message.length > MAX_MESSAGE_LENGTH) {
@@ -219,7 +260,15 @@ module.exports = async (req, res) => {
   const toEmail = process.env.CONTACT_TO_EMAIL;
   const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Merlin Assistant <onboarding@resend.dev>';
 
-  if (!resendApiKey || !toEmail) {
+  const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+  const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+  const twilioFromNumber = process.env.TWILIO_FROM_NUMBER;
+  const toSmsNumber = process.env.CONTACT_TO_SMS;
+
+  const smsConfigured = Boolean(twilioAccountSid && twilioAuthToken && twilioFromNumber && toSmsNumber);
+  const emailConfigured = Boolean(resendApiKey && toEmail);
+
+  if (!smsConfigured && !emailConfigured) {
     return res.status(503).json({ ok: false, error: 'Contact service is not configured.' });
   }
 
@@ -227,7 +276,8 @@ module.exports = async (req, res) => {
   const subject = `Portfolio inquiry from ${name}`;
   const text = [
     `Name: ${name}`,
-    `Email: ${email}`,
+    `Phone: ${normalizedPhone || 'not provided'}`,
+    `Email: ${email || 'not provided'}`,
     `Source page: ${safePageUrl}`,
     `IP: ${ip}`,
     '',
@@ -235,17 +285,41 @@ module.exports = async (req, res) => {
     message,
   ].join('\n');
 
-  try {
-    await sendWithResend({
-      apiKey: resendApiKey,
-      fromEmail,
-      toEmail,
-      subject,
-      text,
-      replyTo: email,
-    });
+  const smsText = [
+    `Portfolio inquiry from ${name}`,
+    `Phone: ${normalizedPhone || 'not provided'}`,
+    `Email: ${email || 'not provided'}`,
+    `Page: ${safePageUrl}`,
+    `Msg: ${message}`,
+  ].join(' | ').slice(0, 1400);
 
-    return res.status(200).json({ ok: true });
+  try {
+    const channels = [];
+
+    if (smsConfigured) {
+      await sendWithTwilio({
+        accountSid: twilioAccountSid,
+        authToken: twilioAuthToken,
+        fromNumber: twilioFromNumber,
+        toNumber: toSmsNumber,
+        body: smsText,
+      });
+      channels.push('sms');
+    }
+
+    if (emailConfigured) {
+      await sendWithResend({
+        apiKey: resendApiKey,
+        fromEmail,
+        toEmail,
+        subject,
+        text,
+        replyTo: email || undefined,
+      });
+      channels.push('email');
+    }
+
+    return res.status(200).json({ ok: true, channels });
   } catch {
     return res.status(502).json({ ok: false, error: 'Unable to send message right now. Please try again soon.' });
   }

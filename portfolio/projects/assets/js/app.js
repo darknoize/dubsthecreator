@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="merlin-panel__header">
           <div class="merlin-panel__title-wrap">
             <p class="merlin-panel__title">Merlin Assistant</p>
-            <p class="merlin-panel__subtitle">Send a quick note to Dubs by email</p>
+            <p class="merlin-panel__subtitle">Send a quick note to Dubs by text or email</p>
           </div>
           <div class="merlin-panel__actions">
             <button type="button" class="merlin-action-btn" data-merlin-voice>Pause Voice</button>
@@ -76,14 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <form class="merlin-form" data-merlin-form novalidate>
           <input class="merlin-input" type="text" name="name" placeholder="Your name" maxlength="80" required />
-          <input class="merlin-input" type="email" name="email" placeholder="Your email" maxlength="150" required />
+          <input class="merlin-input" type="tel" name="phone" placeholder="Your phone (optional for text replies)" maxlength="40" />
+          <input class="merlin-input" type="email" name="email" placeholder="Your email (optional)" maxlength="150" />
           <textarea class="merlin-textarea" name="message" rows="3" placeholder="How can Dubs help you?" maxlength="2000" required></textarea>
           <input class="merlin-honeypot" type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" />
           <input type="hidden" name="startedAt" value="" />
 
           <div class="merlin-form__actions">
             <button type="button" class="merlin-btn merlin-btn--ghost" data-merlin-mic>Voice to Text</button>
-            <button type="submit" class="merlin-btn merlin-btn--primary" data-merlin-submit>Send Email</button>
+            <button type="submit" class="merlin-btn merlin-btn--primary" data-merlin-submit>Send Message</button>
           </div>
 
           <p class="merlin-status" data-merlin-status aria-live="polite"></p>
@@ -108,11 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const startedAtInput = formNode.querySelector('input[name="startedAt"]');
     const nameInput = formNode.querySelector('input[name="name"]');
+    const phoneInput = formNode.querySelector('input[name="phone"]');
     const emailInput = formNode.querySelector('input[name="email"]');
     const messageInput = formNode.querySelector('textarea[name="message"]');
     const honeypotInput = formNode.querySelector('input[name="company"]');
 
-    if (!startedAtInput || !nameInput || !emailInput || !messageInput || !honeypotInput) {
+    if (!startedAtInput || !nameInput || !phoneInput || !emailInput || !messageInput || !honeypotInput) {
       return;
     }
 
@@ -165,6 +167,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let introPaused = false;
     let introGapTimer = null;
 
+    const normalizeAssistantSpeech = (value) => value
+      .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
+        const lower = match.toLowerCase();
+        if (lower.endsWith('ing')) return 'skeduling';
+        if (lower.endsWith('ed')) return 'skeduled';
+        if (lower.endsWith('es')) return 'skedules';
+        return 'skedule';
+      })
+      .replace(/\bsaas\b/gi, 'sass');
+
     const pickAssistantVoice = () => {
       const voices = window.speechSynthesis.getVoices();
       const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
@@ -212,7 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const utterance = new SpeechSynthesisUtterance(introLines[lineIndex]);
+        const utteranceText = normalizeAssistantSpeech(introLines[lineIndex]);
+        const utterance = new SpeechSynthesisUtterance(utteranceText);
         utterance.rate = 0.97;
         utterance.pitch = 0.9;
         utterance.lang = 'en-GB';
@@ -312,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(Boolean)
             .join(' ');
           messageInput.value = merged;
-          setStatus('Voice captured. Continue speaking or send the email.', 'info');
+          setStatus('Voice captured. Continue speaking or send the message.', 'info');
           return;
         }
 
@@ -402,6 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
 
       const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
       const email = emailInput.value.trim();
       const message = messageInput.value.trim();
 
@@ -410,9 +424,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if (!emailIsValid) {
-        setStatus('Please add a valid email address.', 'error');
+      if (email) {
+        const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailIsValid) {
+          setStatus('Please add a valid email address, or leave it blank.', 'error');
+          return;
+        }
+      }
+
+      if (phone) {
+        const normalizedPhone = phone.replace(/[^\d]/g, '');
+        if (normalizedPhone.length < 10 || normalizedPhone.length > 15) {
+          setStatus('Please add a valid phone number, or leave it blank.', 'error');
+          return;
+        }
+      }
+
+      if (!email && !phone) {
+        setStatus('Add a phone or email so Dubs can follow up.', 'error');
         return;
       }
 
@@ -432,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           body: JSON.stringify({
             name,
+            phone,
             email,
             message,
             company: honeypotInput.value,
@@ -446,10 +476,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         appendMessage(message, 'user');
-        appendMessage('Thanks, your message was sent to Dubs. He will follow up by email.', 'bot');
+        appendMessage('Thanks, your message was sent to Dubs.', 'bot');
         formNode.reset();
         resetStartedAt();
-        setStatus('Sent. Merlin forwarded your note by email.', 'success');
+
+        const channels = Array.isArray(result.channels) ? result.channels : [];
+        if (channels.includes('sms') && channels.includes('email')) {
+          setStatus('Sent. Merlin delivered your note by text and email.', 'success');
+        } else if (channels.includes('sms')) {
+          setStatus('Sent. Merlin delivered your note by text.', 'success');
+        } else {
+          setStatus('Sent. Merlin delivered your note by email.', 'success');
+        }
       } catch (error) {
         setStatus(error.message || 'Unable to send message right now. Please try again.', 'error');
       } finally {
@@ -458,260 +496,261 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && panelNode.classList.contains('is-open')) {
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && panelNode.classList.contains('is-open')) {
+          closeAssistant();
+        }
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!panelNode.classList.contains('is-open')) {
+          return;
+        }
+
+        if (assistantNode.contains(event.target)) {
+          return;
+        }
+
         closeAssistant();
+      });
+
+      window.addEventListener('pagehide', () => {
+        clearAutoOpenTimer();
+        stopAssistantVoice();
+        stopVoiceToText();
+      });
+
+      if (isHomePage && !sessionStorage.getItem(homePromptKey)) {
+        autoOpenTimer = window.setTimeout(() => {
+          sessionStorage.setItem(homePromptKey, 'true');
+          openAssistant();
+          playAssistantIntro();
+        }, autoOpenDelayMs);
       }
+    };
+
+    initMerlinAssistant();
+
+    const readSectionsConfig = [
+      {
+        sectionId: 'overview',
+        defaultLabel: 'Read Overview Aloud',
+        activeLabel: 'Stop Reading Overview',
+      },
+      {
+        sectionId: 'outcomes',
+        defaultLabel: 'Read Outcomes Aloud',
+        activeLabel: 'Stop Reading Outcomes',
+      },
+    ];
+
+    const setReadButtonState = (button, isReading) => {
+      button.classList.toggle('is-reading', isReading);
+      const label = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
+      const speakerSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+      button.innerHTML = speakerSvg + label;
+      button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
+    };
+
+    const readButtons = [];
+
+    readSectionsConfig.forEach(({ sectionId, defaultLabel, activeLabel }) => {
+      const section = document.getElementById(sectionId);
+      if (!section) {
+        return;
+      }
+
+      const sectionTitle = section.querySelector('.sectionTitle');
+      if (!sectionTitle) {
+        return;
+      }
+
+      let button = sectionTitle.querySelector('.read-trigger[data-read-target]');
+      if (!button) {
+        button = document.createElement('button');
+        button.className = 'read-trigger';
+        sectionTitle.appendChild(button);
+      }
+
+      button.type = 'button';
+      button.dataset.readTarget = sectionId;
+      button.dataset.defaultLabel = defaultLabel;
+      button.dataset.activeLabel = activeLabel;
+      setReadButtonState(button, false);
+      readButtons.push(button);
+    });
+
+    if (readButtons.length === 0) {
+      return;
+    }
+
+    const canSpeak = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+    if (!canSpeak) {
+      readButtons.forEach((button) => {
+        button.disabled = true;
+        button.title = 'Read aloud is not supported in this browser.';
+      });
+      return;
+    }
+
+    const clearReadButtonStates = () => {
+      readButtons.forEach((button) => {
+        setReadButtonState(button, false);
+      });
+    };
+
+    const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
+
+    const applySpeechPronunciationFixes = (value) => value
+      // Force known brand/domain pronunciations that default voices misread.
+      .replace(/\bpiceus\b/gi, 'Pie-see-us')
+      .replace(/\bcycle\b/gi, 'sigh-kull')
+      .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
+      .replace(/\bcyber\b/gi, 'sigh-burr')
+      .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
+        const lower = match.toLowerCase();
+        if (lower.endsWith('ing')) return 'skeduling';
+        if (lower.endsWith('ed')) return 'skeduled';
+        if (lower.endsWith('es')) return 'skedules';
+        return 'skedule';
+      })
+      .replace(/\bsaas\b/gi, 'sass')
+      .replace(/\becosystem\b/gi, 'ee-ko-system')
+      .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
+        /services/i.test(match) ? 'my-crow services' : 'my-crow service'
+      ));
+
+    const pickVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      // Prefer British male voices (Daniel = macOS/iOS Siri en-GB male)
+      const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
+      for (const name of preferred) {
+        const v = voices.find(v => v.name === name);
+        if (v) return v;
+      }
+      return voices.find(v => v.lang === 'en-GB') || null;
+    };
+
+    const stopReadAloud = () => {
+      window.speechSynthesis.cancel();
+      clearReadButtonStates();
+    };
+
+    const extractReadableText = (targetId) => {
+      const source = document.getElementById(targetId);
+      if (!source) {
+        return '';
+      }
+
+      const clone = source.cloneNode(true);
+      clone.querySelectorAll('.read-trigger, script, style, [aria-hidden="true"]').forEach((el) => {
+        el.remove();
+      });
+
+      const segments = [];
+      clone.querySelectorAll('h1, h2, h3, h4, p, li').forEach((el) => {
+        if (el.matches('p') && el.querySelector('li')) {
+          return;
+        }
+
+        const text = normalizeSpeechText(el.textContent || '');
+        if (text) {
+          segments.push(text);
+        }
+      });
+
+      if (segments.length > 0) {
+        return segments.join('. ');
+      }
+
+      return normalizeSpeechText(clone.textContent || '');
+    };
+
+    const shouldCancelForNavigation = (anchor) => {
+      if (!anchor || !anchor.href) {
+        return false;
+      }
+
+      if (anchor.target && anchor.target.toLowerCase() === '_blank') {
+        return false;
+      }
+
+      if (anchor.hasAttribute('download')) {
+        return false;
+      }
+
+      let linkUrl;
+      try {
+        linkUrl = new URL(anchor.href, window.location.href);
+      } catch {
+        return false;
+      }
+
+      const isSameDocument =
+        linkUrl.origin === window.location.origin
+        && linkUrl.pathname === window.location.pathname
+        && linkUrl.search === window.location.search;
+
+      if (isSameDocument && linkUrl.hash) {
+        return false;
+      }
+
+      return !isSameDocument;
+    };
+
+    readButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const isAlreadyReading = button.classList.contains('is-reading');
+
+        if (isAlreadyReading) {
+          stopReadAloud();
+          return;
+        }
+
+        let readText = extractReadableText(button.dataset.readTarget);
+        if (!readText) {
+          return;
+        }
+
+        readText = applySpeechPronunciationFixes(readText);
+
+        stopReadAloud();
+
+        const utterance = new SpeechSynthesisUtterance(readText);
+        utterance.rate = 0.95;
+        utterance.pitch = 0.85;
+        utterance.lang = 'en-GB';
+        const voice = pickVoice();
+        if (voice) utterance.voice = voice;
+
+        utterance.onstart = () => {
+          setReadButtonState(button, true);
+        };
+
+        utterance.onend = () => {
+          setReadButtonState(button, false);
+        };
+
+        utterance.onerror = () => {
+          setReadButtonState(button, false);
+        };
+
+        window.speechSynthesis.speak(utterance);
+      });
     });
 
     document.addEventListener('click', (event) => {
-      if (!panelNode.classList.contains('is-open')) {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return;
       }
 
-      if (assistantNode.contains(event.target)) {
-        return;
-      }
-
-      closeAssistant();
-    });
-
-    window.addEventListener('pagehide', () => {
-      clearAutoOpenTimer();
-      stopAssistantVoice();
-      stopVoiceToText();
-    });
-
-    if (isHomePage && !sessionStorage.getItem(homePromptKey)) {
-      autoOpenTimer = window.setTimeout(() => {
-        sessionStorage.setItem(homePromptKey, 'true');
-        openAssistant();
-        playAssistantIntro();
-      }, autoOpenDelayMs);
-    }
-  };
-
-  initMerlinAssistant();
-
-  const readSectionsConfig = [
-    {
-      sectionId: 'overview',
-      defaultLabel: 'Read Overview Aloud',
-      activeLabel: 'Stop Reading Overview',
-    },
-    {
-      sectionId: 'outcomes',
-      defaultLabel: 'Read Outcomes Aloud',
-      activeLabel: 'Stop Reading Outcomes',
-    },
-  ];
-
-  const setReadButtonState = (button, isReading) => {
-    button.classList.toggle('is-reading', isReading);
-    const label = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
-    const speakerSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
-    button.innerHTML = speakerSvg + label;
-    button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
-  };
-
-  const readButtons = [];
-
-  readSectionsConfig.forEach(({ sectionId, defaultLabel, activeLabel }) => {
-    const section = document.getElementById(sectionId);
-    if (!section) {
-      return;
-    }
-
-    const sectionTitle = section.querySelector('.sectionTitle');
-    if (!sectionTitle) {
-      return;
-    }
-
-    let button = sectionTitle.querySelector('.read-trigger[data-read-target]');
-    if (!button) {
-      button = document.createElement('button');
-      button.className = 'read-trigger';
-      sectionTitle.appendChild(button);
-    }
-
-    button.type = 'button';
-    button.dataset.readTarget = sectionId;
-    button.dataset.defaultLabel = defaultLabel;
-    button.dataset.activeLabel = activeLabel;
-    setReadButtonState(button, false);
-    readButtons.push(button);
-  });
-
-  if (readButtons.length === 0) {
-    return;
-  }
-
-  const canSpeak = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-  if (!canSpeak) {
-    readButtons.forEach((button) => {
-      button.disabled = true;
-      button.title = 'Read aloud is not supported in this browser.';
-    });
-    return;
-  }
-
-  const clearReadButtonStates = () => {
-    readButtons.forEach((button) => {
-      setReadButtonState(button, false);
-    });
-  };
-
-  const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
-
-  const applySpeechPronunciationFixes = (value) => value
-    // Force known brand/domain pronunciations that default voices misread.
-    .replace(/\bpiceus\b/gi, 'Pie-see-us')
-    .replace(/\bcycle\b/gi, 'sigh-kull')
-    .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
-    .replace(/\bcyber\b/gi, 'sigh-burr')
-    .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
-      const lower = match.toLowerCase();
-      if (lower.endsWith('ing')) return 'skeduling';
-      if (lower.endsWith('ed')) return 'skeduled';
-      if (lower.endsWith('es')) return 'skedules';
-      return 'skedule';
-    })
-    .replace(/\becosystem\b/gi, 'ee-ko-system')
-    .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
-      /services/i.test(match) ? 'my-crow services' : 'my-crow service'
-    ));
-
-  const pickVoice = () => {
-    const voices = window.speechSynthesis.getVoices();
-    // Prefer British male voices (Daniel = macOS/iOS Siri en-GB male)
-    const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
-    for (const name of preferred) {
-      const v = voices.find(v => v.name === name);
-      if (v) return v;
-    }
-    return voices.find(v => v.lang === 'en-GB') || null;
-  };
-
-  const stopReadAloud = () => {
-    window.speechSynthesis.cancel();
-    clearReadButtonStates();
-  };
-
-  const extractReadableText = (targetId) => {
-    const source = document.getElementById(targetId);
-    if (!source) {
-      return '';
-    }
-
-    const clone = source.cloneNode(true);
-    clone.querySelectorAll('.read-trigger, script, style, [aria-hidden="true"]').forEach((el) => {
-      el.remove();
-    });
-
-    const segments = [];
-    clone.querySelectorAll('h1, h2, h3, h4, p, li').forEach((el) => {
-      if (el.matches('p') && el.querySelector('li')) {
-        return;
-      }
-
-      const text = normalizeSpeechText(el.textContent || '');
-      if (text) {
-        segments.push(text);
-      }
-    });
-
-    if (segments.length > 0) {
-      return segments.join('. ');
-    }
-
-    return normalizeSpeechText(clone.textContent || '');
-  };
-
-  const shouldCancelForNavigation = (anchor) => {
-    if (!anchor || !anchor.href) {
-      return false;
-    }
-
-    if (anchor.target && anchor.target.toLowerCase() === '_blank') {
-      return false;
-    }
-
-    if (anchor.hasAttribute('download')) {
-      return false;
-    }
-
-    let linkUrl;
-    try {
-      linkUrl = new URL(anchor.href, window.location.href);
-    } catch {
-      return false;
-    }
-
-    const isSameDocument =
-      linkUrl.origin === window.location.origin
-      && linkUrl.pathname === window.location.pathname
-      && linkUrl.search === window.location.search;
-
-    if (isSameDocument && linkUrl.hash) {
-      return false;
-    }
-
-    return !isSameDocument;
-  };
-
-  readButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const isAlreadyReading = button.classList.contains('is-reading');
-
-      if (isAlreadyReading) {
+      const anchor = event.target.closest('a[href]');
+      if (shouldCancelForNavigation(anchor)) {
         stopReadAloud();
-        return;
       }
-
-      let readText = extractReadableText(button.dataset.readTarget);
-      if (!readText) {
-        return;
-      }
-
-      readText = applySpeechPronunciationFixes(readText);
-
-      stopReadAloud();
-
-      const utterance = new SpeechSynthesisUtterance(readText);
-      utterance.rate = 0.95;
-      utterance.pitch = 0.85;
-      utterance.lang = 'en-GB';
-      const voice = pickVoice();
-      if (voice) utterance.voice = voice;
-
-      utterance.onstart = () => {
-        setReadButtonState(button, true);
-      };
-
-      utterance.onend = () => {
-        setReadButtonState(button, false);
-      };
-
-      utterance.onerror = () => {
-        setReadButtonState(button, false);
-      };
-
-      window.speechSynthesis.speak(utterance);
     });
+
+    window.addEventListener('beforeunload', stopReadAloud);
+    window.addEventListener('pagehide', stopReadAloud);
   });
-
-  document.addEventListener('click', (event) => {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-      return;
-    }
-
-    const anchor = event.target.closest('a[href]');
-    if (shouldCancelForNavigation(anchor)) {
-      stopReadAloud();
-    }
-  });
-
-  window.addEventListener('beforeunload', stopReadAloud);
-  window.addEventListener('pagehide', stopReadAloud);
-});
 
