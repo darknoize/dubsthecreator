@@ -104,6 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
 
+  const pickVoice = () => {
+    const voices = window.speechSynthesis.getVoices();
+    // Prefer British male voices (Daniel = macOS/iOS Siri en-GB male)
+    const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
+    for (const name of preferred) {
+      const v = voices.find(v => v.name === name);
+      if (v) return v;
+    }
+    return voices.find(v => v.lang === 'en-GB') || null;
+  };
+
   const stopReadAloud = () => {
     window.speechSynthesis.cancel();
     clearReadButtonStates();
@@ -189,7 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const utterance = new SpeechSynthesisUtterance(readText);
       utterance.rate = 0.95;
-      utterance.pitch = 1;
+      utterance.pitch = 0.85;
+      utterance.lang = 'en-GB';
+      const voice = pickVoice();
+      if (voice) utterance.voice = voice;
 
       utterance.onstart = () => {
         setReadButtonState(button, true);
