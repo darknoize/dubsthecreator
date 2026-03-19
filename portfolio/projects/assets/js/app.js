@@ -110,8 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Force known brand/domain pronunciations that default voices misread.
     .replace(/\bpiceus\b/gi, 'Pie-see-us')
     .replace(/\bcycle\b/gi, 'sigh-kull')
-    .replace(/\bcyber[\s-]?security\b/gi, 'sigh-ber security')
-    .replace(/\bcyber\b/gi, 'sigh-ber')
+    .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
+    .replace(/\bcyber\b/gi, 'sigh-burr')
+    .replace(/\becosystem\b/gi, 'Eee-ko-system')
     .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
       /services/i.test(match) ? 'my-crow services' : 'my-crow service'
     ));
