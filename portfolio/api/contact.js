@@ -6,6 +6,7 @@ const MAX_FILL_TIME_MS = 60 * 60 * 1000;
 const MAX_NAME_LENGTH = 80;
 const MAX_EMAIL_LENGTH = 150;
 const MAX_PHONE_LENGTH = 40;
+const MAX_LINKEDIN_LENGTH = 250;
 const MAX_MESSAGE_LENGTH = 2000;
 
 const rateBuckets = new Map();
@@ -198,6 +199,7 @@ module.exports = async (req, res) => {
   const name = toTrimmedString(body.name);
   const phone = toTrimmedString(body.phone);
   const email = toTrimmedString(body.email);
+  const linkedIn = toTrimmedString(body.linkedIn);
   const message = toTrimmedString(body.message);
   const honeypot = toTrimmedString(body.company);
   const pageUrl = toTrimmedString(body.pageUrl);
@@ -221,21 +223,21 @@ module.exports = async (req, res) => {
     return res.status(400).json({ ok: false, error: 'Please provide a valid name.' });
   }
 
-  if (email && (email.length > MAX_EMAIL_LENGTH || !isValidEmail(email))) {
+  if (!email || email.length > MAX_EMAIL_LENGTH || !isValidEmail(email)) {
     return res.status(400).json({ ok: false, error: 'Please provide a valid email.' });
   }
 
-  if (phone && phone.length > MAX_PHONE_LENGTH) {
+  if (!phone || phone.length > MAX_PHONE_LENGTH) {
     return res.status(400).json({ ok: false, error: 'Please provide a valid phone number.' });
   }
 
   const normalizedPhone = phone ? normalizePhone(phone) : '';
-  if (normalizedPhone && !isValidPhone(normalizedPhone)) {
+  if (!normalizedPhone || !isValidPhone(normalizedPhone)) {
     return res.status(400).json({ ok: false, error: 'Please provide a valid phone number.' });
   }
 
-  if (!email && !normalizedPhone) {
-    return res.status(400).json({ ok: false, error: 'Please provide a phone or email so Dubs can reply.' });
+  if (linkedIn.length > MAX_LINKEDIN_LENGTH) {
+    return res.status(400).json({ ok: false, error: 'Please provide a valid LinkedIn URL.' });
   }
 
   if (message.length < 10 || message.length > MAX_MESSAGE_LENGTH) {
@@ -277,7 +279,8 @@ module.exports = async (req, res) => {
   const text = [
     `Name: ${name}`,
     `Phone: ${normalizedPhone || 'not provided'}`,
-    `Email: ${email || 'not provided'}`,
+    `Email: ${email}`,
+    `LinkedIn: ${linkedIn || 'not provided'}`,
     `Source page: ${safePageUrl}`,
     `IP: ${ip}`,
     '',
@@ -287,8 +290,9 @@ module.exports = async (req, res) => {
 
   const smsText = [
     `Portfolio inquiry from ${name}`,
-    `Phone: ${normalizedPhone || 'not provided'}`,
-    `Email: ${email || 'not provided'}`,
+    `Phone: ${normalizedPhone}`,
+    `Email: ${email}`,
+    `LinkedIn: ${linkedIn || 'not provided'}`,
     `Page: ${safePageUrl}`,
     `Msg: ${message}`,
   ].join(' | ').slice(0, 1400);

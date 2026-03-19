@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const introPauseMs = 550;
     const introLines = [
       "Hello, I'm Merlin, your personal assistant while you are visiting. Please let me know how I can help as you browse.",
-      'I would be happy to schedule a chat with Dubs The Creator if there is anything he can assist with, I will inform him.',
+      'I would be happy to schedule a chat with Sir Dubs The Creator if there is anything he can assist with. I will inform him.',
     ];
 
     const assistantNode = document.createElement('aside');
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="merlin-panel__header">
           <div class="merlin-panel__title-wrap">
             <p class="merlin-panel__title">Merlin Assistant</p>
-            <p class="merlin-panel__subtitle">Send a quick note to Dubs by text or email</p>
+            <p class="merlin-panel__subtitle">Leave Sir Dubs The Creator a message</p>
           </div>
           <div class="merlin-panel__actions">
             <button type="button" class="merlin-action-btn" data-merlin-voice>Pause Voice</button>
@@ -76,15 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <form class="merlin-form" data-merlin-form novalidate>
           <input class="merlin-input" type="text" name="name" placeholder="Your name" maxlength="80" required />
-          <input class="merlin-input" type="tel" name="phone" placeholder="Your phone (optional for text replies)" maxlength="40" />
-          <input class="merlin-input" type="email" name="email" placeholder="Your email (optional)" maxlength="150" />
-          <textarea class="merlin-textarea" name="message" rows="3" placeholder="How can Dubs help you?" maxlength="2000" required></textarea>
+          <input class="merlin-input" type="tel" name="phone" placeholder="Your phone" maxlength="40" required />
+          <input class="merlin-input" type="email" name="email" placeholder="Your email" maxlength="150" required />
+          <input class="merlin-input" type="url" name="linkedin" placeholder="Your LinkedIn (optional)" maxlength="250" />
+          <textarea class="merlin-textarea" name="message" rows="3" placeholder="How can Dubs help you?" maxlength="2000" minlength="10" required></textarea>
           <input class="merlin-honeypot" type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" />
           <input type="hidden" name="startedAt" value="" />
 
           <div class="merlin-form__actions">
             <button type="button" class="merlin-btn merlin-btn--ghost" data-merlin-mic>Voice to Text</button>
-            <button type="submit" class="merlin-btn merlin-btn--primary" data-merlin-submit>Send Message</button>
+            <button type="submit" class="merlin-btn merlin-btn--primary" data-merlin-submit>Leave Message</button>
           </div>
 
           <p class="merlin-status" data-merlin-status aria-live="polite"></p>
@@ -111,10 +112,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = formNode.querySelector('input[name="name"]');
     const phoneInput = formNode.querySelector('input[name="phone"]');
     const emailInput = formNode.querySelector('input[name="email"]');
+    const linkedInInput = formNode.querySelector('input[name="linkedin"]');
     const messageInput = formNode.querySelector('textarea[name="message"]');
     const honeypotInput = formNode.querySelector('input[name="company"]');
 
-    if (!startedAtInput || !nameInput || !phoneInput || !emailInput || !messageInput || !honeypotInput) {
+    if (!startedAtInput || !nameInput || !phoneInput || !emailInput || !linkedInInput || !messageInput || !honeypotInput) {
       return;
     }
 
@@ -417,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = nameInput.value.trim();
       const phone = phoneInput.value.trim();
       const email = emailInput.value.trim();
+      const linkedIn = linkedInInput.value.trim();
       const message = messageInput.value.trim();
 
       if (name.length < 2) {
@@ -424,24 +427,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (email) {
-        const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        if (!emailIsValid) {
-          setStatus('Please add a valid email address, or leave it blank.', 'error');
-          return;
-        }
+      const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!emailIsValid) {
+        setStatus('Please add a valid email address.', 'error');
+        return;
       }
 
-      if (phone) {
-        const normalizedPhone = phone.replace(/[^\d]/g, '');
-        if (normalizedPhone.length < 10 || normalizedPhone.length > 15) {
-          setStatus('Please add a valid phone number, or leave it blank.', 'error');
-          return;
-        }
+      const normalizedPhone = phone.replace(/[^\d]/g, '');
+      if (normalizedPhone.length < 10 || normalizedPhone.length > 15) {
+        setStatus('Please add a valid phone number.', 'error');
+        return;
       }
 
-      if (!email && !phone) {
-        setStatus('Add a phone or email so Dubs can follow up.', 'error');
+      if (linkedIn && linkedIn.length > 250) {
+        setStatus('Please shorten the LinkedIn field.', 'error');
         return;
       }
 
@@ -463,6 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name,
             phone,
             email,
+            linkedIn,
             message,
             company: honeypotInput.value,
             startedAt: Number(startedAtInput.value),
@@ -476,18 +476,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         appendMessage(message, 'user');
-        appendMessage('Thanks, your message was sent to Dubs.', 'bot');
+        appendMessage('Thank you. Merlin has delivered your note to Sir Dubs The Creator.', 'bot');
         formNode.reset();
         resetStartedAt();
-
-        const channels = Array.isArray(result.channels) ? result.channels : [];
-        if (channels.includes('sms') && channels.includes('email')) {
-          setStatus('Sent. Merlin delivered your note by text and email.', 'success');
-        } else if (channels.includes('sms')) {
-          setStatus('Sent. Merlin delivered your note by text.', 'success');
-        } else {
-          setStatus('Sent. Merlin delivered your note by email.', 'success');
-        }
+        setStatus('Sent. Merlin delivered your message to Sir Dubs The Creator.', 'success');
       } catch (error) {
         setStatus(error.message || 'Unable to send message right now. Please try again.', 'error');
       } finally {
