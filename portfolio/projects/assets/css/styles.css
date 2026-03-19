@@ -178,11 +178,6 @@ nav a:hover{color:var(--text)}
   transition: transform .15s ease, background .2s ease, border-color .2s ease;
 }
 
-.read-trigger::before{
-  content: '🔊';
-  font-size: 12px;
-}
-
 .read-trigger:hover{
   transform: translateY(-1px);
   background: rgba(3, 157, 252, 0.2);

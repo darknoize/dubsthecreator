@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const setReadButtonState = (button, isReading) => {
     button.classList.toggle('is-reading', isReading);
-    button.textContent = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
+    const label = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
+    const speakerSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+    button.innerHTML = speakerSvg + label;
     button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
   };
 
