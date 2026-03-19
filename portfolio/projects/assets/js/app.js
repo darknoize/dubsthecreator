@@ -191,10 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const readText = extractReadableText(button.dataset.readTarget);
+      let readText = extractReadableText(button.dataset.readTarget);
       if (!readText) {
         return;
       }
+
+      // Fix brand pronunciation: "PICEUS" → "Pie-see-us" (hard 'I' sound)
+      readText = readText.replace(/\bpiceus\b/gi, 'Pie-see-us');
 
       stopReadAloud();
 
