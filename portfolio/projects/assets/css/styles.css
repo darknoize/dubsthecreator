@@ -786,6 +786,7 @@ h1, h2, h3, h4, h5, h6 {
 .merlin-panel{
   display:none;
   width:min(360px, calc(100vw - 24px));
+  max-width:calc(100vw - 24px);
   max-height:min(70vh, 560px);
   border-radius:18px;
   border:1px solid rgba(255,255,255,0.15);
@@ -815,9 +816,15 @@ h1, h2, h3, h4, h5, h6 {
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
+  flex-wrap:wrap;
   gap:10px;
   padding:12px 12px 10px;
   border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.merlin-panel__title-wrap{
+  flex:1 1 180px;
+  min-width:0;
 }
 
 .merlin-panel__title{
@@ -832,10 +839,13 @@ h1, h2, h3, h4, h5, h6 {
   margin:2px 0 0;
   font-size:11px;
   color:rgba(255,255,255,0.65);
+  overflow-wrap:anywhere;
 }
 
 .merlin-panel__actions{
   display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
   gap:6px;
 }
 
@@ -877,6 +887,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size:12px;
   line-height:1.45;
   max-width:95%;
+  overflow-wrap:anywhere;
 }
 
 .merlin-message--bot{
@@ -929,10 +940,13 @@ h1, h2, h3, h4, h5, h6 {
 .merlin-form__actions{
   display:flex;
   justify-content:space-between;
+  flex-wrap:wrap;
   gap:8px;
 }
 
 .merlin-btn{
+  flex:1 1 140px;
+  min-width:0;
   border-radius:10px;
   border:1px solid rgba(255,255,255,0.2);
   padding:8px 10px;
@@ -971,6 +985,7 @@ h1, h2, h3, h4, h5, h6 {
   min-height:18px;
   font-size:11px;
   color:rgba(255,255,255,0.75);
+  overflow-wrap:anywhere;
 }
 
 .merlin-status[data-state="error"]{
@@ -996,6 +1011,8 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 760px){
   .merlin-assistant{
+    width:calc(100vw - 24px);
+    max-width:calc(100vw - 24px);
     right:12px;
     left:12px;
     align-items:stretch;
@@ -1007,6 +1024,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .merlin-panel{
     width:100%;
+    max-width:100%;
     max-height:min(68vh, 540px);
   }
 }
