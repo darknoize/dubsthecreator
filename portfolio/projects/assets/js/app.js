@@ -102,6 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
+
   const extractReadableText = (targetId) => {
     const source = document.getElementById(targetId);
     if (!source) {
@@ -113,7 +115,23 @@ document.addEventListener('DOMContentLoaded', () => {
       el.remove();
     });
 
-    return (clone.textContent || '').replace(/\s+/g, ' ').trim();
+    const segments = [];
+    clone.querySelectorAll('h1, h2, h3, h4, p, li').forEach((el) => {
+      if (el.matches('p') && el.querySelector('li')) {
+        return;
+      }
+
+      const text = normalizeSpeechText(el.textContent || '');
+      if (text) {
+        segments.push(text);
+      }
+    });
+
+    if (segments.length > 0) {
+      return segments.join('. ');
+    }
+
+    return normalizeSpeechText(clone.textContent || '');
   };
 
   readButtons.forEach((button) => {
@@ -135,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       clearReadButtonStates();
 
       const utterance = new SpeechSynthesisUtterance(readText);
-      utterance.rate = 1;
+      utterance.rate = 0.95;
       utterance.pitch = 1;
 
       utterance.onstart = () => {
