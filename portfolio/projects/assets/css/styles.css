@@ -51,9 +51,11 @@ header{
   font-size:13px; letter-spacing:.18em; text-transform:uppercase;
 }
 .brand .ring{
-  width:14px;height:14px;border-radius:999px;
+  width:50px;height:50px;border-radius:999px;
   border:1px solid rgba(255,255,255,0.55);
   box-shadow:0 0 18px rgba(98,208,250,0.45);
+  object-fit:cover;
+  display:block;
 }
 nav{display:flex; gap:22px; align-items:center}
 nav a{color:var(--muted); font-size:14px}
@@ -419,6 +421,9 @@ nav a:hover{color:var(--text)}
   justify-self: center;
 }
 @media (max-width: 760px){
+  .brand .ring{
+    width:25px;height:25px;
+  }
   .gallery-main{ grid-template-columns: 40px 1fr 40px; }
   .gbtn{ width:40px; height:40px; }
   .thumbbtn img{ width: 108px; height: 66px; }
@@ -497,9 +502,11 @@ header{
   font-size:13px; letter-spacing:.18em; text-transform:uppercase;
 }
 .brand .ring{
-  width:14px;height:14px;border-radius:999px;
+  width:50px;height:50px;border-radius:999px;
   border:1px solid rgba(255,255,255,0.55);
   box-shadow:0 0 18px rgba(98,208,250,0.45);
+  object-fit:cover;
+  display:block;
 }
 nav{display:flex; gap:22px; align-items:center}
 nav a{color:var(--muted); font-size:14px}
