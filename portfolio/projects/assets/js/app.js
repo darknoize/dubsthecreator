@@ -192,10 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const normalizeAssistantSpeech = (value) => value
       .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
         const lower = match.toLowerCase();
-        if (lower.endsWith('ing')) return 'skeduling';
-        if (lower.endsWith('ed')) return 'skeduled';
-        if (lower.endsWith('es')) return 'skedules';
-        return 'skedule';
+        if (lower.endsWith('ing')) return 'sked-jooling';
+        if (lower.endsWith('ed')) return 'sked-joold';
+        if (lower.endsWith('es')) return 'sked-jools';
+        return 'sked-jool';
       })
       .replace(/\bsaas\b/gi, 'sass');
 
@@ -653,10 +653,10 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/\bcyber\b/gi, 'sigh-burr')
       .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
         const lower = match.toLowerCase();
-        if (lower.endsWith('ing')) return 'skeduling';
-        if (lower.endsWith('ed')) return 'skeduled';
-        if (lower.endsWith('es')) return 'skedules';
-        return 'skedule';
+        if (lower.endsWith('ing')) return 'sked-jooling';
+        if (lower.endsWith('ed')) return 'sked-joold';
+        if (lower.endsWith('es')) return 'sked-jools';
+        return 'sked-jool';
       })
       .replace(/\bsaas\b/gi, 'sass')
       .replace(/\becosystem\b/gi, 'ee-ko-system')
