@@ -104,6 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
 
+  const applySpeechPronunciationFixes = (value) => value
+    // Force known brand/domain pronunciations that default voices misread.
+    .replace(/\bpiceus\b/gi, 'Pie-see-us')
+    .replace(/\bcycle\b/gi, 'sigh-kull')
+    .replace(/\bcyber[\s-]?security\b/gi, 'sigh-ber security')
+    .replace(/\bcyber\b/gi, 'sigh-ber')
+    .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
+      /services/i.test(match) ? 'my-crow services' : 'my-crow service'
+    ));
+
   const pickVoice = () => {
     const voices = window.speechSynthesis.getVoices();
     // Prefer British male voices (Daniel = macOS/iOS Siri en-GB male)
@@ -196,8 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Fix brand pronunciation: "PICEUS" → "Pie-see-us" (hard 'I' sound)
-      readText = readText.replace(/\bpiceus\b/gi, 'Pie-see-us');
+      readText = applySpeechPronunciationFixes(readText);
 
       stopReadAloud();
 
