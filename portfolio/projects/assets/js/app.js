@@ -45,13 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const isHomePage = !pagePath.includes('/projects/') && (pagePath === '/' || pagePath.endsWith('/index.html'));
     const homePromptKey = 'merlinAssistantHomePromptShown';
     const primaryIntroKey = 'merlinAssistantPrimaryIntroPlayed';
+    const messageLimitKey = 'merlinAssistantMessageCount';
+    const messageLimitMax = 3;
     const autoOpenDelayMs = 9000;
     const introPauseMs = 550;
     const introLines = [
       "Hello, I'm Merlin, your personal assistant while you are visiting. Please let me know how I can help as you browse.",
       'I would be happy to schedule a chat with Sir Dubs The Creator if there is anything he can assist with. I will inform him.',
     ];
-    const secondaryPrompt = 'How may I assist you today? Please leave Sir Dubs The Creator a message below.';
+    const secondaryPrompt = 'How may I assist? I will send a message to Sir Dubs and he will respond shortly.';
 
     const assistantNode = document.createElement('aside');
     assistantNode.className = 'merlin-assistant';
@@ -80,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <input class="merlin-input" type="text" name="name" placeholder="Your name" maxlength="80" required />
           <input class="merlin-input" type="tel" name="phone" placeholder="Your phone" maxlength="40" required />
           <input class="merlin-input" type="email" name="email" placeholder="Your email" maxlength="150" required />
-          <input class="merlin-input" type="url" name="linkedin" placeholder="Your LinkedIn (optional)" maxlength="250" />
           <textarea class="merlin-textarea" name="message" rows="3" placeholder="How can Dubs help you?" maxlength="2000" minlength="10" required></textarea>
           <input class="merlin-honeypot" type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" />
           <input type="hidden" name="startedAt" value="" />
@@ -114,16 +115,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = formNode.querySelector('input[name="name"]');
     const phoneInput = formNode.querySelector('input[name="phone"]');
     const emailInput = formNode.querySelector('input[name="email"]');
-    const linkedInInput = formNode.querySelector('input[name="linkedin"]');
     const messageInput = formNode.querySelector('textarea[name="message"]');
     const honeypotInput = formNode.querySelector('input[name="company"]');
 
-    if (!startedAtInput || !nameInput || !phoneInput || !emailInput || !linkedInInput || !messageInput || !honeypotInput) {
+    if (!startedAtInput || !nameInput || !phoneInput || !emailInput || !messageInput || !honeypotInput) {
       return;
     }
 
     const resetStartedAt = () => {
       startedAtInput.value = String(Date.now());
+    };
+
+    const getStoredMessageCount = () => {
+      const count = Number(window.localStorage.getItem(messageLimitKey) || '0');
+      return Number.isFinite(count) && count > 0 ? count : 0;
+    };
+
+    const setStoredMessageCount = (count) => {
+      window.localStorage.setItem(messageLimitKey, String(Math.max(0, count)));
     };
 
     const appendMessage = (text, role = 'bot') => {
@@ -147,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
       panelNode.classList.toggle('is-open', isOpen);
       panelNode.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
       bubbleButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      if (isOpen) {
+      if (isOpen && !messageInput.disabled) {
         messageInput.focus();
       }
     };
@@ -208,6 +217,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showSecondaryPrompt = () => {
       renderBotMessages([secondaryPrompt]);
+    };
+
+    const syncMessageLimitState = () => {
+      const limitReached = getStoredMessageCount() >= messageLimitMax;
+      [nameInput, phoneInput, emailInput, messageInput].forEach((field) => {
+        field.disabled = limitReached;
+      });
+
+      submitButton.disabled = limitReached;
+      micButton.disabled = limitReached || !hasVoiceToText;
+
+      if (limitReached) {
+        setStatus('Message limit reached. Please wait before sending another note.', 'error');
+      }
     };
 
     const stopAssistantVoice = () => {
@@ -277,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           introSpeaking = false;
           introPaused = false;
-          voiceButton.textContent = 'Replay Voice';
+          setIdleVoiceButtonLabel();
         };
 
         utterance.onend = onLineComplete;
@@ -378,6 +401,8 @@ document.addEventListener('DOMContentLoaded', () => {
       micButton.title = 'Voice transcription is not supported in this browser.';
     }
 
+    syncMessageLimitState();
+
     bubbleButton.addEventListener('click', () => {
       const currentlyOpen = panelNode.classList.contains('is-open');
       if (currentlyOpen) {
@@ -443,10 +468,14 @@ document.addEventListener('DOMContentLoaded', () => {
     formNode.addEventListener('submit', async (event) => {
       event.preventDefault();
 
+      if (getStoredMessageCount() >= messageLimitMax) {
+        syncMessageLimitState();
+        return;
+      }
+
       const name = nameInput.value.trim();
       const phone = phoneInput.value.trim();
       const email = emailInput.value.trim();
-      const linkedIn = linkedInInput.value.trim();
       const message = messageInput.value.trim();
 
       if (name.length < 2) {
@@ -463,11 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const normalizedPhone = phone.replace(/[^\d]/g, '');
       if (normalizedPhone.length < 10 || normalizedPhone.length > 15) {
         setStatus('Please add a valid phone number.', 'error');
-        return;
-      }
-
-      if (linkedIn && linkedIn.length > 250) {
-        setStatus('Please shorten the LinkedIn field.', 'error');
         return;
       }
 
@@ -489,7 +513,6 @@ document.addEventListener('DOMContentLoaded', () => {
             name,
             phone,
             email,
-            linkedIn,
             message,
             company: honeypotInput.value,
             startedAt: Number(startedAtInput.value),
@@ -506,6 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage('Thank you. Merlin has delivered your note to Sir Dubs The Creator.', 'bot');
         formNode.reset();
         resetStartedAt();
+        setStoredMessageCount(getStoredMessageCount() + 1);
+        syncMessageLimitState();
         setStatus('Sent. Merlin delivered your message to Sir Dubs The Creator.', 'success');
       } catch (error) {
         setStatus(error.message || 'Unable to send message right now. Please try again.', 'error');

@@ -1,12 +1,11 @@
-const RATE_WINDOW_MS = 10 * 60 * 1000;
-const RATE_MAX_REQUESTS = 5;
+const RATE_WINDOW_MS = 24 * 60 * 60 * 1000;
+const RATE_MAX_REQUESTS = 3;
 const MIN_FILL_TIME_MS = 3500;
 const MAX_FILL_TIME_MS = 60 * 60 * 1000;
 
 const MAX_NAME_LENGTH = 80;
 const MAX_EMAIL_LENGTH = 150;
 const MAX_PHONE_LENGTH = 40;
-const MAX_LINKEDIN_LENGTH = 250;
 const MAX_MESSAGE_LENGTH = 2000;
 
 const rateBuckets = new Map();
@@ -199,7 +198,6 @@ module.exports = async (req, res) => {
   const name = toTrimmedString(body.name);
   const phone = toTrimmedString(body.phone);
   const email = toTrimmedString(body.email);
-  const linkedIn = toTrimmedString(body.linkedIn);
   const message = toTrimmedString(body.message);
   const honeypot = toTrimmedString(body.company);
   const pageUrl = toTrimmedString(body.pageUrl);
@@ -236,10 +234,6 @@ module.exports = async (req, res) => {
     return res.status(400).json({ ok: false, error: 'Please provide a valid phone number.' });
   }
 
-  if (linkedIn.length > MAX_LINKEDIN_LENGTH) {
-    return res.status(400).json({ ok: false, error: 'Please provide a valid LinkedIn URL.' });
-  }
-
   if (message.length < 10 || message.length > MAX_MESSAGE_LENGTH) {
     return res.status(400).json({ ok: false, error: 'Please provide a valid message.' });
   }
@@ -259,7 +253,7 @@ module.exports = async (req, res) => {
   }
 
   const resendApiKey = process.env.RESEND_API_KEY;
-  const toEmail = process.env.CONTACT_TO_EMAIL;
+  const toEmail = process.env.CONTACT_TO_EMAIL || 'william.weems@gmail.com';
   const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Merlin Assistant <onboarding@resend.dev>';
 
   const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -278,9 +272,8 @@ module.exports = async (req, res) => {
   const subject = `Portfolio inquiry from ${name}`;
   const text = [
     `Name: ${name}`,
-    `Phone: ${normalizedPhone || 'not provided'}`,
+    `Phone: ${normalizedPhone}`,
     `Email: ${email}`,
-    `LinkedIn: ${linkedIn || 'not provided'}`,
     `Source page: ${safePageUrl}`,
     `IP: ${ip}`,
     '',
@@ -292,7 +285,6 @@ module.exports = async (req, res) => {
     `Portfolio inquiry from ${name}`,
     `Phone: ${normalizedPhone}`,
     `Email: ${email}`,
-    `LinkedIn: ${linkedIn || 'not provided'}`,
     `Page: ${safePageUrl}`,
     `Msg: ${message}`,
   ].join(' | ').slice(0, 1400);
