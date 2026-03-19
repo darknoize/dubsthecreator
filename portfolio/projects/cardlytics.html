@@ -160,6 +160,25 @@
       text-align:center;
       max-width: 56ch;
     }
+
+    @media (max-width: 980px){
+      .overview-content[style]{
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:stretch !important;
+      }
+
+      .overview-content > *{
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0;
+      }
+
+      .overview-content .iphone-frame{
+        width:100% !important;
+        max-width:100% !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -232,19 +251,51 @@
         <h2>Overview</h2>
         <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Transaction Based Analytics Platform Development Outcomes</p>
       </div>
-        <div class="overview-content">
-          <div class="overview-text">
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
+            <p style="margin-bottom: 1em;">Architected comprehensive transaction-based analytics platform providing real-time transaction insights and fraud detection capabilities.</p>
+            <p style="margin-bottom: 1em;">Developed machine learning models for advanced risk assessment and customer segmentation.</p>
+            <p style="margin-bottom: 1em;">Implemented scalable data processing pipeline handling billions of transactions daily.</p>
+            <p style="margin-bottom: 1em;">The platform enables financial institutions to gain deep insights into transaction patterns, detect fraudulent activities in real-time, and make data-driven decisions for risk management and customer engagement.</p>
+            <p style="margin-bottom: 1em;">Advanced analytics provide predictive modeling for credit scoring and personalized financial services.</p>
+            <p style="margin-bottom: 1em;">Led product, UX/UI, and data platform design for transaction-based purchase intelligence systems embedded within tier-one banking applications.</p>
+            <p style="margin-bottom: 1em;">Architected end-to-end data pipelines and product workflows leveraging real-time and historical transaction data to power audience segmentation, targeted offers, and performance measurement.</p>
+            <p style="margin-bottom: 1em;">Designed privacy-aware, compliant systems operating within regulated financial environments, aligning product, engineering, and banking partners to deliver secure, scalable solutions.</p>
+            <p style="margin-bottom: 1em;">Built marketer and operator-facing tools for campaign creation, management, and reporting, translating complex financial data into usable, actionable interfaces within constrained banking ecosystems.</p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <!-- Scrollable viewport -->
+                <div class="screen-viewport" id="viewport-overview" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageOverview"
+                    class="screen-image"
+                    src="assets/img/projects/cardlytics/cardlytics-06.png"
+                    alt="CardLytics overview mobile screen"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- Overlay controls (kept minimal) -->
+                <button class="scroll-btn up" type="button" id="mobileScrollUpOverview" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownOverview" aria-label="Scroll down">▼</button>
+
+                <!-- iPhone home indicator -->
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint" style="font-size: 10px;">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser, this scales.
+              </p>
+            </div>
           </div>
         </div>
-        <p style="margin-bottom: 1em;">Architected comprehensive transaction-based analytics platform providing real-time transaction insights and fraud detection capabilities.</p>
-        <p style="margin-bottom: 1em;">Developed machine learning models for advanced risk assessment and customer segmentation.</p>
-        <p style="margin-bottom: 1em;">Implemented scalable data processing pipeline handling billions of transactions daily.</p>
-        <p style="margin-bottom: 1em;">The platform enables financial institutions to gain deep insights into transaction patterns, detect fraudulent activities in real-time, and make data-driven decisions for risk management and customer engagement.</p>
-        <p style="margin-bottom: 1em;">Advanced analytics provide predictive modeling for credit scoring and personalized financial services.</p>
-        <p style="margin-bottom: 1em;">Led product, UX/UI, and data platform design for transaction-based purchase intelligence systems embedded within tier-one banking applications.</p>
-        <p style="margin-bottom: 1em;">Architected end-to-end data pipelines and product workflows leveraging real-time and historical transaction data to power audience segmentation, targeted offers, and performance measurement.</p>
-        <p style="margin-bottom: 1em;">Designed privacy-aware, compliant systems operating within regulated financial environments, aligning product, engineering, and banking partners to deliver secure, scalable solutions.</p>
-        <p style="margin-bottom: 1em;">Built marketer and operator-facing tools for campaign creation, management, and reporting, translating complex financial data into usable, actionable interfaces within constrained banking ecosystems.</p>
       </div>
     </section>
 
