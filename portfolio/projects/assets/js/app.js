@@ -36,6 +36,463 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const initMerlinAssistant = () => {
+    if (!document.body || document.querySelector('[data-merlin-assistant]')) {
+      return;
+    }
+
+    const pagePath = window.location.pathname.toLowerCase();
+    const isHomePage = !pagePath.includes('/projects/') && (pagePath === '/' || pagePath.endsWith('/index.html'));
+    const homePromptKey = 'merlinAssistantHomePromptShown';
+    const autoOpenDelayMs = 9000;
+    const introPauseMs = 550;
+    const introLines = [
+      "Hello, I'm Merlin, your personal assistant while you are visiting. Please let me know how I can help as you browse.",
+      'I would be happy to schedule a chat with Dubs The Creator if there is anything he can assist with, I will inform him.',
+    ];
+
+    const assistantNode = document.createElement('aside');
+    assistantNode.className = 'merlin-assistant';
+    assistantNode.dataset.merlinAssistant = 'true';
+    assistantNode.innerHTML = `
+      <button type="button" class="merlin-bubble" data-merlin-bubble aria-label="Open Merlin assistant" aria-expanded="false">
+        <span class="merlin-bubble__dot" aria-hidden="true"></span>
+        <span class="merlin-bubble__label">Message Merlin</span>
+      </button>
+
+      <section class="merlin-panel" data-merlin-panel aria-hidden="true" aria-label="Merlin assistant panel">
+        <div class="merlin-panel__header">
+          <div class="merlin-panel__title-wrap">
+            <p class="merlin-panel__title">Merlin Assistant</p>
+            <p class="merlin-panel__subtitle">Send a quick note to Dubs by email</p>
+          </div>
+          <div class="merlin-panel__actions">
+            <button type="button" class="merlin-action-btn" data-merlin-voice>Pause Voice</button>
+            <button type="button" class="merlin-action-btn" data-merlin-close aria-label="Close assistant">Close</button>
+          </div>
+        </div>
+
+        <div class="merlin-messages" data-merlin-messages></div>
+
+        <form class="merlin-form" data-merlin-form novalidate>
+          <input class="merlin-input" type="text" name="name" placeholder="Your name" maxlength="80" required />
+          <input class="merlin-input" type="email" name="email" placeholder="Your email" maxlength="150" required />
+          <textarea class="merlin-textarea" name="message" rows="3" placeholder="How can Dubs help you?" maxlength="2000" required></textarea>
+          <input class="merlin-honeypot" type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" />
+          <input type="hidden" name="startedAt" value="" />
+
+          <div class="merlin-form__actions">
+            <button type="button" class="merlin-btn merlin-btn--ghost" data-merlin-mic>Voice to Text</button>
+            <button type="submit" class="merlin-btn merlin-btn--primary" data-merlin-submit>Send Email</button>
+          </div>
+
+          <p class="merlin-status" data-merlin-status aria-live="polite"></p>
+        </form>
+      </section>
+    `;
+    document.body.appendChild(assistantNode);
+
+    const bubbleButton = assistantNode.querySelector('[data-merlin-bubble]');
+    const panelNode = assistantNode.querySelector('[data-merlin-panel]');
+    const closeButton = assistantNode.querySelector('[data-merlin-close]');
+    const voiceButton = assistantNode.querySelector('[data-merlin-voice]');
+    const messagesNode = assistantNode.querySelector('[data-merlin-messages]');
+    const formNode = assistantNode.querySelector('[data-merlin-form]');
+    const micButton = assistantNode.querySelector('[data-merlin-mic]');
+    const submitButton = assistantNode.querySelector('[data-merlin-submit]');
+    const statusNode = assistantNode.querySelector('[data-merlin-status]');
+
+    if (!bubbleButton || !panelNode || !closeButton || !voiceButton || !messagesNode || !formNode || !micButton || !submitButton || !statusNode) {
+      return;
+    }
+
+    const startedAtInput = formNode.querySelector('input[name="startedAt"]');
+    const nameInput = formNode.querySelector('input[name="name"]');
+    const emailInput = formNode.querySelector('input[name="email"]');
+    const messageInput = formNode.querySelector('textarea[name="message"]');
+    const honeypotInput = formNode.querySelector('input[name="company"]');
+
+    if (!startedAtInput || !nameInput || !emailInput || !messageInput || !honeypotInput) {
+      return;
+    }
+
+    const resetStartedAt = () => {
+      startedAtInput.value = String(Date.now());
+    };
+
+    const appendMessage = (text, role = 'bot') => {
+      const message = document.createElement('p');
+      message.className = `merlin-message merlin-message--${role}`;
+      message.textContent = text;
+      messagesNode.appendChild(message);
+      messagesNode.scrollTop = messagesNode.scrollHeight;
+    };
+
+    const setStatus = (text, state = '') => {
+      statusNode.textContent = text;
+      if (state) {
+        statusNode.dataset.state = state;
+      } else {
+        statusNode.removeAttribute('data-state');
+      }
+    };
+
+    const setPanelOpen = (isOpen) => {
+      panelNode.classList.toggle('is-open', isOpen);
+      panelNode.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      bubbleButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        messageInput.focus();
+      }
+    };
+
+    appendMessage(introLines[0], 'bot');
+    appendMessage(introLines[1], 'bot');
+    resetStartedAt();
+
+    let autoOpenTimer = null;
+
+    const clearAutoOpenTimer = () => {
+      if (autoOpenTimer) {
+        window.clearTimeout(autoOpenTimer);
+        autoOpenTimer = null;
+      }
+    };
+
+    const canSpeakAssistant = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+    let introPlayed = false;
+    let introSpeaking = false;
+    let introPaused = false;
+    let introGapTimer = null;
+
+    const pickAssistantVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
+      for (const name of preferred) {
+        const selected = voices.find((voice) => voice.name === name);
+        if (selected) {
+          return selected;
+        }
+      }
+      return voices.find((voice) => voice.lang === 'en-GB') || null;
+    };
+
+    const stopAssistantVoice = () => {
+      if (!canSpeakAssistant) {
+        return;
+      }
+
+      if (introGapTimer) {
+        window.clearTimeout(introGapTimer);
+        introGapTimer = null;
+      }
+
+      window.speechSynthesis.cancel();
+      introSpeaking = false;
+      introPaused = false;
+      voiceButton.textContent = introPlayed ? 'Replay Voice' : 'Play Voice';
+    };
+
+    const playAssistantIntro = () => {
+      if (!canSpeakAssistant) {
+        return;
+      }
+
+      stopAssistantVoice();
+      introPlayed = true;
+      introSpeaking = true;
+      voiceButton.textContent = 'Pause Voice';
+
+      let lineIndex = 0;
+      const speakNextLine = () => {
+        if (!introSpeaking || lineIndex >= introLines.length) {
+          introSpeaking = false;
+          introPaused = false;
+          voiceButton.textContent = 'Replay Voice';
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(introLines[lineIndex]);
+        utterance.rate = 0.97;
+        utterance.pitch = 0.9;
+        utterance.lang = 'en-GB';
+        const voice = pickAssistantVoice();
+        if (voice) {
+          utterance.voice = voice;
+        }
+
+        const onLineComplete = () => {
+          if (!introSpeaking) {
+            return;
+          }
+
+          lineIndex += 1;
+          if (lineIndex < introLines.length) {
+            introGapTimer = window.setTimeout(() => {
+              introGapTimer = null;
+              speakNextLine();
+            }, introPauseMs);
+            return;
+          }
+
+          introSpeaking = false;
+          introPaused = false;
+          voiceButton.textContent = 'Replay Voice';
+        };
+
+        utterance.onend = onLineComplete;
+        utterance.onerror = onLineComplete;
+        window.speechSynthesis.speak(utterance);
+      };
+
+      speakNextLine();
+    };
+
+    if (!canSpeakAssistant) {
+      voiceButton.disabled = true;
+      voiceButton.textContent = 'Voice Unavailable';
+      voiceButton.title = 'Voice playback is not supported in this browser.';
+    }
+
+    const closeAssistant = () => {
+      setPanelOpen(false);
+      stopAssistantVoice();
+      stopVoiceToText();
+      setStatus('');
+    };
+
+    const openAssistant = () => {
+      setPanelOpen(true);
+      clearAutoOpenTimer();
+      if (isHomePage) {
+        sessionStorage.setItem(homePromptKey, 'true');
+      }
+    };
+
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const hasVoiceToText = typeof SpeechRecognitionAPI !== 'undefined';
+    let recognition = null;
+    let listening = false;
+
+    function stopVoiceToText() {
+      if (recognition && listening) {
+        listening = false;
+        recognition.stop();
+      }
+      micButton.textContent = 'Voice to Text';
+    }
+
+    if (hasVoiceToText) {
+      recognition = new SpeechRecognitionAPI();
+      recognition.lang = 'en-US';
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      recognition.onstart = () => {
+        listening = true;
+        micButton.textContent = 'Stop Listening';
+        setStatus('Listening... speak your message.', 'info');
+      };
+
+      recognition.onresult = (event) => {
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        for (let index = event.resultIndex; index < event.results.length; index += 1) {
+          const part = event.results[index][0].transcript;
+          if (event.results[index].isFinal) {
+            finalTranscript += `${part.trim()} `;
+          } else {
+            interimTranscript += part;
+          }
+        }
+
+        if (finalTranscript.trim()) {
+          const merged = [messageInput.value.trim(), finalTranscript.trim()]
+            .filter(Boolean)
+            .join(' ');
+          messageInput.value = merged;
+          setStatus('Voice captured. Continue speaking or send the email.', 'info');
+          return;
+        }
+
+        if (interimTranscript.trim()) {
+          setStatus(`Listening: ${interimTranscript.trim()}`, 'info');
+        }
+      };
+
+      recognition.onerror = () => {
+        listening = false;
+        micButton.textContent = 'Voice to Text';
+        setStatus('Voice input ran into an issue. You can type instead.', 'error');
+      };
+
+      recognition.onend = () => {
+        listening = false;
+        micButton.textContent = 'Voice to Text';
+      };
+    } else {
+      micButton.disabled = true;
+      micButton.title = 'Voice transcription is not supported in this browser.';
+    }
+
+    bubbleButton.addEventListener('click', () => {
+      const currentlyOpen = panelNode.classList.contains('is-open');
+      if (currentlyOpen) {
+        closeAssistant();
+        return;
+      }
+
+      openAssistant();
+      if (isHomePage && !introPlayed) {
+        playAssistantIntro();
+      }
+    });
+
+    closeButton.addEventListener('click', () => {
+      closeAssistant();
+    });
+
+    voiceButton.addEventListener('click', () => {
+      if (!canSpeakAssistant) {
+        return;
+      }
+
+      if (!introSpeaking) {
+        playAssistantIntro();
+        return;
+      }
+
+      if (!introPaused && window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        introPaused = true;
+        voiceButton.textContent = 'Resume Voice';
+        return;
+      }
+
+      if (introPaused) {
+        window.speechSynthesis.resume();
+        introPaused = false;
+        voiceButton.textContent = 'Pause Voice';
+        return;
+      }
+
+      stopAssistantVoice();
+    });
+
+    micButton.addEventListener('click', () => {
+      if (!recognition) {
+        return;
+      }
+
+      if (listening) {
+        stopVoiceToText();
+        setStatus('Voice capture stopped.', 'info');
+        return;
+      }
+
+      try {
+        recognition.start();
+      } catch {
+        setStatus('Microphone is busy. Try again in a moment.', 'info');
+      }
+    });
+
+    formNode.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (name.length < 2) {
+        setStatus('Please add your name.', 'error');
+        return;
+      }
+
+      const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!emailIsValid) {
+        setStatus('Please add a valid email address.', 'error');
+        return;
+      }
+
+      if (message.length < 10) {
+        setStatus('Please share a little more detail in your message.', 'error');
+        return;
+      }
+
+      submitButton.disabled = true;
+      setStatus('Sending your message to Dubs...', 'info');
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+            company: honeypotInput.value,
+            startedAt: Number(startedAtInput.value),
+            pageUrl: window.location.href,
+          }),
+        });
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || 'Message could not be sent right now.');
+        }
+
+        appendMessage(message, 'user');
+        appendMessage('Thanks, your message was sent to Dubs. He will follow up by email.', 'bot');
+        formNode.reset();
+        resetStartedAt();
+        setStatus('Sent. Merlin forwarded your note by email.', 'success');
+      } catch (error) {
+        setStatus(error.message || 'Unable to send message right now. Please try again.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        stopVoiceToText();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && panelNode.classList.contains('is-open')) {
+        closeAssistant();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!panelNode.classList.contains('is-open')) {
+        return;
+      }
+
+      if (assistantNode.contains(event.target)) {
+        return;
+      }
+
+      closeAssistant();
+    });
+
+    window.addEventListener('pagehide', () => {
+      clearAutoOpenTimer();
+      stopAssistantVoice();
+      stopVoiceToText();
+    });
+
+    if (isHomePage && !sessionStorage.getItem(homePromptKey)) {
+      autoOpenTimer = window.setTimeout(() => {
+        sessionStorage.setItem(homePromptKey, 'true');
+        openAssistant();
+        playAssistantIntro();
+      }, autoOpenDelayMs);
+    }
+  };
+
+  initMerlinAssistant();
+
   const readSectionsConfig = [
     {
       sectionId: 'overview',
