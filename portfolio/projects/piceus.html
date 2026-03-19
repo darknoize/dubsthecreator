@@ -50,41 +50,6 @@
   font-size:13px;
   color:var(--muted);
 }
-
-.read-trigger{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  margin: 0 0 1em 0;
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(250, 250, 250, 0.2);
-  background: rgba(250, 250, 250, 0.08);
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: transform .15s ease, background .2s ease, border-color .2s ease;
-}
-
-.read-trigger:hover{
-  transform: translateY(-1px);
-  background: rgba(3, 157, 252, 0.2);
-  border-color: rgba(3, 157, 252, 0.6);
-}
-
-.read-trigger.is-reading{
-  background: rgba(3, 157, 252, 0.22);
-  border-color: rgba(3, 157, 252, 0.75);
-}
-
-.read-trigger:disabled{
-  opacity: .55;
-  cursor: not-allowed;
-  transform: none;
-}
   </style>
 </head>
 <body>
@@ -174,13 +139,12 @@
     </section>-->
     
     <section id="overview">
-      <div class="card" id="overview-read">
+      <div class="card">
         <div class="overview-content">
           <div class="overview-text">
             <div class="sectionTitle">
         <h2>Overview</h2>
         <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Governed Agentic AI Architecture & Machine-Native Intelligence Systems</p>
-        <button type="button" class="read-trigger" data-read-target="overview-read" data-default-label="Read Overview Aloud" data-active-label="Stop Reading Overview">Read Overview Aloud</button>
       </div>
           </div>
           <!--<div class="tech-stack-block">
@@ -220,11 +184,10 @@
     </section>
 
     <section id="outcomes">
-      <div class="card" id="outcomes-read">
+      <div class="card">
         <div class="sectionTitle">
         <h2>Outcomes</h2>
         <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Platform Capability, System Maturity & Operational Impact</p>
-        <button type="button" class="read-trigger" data-read-target="outcomes-read" data-default-label="Read Outcomes Aloud" data-active-label="Stop Reading Outcomes">Read Outcomes Aloud</button>
       </div>
         <p style="margin-bottom: 1em;">Successfully designed and implemented a fully governed, multi-agent AI platform capable of operating in high-risk, compliance-sensitive environments with real-time orchestration, auditability, and controlled autonomy.</p>
         <p style="margin-bottom: 1em;">Established a cloning-based agent architecture that enabled scalable deployment of AI agents with consistent security, behavior, and capability inheritance, significantly improving system maintainability, upgradeability, and operational control.</p>
@@ -299,84 +262,6 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/gallery.js"></script>
   <script src="assets/js/scroll.js"></script>
-  <script>
-    (function () {
-      var buttons = Array.from(document.querySelectorAll('.read-trigger[data-read-target]'));
-      var canSpeak = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-
-      function setButtonState(button, isReading) {
-        button.classList.toggle('is-reading', isReading);
-        button.textContent = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
-        button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
-      }
-
-      function clearButtonStates() {
-        buttons.forEach(function (button) {
-          setButtonState(button, false);
-        });
-      }
-
-      function extractReadableText(targetId) {
-        var source = document.getElementById(targetId);
-        if (!source) return '';
-
-        var clone = source.cloneNode(true);
-        clone.querySelectorAll('.read-trigger, script, style, [aria-hidden="true"]').forEach(function (el) {
-          el.remove();
-        });
-
-        return (clone.textContent || '').replace(/\s+/g, ' ').trim();
-      }
-
-      if (!canSpeak) {
-        buttons.forEach(function (button) {
-          button.disabled = true;
-          button.title = 'Read aloud is not supported in this browser.';
-        });
-        return;
-      }
-
-      buttons.forEach(function (button) {
-        button.addEventListener('click', function () {
-          var isAlreadyReading = button.classList.contains('is-reading');
-
-          if (isAlreadyReading) {
-            window.speechSynthesis.cancel();
-            clearButtonStates();
-            return;
-          }
-
-          var readText = extractReadableText(button.dataset.readTarget);
-          if (!readText) return;
-
-          window.speechSynthesis.cancel();
-          clearButtonStates();
-
-          var utterance = new SpeechSynthesisUtterance(readText);
-          utterance.rate = 1;
-          utterance.pitch = 1;
-
-          utterance.onstart = function () {
-            setButtonState(button, true);
-          };
-
-          utterance.onend = function () {
-            setButtonState(button, false);
-          };
-
-          utterance.onerror = function () {
-            setButtonState(button, false);
-          };
-
-          window.speechSynthesis.speak(utterance);
-        });
-      });
-
-      window.addEventListener('beforeunload', function () {
-        window.speechSynthesis.cancel();
-      });
-    })();
-  </script>
 </main>
 </main>
 </body>
