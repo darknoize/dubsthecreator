@@ -44,12 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const pagePath = window.location.pathname.toLowerCase();
     const isHomePage = !pagePath.includes('/projects/') && (pagePath === '/' || pagePath.endsWith('/index.html'));
     const homePromptKey = 'merlinAssistantHomePromptShown';
+    const primaryIntroKey = 'merlinAssistantPrimaryIntroPlayed';
     const autoOpenDelayMs = 9000;
     const introPauseMs = 550;
     const introLines = [
       "Hello, I'm Merlin, your personal assistant while you are visiting. Please let me know how I can help as you browse.",
       'I would be happy to schedule a chat with Sir Dubs The Creator if there is anything he can assist with. I will inform him.',
     ];
+    const secondaryPrompt = 'How may I assist you today? Please leave Sir Dubs The Creator a message below.';
 
     const assistantNode = document.createElement('aside');
     assistantNode.className = 'merlin-assistant';
@@ -150,8 +152,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    appendMessage(introLines[0], 'bot');
-    appendMessage(introLines[1], 'bot');
+    const renderBotMessages = (lines) => {
+      messagesNode.innerHTML = '';
+      lines.forEach((line) => appendMessage(line, 'bot'));
+    };
+
+    let primaryIntroPlayed = sessionStorage.getItem(primaryIntroKey) === 'true';
+    if (primaryIntroPlayed) {
+      renderBotMessages([secondaryPrompt]);
+    } else {
+      renderBotMessages(introLines);
+    }
+
     resetStartedAt();
 
     let autoOpenTimer = null;
@@ -164,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const canSpeakAssistant = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-    let introPlayed = false;
     let introSpeaking = false;
     let introPaused = false;
     let introGapTimer = null;
@@ -191,6 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return voices.find((voice) => voice.lang === 'en-GB') || null;
     };
 
+    const setIdleVoiceButtonLabel = () => {
+      voiceButton.textContent = primaryIntroPlayed ? 'Replay Prompt' : 'Play Voice';
+    };
+
+    const showSecondaryPrompt = () => {
+      renderBotMessages([secondaryPrompt]);
+    };
+
     const stopAssistantVoice = () => {
       if (!canSpeakAssistant) {
         return;
@@ -204,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.speechSynthesis.cancel();
       introSpeaking = false;
       introPaused = false;
-      voiceButton.textContent = introPlayed ? 'Replay Voice' : 'Play Voice';
+      setIdleVoiceButtonLabel();
     };
 
     const playAssistantIntro = () => {
@@ -213,20 +232,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       stopAssistantVoice();
-      introPlayed = true;
       introSpeaking = true;
       voiceButton.textContent = 'Pause Voice';
 
+      const promptLines = primaryIntroPlayed ? [secondaryPrompt] : introLines;
+
       let lineIndex = 0;
       const speakNextLine = () => {
-        if (!introSpeaking || lineIndex >= introLines.length) {
+        if (!introSpeaking || lineIndex >= promptLines.length) {
           introSpeaking = false;
           introPaused = false;
-          voiceButton.textContent = 'Replay Voice';
+          if (!primaryIntroPlayed) {
+            primaryIntroPlayed = true;
+            sessionStorage.setItem(primaryIntroKey, 'true');
+            showSecondaryPrompt();
+          }
+          setIdleVoiceButtonLabel();
           return;
         }
 
-        const utteranceText = normalizeAssistantSpeech(introLines[lineIndex]);
+        const utteranceText = normalizeAssistantSpeech(promptLines[lineIndex]);
         const utterance = new SpeechSynthesisUtterance(utteranceText);
         utterance.rate = 0.97;
         utterance.pitch = 0.9;
@@ -242,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           lineIndex += 1;
-          if (lineIndex < introLines.length) {
+          if (lineIndex < promptLines.length) {
             introGapTimer = window.setTimeout(() => {
               introGapTimer = null;
               speakNextLine();
@@ -267,6 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
       voiceButton.disabled = true;
       voiceButton.textContent = 'Voice Unavailable';
       voiceButton.title = 'Voice playback is not supported in this browser.';
+    } else {
+      setIdleVoiceButtonLabel();
     }
 
     const closeAssistant = () => {
@@ -359,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       openAssistant();
-      if (isHomePage && !introPlayed) {
+      if (isHomePage && !primaryIntroPlayed) {
         playAssistantIntro();
       }
     });
