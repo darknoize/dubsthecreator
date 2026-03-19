@@ -104,6 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
 
+  const stopReadAloud = () => {
+    window.speechSynthesis.cancel();
+    clearReadButtonStates();
+  };
+
   const extractReadableText = (targetId) => {
     const source = document.getElementById(targetId);
     if (!source) {
@@ -134,13 +139,44 @@ document.addEventListener('DOMContentLoaded', () => {
     return normalizeSpeechText(clone.textContent || '');
   };
 
+  const shouldCancelForNavigation = (anchor) => {
+    if (!anchor || !anchor.href) {
+      return false;
+    }
+
+    if (anchor.target && anchor.target.toLowerCase() === '_blank') {
+      return false;
+    }
+
+    if (anchor.hasAttribute('download')) {
+      return false;
+    }
+
+    let linkUrl;
+    try {
+      linkUrl = new URL(anchor.href, window.location.href);
+    } catch {
+      return false;
+    }
+
+    const isSameDocument =
+      linkUrl.origin === window.location.origin
+      && linkUrl.pathname === window.location.pathname
+      && linkUrl.search === window.location.search;
+
+    if (isSameDocument && linkUrl.hash) {
+      return false;
+    }
+
+    return !isSameDocument;
+  };
+
   readButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const isAlreadyReading = button.classList.contains('is-reading');
 
       if (isAlreadyReading) {
-        window.speechSynthesis.cancel();
-        clearReadButtonStates();
+        stopReadAloud();
         return;
       }
 
@@ -149,8 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      window.speechSynthesis.cancel();
-      clearReadButtonStates();
+      stopReadAloud();
 
       const utterance = new SpeechSynthesisUtterance(readText);
       utterance.rate = 0.95;
@@ -172,8 +207,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  window.addEventListener('beforeunload', () => {
-    window.speechSynthesis.cancel();
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    const anchor = event.target.closest('a[href]');
+    if (shouldCancelForNavigation(anchor)) {
+      stopReadAloud();
+    }
   });
+
+  window.addEventListener('beforeunload', stopReadAloud);
+  window.addEventListener('pagehide', stopReadAloud);
 });
 
