@@ -569,6 +569,13 @@ document.addEventListener('DOMContentLoaded', () => {
     .replace(/\bcycle\b/gi, 'sigh-kull')
     .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
     .replace(/\bcyber\b/gi, 'sigh-burr')
+    .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
+      const lower = match.toLowerCase();
+      if (lower.endsWith('ing')) return 'skeduling';
+      if (lower.endsWith('ed')) return 'skeduled';
+      if (lower.endsWith('es')) return 'skedules';
+      return 'skedule';
+    })
     .replace(/\becosystem\b/gi, 'ee-ko-system')
     .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
       /services/i.test(match) ? 'my-crow services' : 'my-crow service'
