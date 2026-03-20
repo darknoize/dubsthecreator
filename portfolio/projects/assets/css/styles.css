@@ -100,7 +100,9 @@ nav a:hover{color:var(--text)}
     align-items: center;
     border-top: none !important;
     padding-top: 18px !important;
+    padding-bottom: 8px;
     overflow-x: auto;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
@@ -203,6 +205,15 @@ nav a:hover{color:var(--text)}
   padding:26px;
   box-shadow:var(--shadow);
   backdrop-filter: blur(10px);
+  position:relative;
+  overflow:hidden;
+}
+
+.card:focus,
+.card:focus-visible{
+  outline:none;
+  border-color:rgba(98,208,250,0.5);
+  box-shadow: var(--shadow), 0 0 0 2px rgba(98,208,250,0.35);
 }
 .feature{
   display:grid; grid-template-columns: 1.05fr 1.35fr;
@@ -560,6 +571,8 @@ h1, h2, h3, h4, h5, h6 {
   padding:26px;
   box-shadow:var(--shadow);
   backdrop-filter: blur(10px);
+  position:relative;
+  overflow:hidden;
 }
 .feature{
   display:grid; grid-template-columns: 1.05fr 1.35fr;
@@ -787,7 +800,10 @@ h1, h2, h3, h4, h5, h6 {
   display:none;
   width:min(360px, calc(100vw - 24px));
   max-width:calc(100vw - 24px);
-  max-height:min(70vh, 560px);
+  height:min(78vh, 640px);
+  max-height:min(78vh, 640px);
+  height:min(78dvh, 640px);
+  max-height:min(78dvh, 640px);
   border-radius:18px;
   border:1px solid rgba(255,255,255,0.15);
   background:linear-gradient(180deg, rgba(12,18,30,0.98), rgba(7,11,18,0.96));
@@ -798,6 +814,7 @@ h1, h2, h3, h4, h5, h6 {
 .merlin-panel.is-open{
   display:flex;
   flex-direction:column;
+  min-height:0;
   animation:merlin-panel-in .2s ease;
 }
 
@@ -817,6 +834,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content:space-between;
   align-items:flex-start;
   flex-wrap:wrap;
+  flex:0 0 auto;
   gap:10px;
   padding:12px 12px 10px;
   border-bottom:1px solid rgba(255,255,255,0.08);
@@ -873,10 +891,12 @@ h1, h2, h3, h4, h5, h6 {
 .merlin-messages{
   display:flex;
   flex-direction:column;
+  flex:1 1 auto;
+  min-height:0;
   gap:8px;
   padding:12px;
-  max-height:175px;
-  overflow:auto;
+  overflow-y:auto;
+  overflow-x:hidden;
   border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
@@ -905,13 +925,25 @@ h1, h2, h3, h4, h5, h6 {
 .merlin-form{
   display:flex;
   flex-direction:column;
+  flex:0 0 auto;
+  max-height:min(46vh, 340px);
+  max-height:min(46dvh, 340px);
   gap:8px;
   padding:12px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+}
+
+.merlin-form > *{
+  min-width:0;
+  max-width:100%;
 }
 
 .merlin-input,
 .merlin-textarea{
   width:100%;
+  max-width:100%;
   border:1px solid rgba(255,255,255,0.15);
   background:rgba(255,255,255,0.06);
   color:rgba(255,255,255,0.96);
@@ -941,12 +973,15 @@ h1, h2, h3, h4, h5, h6 {
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
+  width:100%;
+  min-width:0;
   gap:8px;
 }
 
 .merlin-btn{
   flex:1 1 140px;
   min-width:0;
+  max-width:100%;
   border-radius:10px;
   border:1px solid rgba(255,255,255,0.2);
   padding:8px 10px;
@@ -1011,8 +1046,8 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 760px){
   .merlin-assistant{
-    width:calc(100vw - 24px);
-    max-width:calc(100vw - 24px);
+    width:auto;
+    max-width:none;
     right:12px;
     left:12px;
     align-items:stretch;
@@ -1025,7 +1060,20 @@ h1, h2, h3, h4, h5, h6 {
   .merlin-panel{
     width:100%;
     max-width:100%;
-    max-height:min(68vh, 540px);
+    height:min(76vh, 620px);
+    max-height:min(76vh, 620px);
+    height:min(76dvh, 620px);
+    max-height:min(76dvh, 620px);
+  }
+
+  .merlin-form{
+    max-height:min(44vh, 320px);
+    max-height:min(44dvh, 320px);
+  }
+
+  .merlin-input,
+  .merlin-textarea{
+    font-size:16px;
   }
 }
 

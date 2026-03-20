@@ -9,20 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const centerActiveFilter = (filterRow, behavior = 'auto') => {
-    const activeTag = filterRow.querySelector('.tag-lrg.active');
-    if (!activeTag) {
+  const centerFilterTag = (filterRow, tag, behavior = 'auto') => {
+    if (!tag) {
       return;
     }
 
     const maxScrollLeft = filterRow.scrollWidth - filterRow.clientWidth;
-    const targetLeft = activeTag.offsetLeft - (filterRow.clientWidth - activeTag.offsetWidth) / 2;
+    const targetLeft = tag.offsetLeft - (filterRow.clientWidth - tag.offsetWidth) / 2;
     const nextScrollLeft = Math.min(Math.max(targetLeft, 0), Math.max(maxScrollLeft, 0));
 
     filterRow.scrollTo({
       left: nextScrollLeft,
       behavior,
     });
+  };
+
+  const centerActiveFilter = (filterRow, behavior = 'auto') => {
+    const activeTag = filterRow.querySelector('.tag-lrg.active');
+    centerFilterTag(filterRow, activeTag, behavior);
   };
 
   const filterRows = document.querySelectorAll('.filters');
@@ -32,7 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => centerActiveFilter(filterRow));
 
     filterRow.querySelectorAll('.tag-lrg').forEach((tag) => {
-      tag.addEventListener('focus', () => centerActiveFilter(filterRow, 'smooth'));
+      tag.addEventListener('focus', () => {
+        // Keep keyboard navigation in view without hijacking pointer clicks.
+        if (!tag.matches(':focus-visible')) {
+          return;
+        }
+
+        centerFilterTag(filterRow, tag, 'smooth');
+      });
     });
   });
 });

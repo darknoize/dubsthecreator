@@ -9,20 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const centerActiveFilter = (filterRow, behavior = 'auto') => {
-    const activeTag = filterRow.querySelector('.tag-lrg.active');
-    if (!activeTag) {
+  const centerFilterTag = (filterRow, tag, behavior = 'auto') => {
+    if (!tag) {
       return;
     }
 
     const maxScrollLeft = filterRow.scrollWidth - filterRow.clientWidth;
-    const targetLeft = activeTag.offsetLeft - (filterRow.clientWidth - activeTag.offsetWidth) / 2;
+    const targetLeft = tag.offsetLeft - (filterRow.clientWidth - tag.offsetWidth) / 2;
     const nextScrollLeft = Math.min(Math.max(targetLeft, 0), Math.max(maxScrollLeft, 0));
 
     filterRow.scrollTo({
       left: nextScrollLeft,
       behavior,
     });
+  };
+
+  const centerActiveFilter = (filterRow, behavior = 'auto') => {
+    const activeTag = filterRow.querySelector('.tag-lrg.active');
+    centerFilterTag(filterRow, activeTag, behavior);
   };
 
   const filterRows = document.querySelectorAll('.filters');
@@ -32,7 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => centerActiveFilter(filterRow));
 
     filterRow.querySelectorAll('.tag-lrg').forEach((tag) => {
-      tag.addEventListener('focus', () => centerActiveFilter(filterRow, 'smooth'));
+      tag.addEventListener('focus', () => {
+        // Keep keyboard navigation in view without hijacking pointer clicks.
+        if (!tag.matches(':focus-visible')) {
+          return;
+        }
+
+        centerFilterTag(filterRow, tag, 'smooth');
+      });
     });
   });
 
@@ -46,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homePromptKey = 'merlinAssistantHomePromptShown';
     const primaryIntroKey = 'merlinAssistantPrimaryIntroPlayed';
     const messageLimitKey = 'merlinAssistantMessageCount';
-    const messageLimitMax = 3;
+    const messageLimitMax = 10;
     const autoOpenDelayMs = 9000;
     const introPauseMs = 550;
     const introLines = [
@@ -122,6 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const shouldAutofocusMessage = typeof window.matchMedia === 'function'
+      ? !window.matchMedia('(pointer: coarse)').matches
+      : true;
+
     const resetStartedAt = () => {
       startedAtInput.value = String(Date.now());
     };
@@ -156,8 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
       panelNode.classList.toggle('is-open', isOpen);
       panelNode.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
       bubbleButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      if (isOpen && !messageInput.disabled) {
-        messageInput.focus();
+      if (isOpen && !messageInput.disabled && shouldAutofocusMessage) {
+        try {
+          messageInput.focus({ preventScroll: true });
+        } catch {
+          messageInput.focus();
+        }
       }
     };
 
@@ -333,6 +352,45 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem(homePromptKey, 'true');
       }
     };
+
+    const handleContactTriggerClick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      openAssistant();
+      if (isHomePage && !primaryIntroPlayed) {
+        playAssistantIntro();
+      }
+    };
+
+    const bindContactTriggers = () => {
+      const contactTriggers = document.querySelectorAll('a[data-contact-merlin], button[data-contact-merlin], a[href="#contact"]');
+      contactTriggers.forEach((trigger) => {
+        if (trigger.dataset.merlinTriggerBound === 'true') {
+          return;
+        }
+
+        trigger.dataset.merlinTriggerBound = 'true';
+        trigger.addEventListener('click', handleContactTriggerClick);
+      });
+    };
+
+    const ensureNavContactLink = () => {
+      document.querySelectorAll('header nav').forEach((navNode) => {
+        if (navNode.querySelector('[data-contact-merlin]')) {
+          return;
+        }
+
+        const contactLink = document.createElement('a');
+        contactLink.href = '#contact';
+        contactLink.dataset.contactMerlin = 'true';
+        contactLink.textContent = 'Contact';
+        navNode.appendChild(contactLink);
+      });
+    };
+
+    ensureNavContactLink();
+    bindContactTriggers();
 
     const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
     const hasVoiceToText = typeof SpeechRecognitionAPI !== 'undefined';
