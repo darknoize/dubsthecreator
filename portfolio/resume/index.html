@@ -1745,7 +1745,7 @@
           currentWordIndex = (currentWordIndex + 1) % wordSpans.length;
         };
 
-        const estimatedTotalDuration = (readText.length / 5) / readAloudSpeechProfile.rate * 1000; // rough estimate
+        const estimatedTotalDuration = (readText.length / 5) / (readAloudSpeechProfile.rate * 1.2) * 1000; // rough estimate
         const estimatedWordDuration = estimatedTotalDuration / wordSpans.length;
 
         const resetHighlighting = () => {
