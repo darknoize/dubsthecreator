@@ -418,6 +418,76 @@
       line-height:1.82;
     }
 
+    /* Tech Stack Section */
+    .tech-stack-section{
+      margin:32px 0 24px;
+      padding:24px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:linear-gradient(180deg, rgba(10, 20, 34, 0.96), rgba(7, 14, 24, 0.93));
+      box-shadow:0 14px 30px rgba(0,0,0,0.18);
+    }
+
+    .tech-stack-section h3{
+      margin:0 0 16px 0;
+      color:rgba(98,208,250,0.9);
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+    }
+
+    .tech-stack-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      max-height:200px;
+      overflow-y:auto;
+      padding-right:8px;
+    }
+
+    .tech-stack-grid::-webkit-scrollbar{
+      width:6px;
+    }
+
+    .tech-stack-grid::-webkit-scrollbar-track{
+      background:rgba(255,255,255,0.05);
+      border-radius:3px;
+    }
+
+    .tech-stack-grid::-webkit-scrollbar-thumb{
+      background:rgba(98,208,250,0.3);
+      border-radius:3px;
+    }
+
+    .tech-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,0.15);
+      background:rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.9);
+      font-size:13px;
+      font-weight:500;
+      white-space:nowrap;
+      transition:transform .15s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .tech-tag:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.12);
+      border-color:rgba(98,208,250,0.4);
+    }
+
+    .tech-tag img{
+      width:16px;
+      height:16px;
+      flex-shrink:0;
+      opacity:0.9;
+    }
+
     .resume-role__subheading{
       margin-top:16px;
       color:rgba(255,255,255,0.5);
@@ -581,6 +651,71 @@
 
         <div class="resume-actions">
           <button type="button" class="read-trigger project-read-fab" data-read-resume data-icon-only="true" aria-pressed="false">Read Resume Aloud</button>
+        </div>
+      </section>
+
+      <section class="tech-stack-section" data-read-aloud-ignore>
+        <h3>Technology Stack</h3>
+        <div class="tech-stack-grid">
+          <!-- Design Tools -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/adobe-creative-suite.svg" alt="Adobe Creative Suite" onerror="this.style.display='none'"> Adobe Creative Suite</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/sketch.svg" alt="Sketch" onerror="this.style.display='none'"> Sketch</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/figma.svg" alt="Figma" onerror="this.style.display='none'"> Figma</span>
+
+          <!-- Frontend Development -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/react.svg" alt="React" onerror="this.style.display='none'"> React</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/html5.svg" alt="HTML5" onerror="this.style.display='none'"> HTML5</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/css3.svg" alt="CSS3" onerror="this.style.display='none'"> CSS3</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/javascript.svg" alt="JavaScript" onerror="this.style.display='none'"> JavaScript</span>
+
+          <!-- Backend Development -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/python.svg" alt="Python" onerror="this.style.display='none'"> Python</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/php.svg" alt="PHP" onerror="this.style.display='none'"> PHP</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/ruby.svg" alt="Ruby" onerror="this.style.display='none'"> Ruby</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/dotnet.svg" alt=".NET" onerror="this.style.display='none'"> .NET</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/coldfusion.svg" alt="ColdFusion" onerror="this.style.display='none'"> ColdFusion</span>
+
+          <!-- Data & Databases -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/postgresql.svg" alt="PostgreSQL" onerror="this.style.display='none'"> PostgreSQL</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/mysql.svg" alt="MySQL" onerror="this.style.display='none'"> MySQL</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/mongodb.svg" alt="MongoDB" onerror="this.style.display='none'"> MongoDB</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/redis.svg" alt="Redis" onerror="this.style.display='none'"> Redis</span>
+
+          <!-- AI & ML -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/tensorflow.svg" alt="TensorFlow" onerror="this.style.display='none'"> TensorFlow</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/pytorch.svg" alt="PyTorch" onerror="this.style.display='none'"> PyTorch</span>
+          <span class="tech-tag">RAG</span>
+          <span class="tech-tag">CAG</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/openai.svg" alt="OpenAI" onerror="this.style.display='none'"> OpenAI</span>
+
+          <!-- DevOps & Infrastructure -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/docker.svg" alt="Docker" onerror="this.style.display='none'"> Docker</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/kubernetes.svg" alt="Kubernetes" onerror="this.style.display='none'"> Kubernetes</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/aws.svg" alt="AWS" onerror="this.style.display='none'"> AWS</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/azure.svg" alt="Azure" onerror="this.style.display='none'"> Azure</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-cloud.svg" alt="Google Cloud" onerror="this.style.display='none'"> Google Cloud</span>
+
+          <!-- Blockchain & Crypto -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/ethereum.svg" alt="Ethereum" onerror="this.style.display='none'"> Ethereum</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/solidity.svg" alt="Solidity" onerror="this.style.display='none'"> Solidity</span>
+          <span class="tech-tag">Tokenization</span>
+          <span class="tech-tag">Smart Contracts</span>
+          <span class="tech-tag">DeFi</span>
+
+          <!-- Payments & Fintech -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/stripe.svg" alt="Stripe" onerror="this.style.display='none'"> Stripe</span>
+          <span class="tech-tag">Payment Processing</span>
+          <span class="tech-tag">Digital Wallets</span>
+          <span class="tech-tag">Fraud Detection</span>
+
+          <!-- Other Technologies -->
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-kafka.svg" alt="Apache Kafka" onerror="this.style.display='none'"> Apache Kafka</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-spark.svg" alt="Apache Spark" onerror="this.style.display='none'"> Apache Spark</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/elasticsearch.svg" alt="Elasticsearch" onerror="this.style.display='none'"> Elasticsearch</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/nginx.svg" alt="NGINX" onerror="this.style.display='none'"> NGINX</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/git.svg" alt="Git" onerror="this.style.display='none'"> Git</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/github.svg" alt="GitHub" onerror="this.style.display='none'"> GitHub</span>
+          <span class="tech-tag"><img src="../images/tech_icons_svg_set/vercel.svg" alt="Vercel" onerror="this.style.display='none'"> Vercel</span>
         </div>
       </section>
 
