@@ -7,6 +7,23 @@ All visuals are separated into assets (SVG). Text stays as real HTML text.
 Open index.html directly, or run:
 python -m http.server 8080
 
+## Deployment
+This folder is the live app root for https://www.dubsthecreator.com on Vercel.
+
+From this directory:
+
+```bash
+vercel --yes
+```
+
+Creates a preview deployment.
+
+```bash
+vercel --prod --yes
+```
+
+Deploys to production and updates https://www.dubsthecreator.com.
+
 ## Files
 - index.html (main portfolio overview)
 - projects/piceus.html (PICEUS project details)

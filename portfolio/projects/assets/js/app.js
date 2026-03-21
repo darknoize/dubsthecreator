@@ -9,6 +9,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const primaryFilterFrontOrder = [
+    'All',
+    'AI Governance',
+    'Sports Tech',
+    'FinTech',
+    'Cybersecurity',
+    'Enterprise Systems',
+    'Healthcare',
+    'Education',
+  ];
+
+  const normalizeFilterLabel = (value) => value.replace(/\s+/g, ' ').trim();
+
+  const syncPrimaryFilterOrder = (filterRow) => {
+    const tags = Array.from(filterRow.querySelectorAll('.tag-lrg'));
+    if (tags.length === 0) {
+      return;
+    }
+
+    const labels = tags.map((tag) => normalizeFilterLabel(tag.textContent || ''));
+    const hasRequestedFrontOrder = primaryFilterFrontOrder.every((label) => labels.includes(label));
+    if (!hasRequestedFrontOrder) {
+      return;
+    }
+
+    const tagByLabel = new Map(tags.map((tag) => [normalizeFilterLabel(tag.textContent || ''), tag]));
+    const orderedLabels = [
+      ...primaryFilterFrontOrder.filter((label) => tagByLabel.has(label)),
+      ...labels.filter((label) => !primaryFilterFrontOrder.includes(label)),
+    ];
+
+    orderedLabels.forEach((label) => {
+      const tag = tagByLabel.get(label);
+      if (tag) {
+        filterRow.appendChild(tag);
+      }
+    });
+  };
+
   const centerFilterTag = (filterRow, tag, behavior = 'auto') => {
     if (!tag) {
       return;
@@ -31,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const filterRows = document.querySelectorAll('.filters');
   filterRows.forEach((filterRow) => {
+    syncPrimaryFilterOrder(filterRow);
     requestAnimationFrame(() => centerActiveFilter(filterRow));
 
     window.addEventListener('load', () => centerActiveFilter(filterRow));
@@ -47,6 +87,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const preferredSpeechVoiceNames = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
+  const assistantSpeechProfile = {
+    lang: 'en-GB',
+    rate: 1.0,
+    pitch: 0.9,
+    volume: 1,
+  };
+  const readAloudSpeechProfile = {
+    lang: 'en-GB',
+    rate: 0.95,
+    pitch: 0.85,
+    volume: 1,
+  };
+
+  const normalizeSpeechVoiceKey = (voice) => `${voice?.name || ''} ${voice?.voiceURI || ''} ${voice?.lang || ''}`.toLowerCase();
+
+  const resolvePreferredSpeechVoice = (preferredLang = 'en-GB') => {
+    if (!('speechSynthesis' in window)) {
+      return null;
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+    if (!Array.isArray(voices) || voices.length === 0) {
+      return null;
+    }
+
+    const preferredVoice = preferredSpeechVoiceNames
+      .map((name) => name.toLowerCase())
+      .map((nameKey) => voices.find((voice) => normalizeSpeechVoiceKey(voice).includes(nameKey)))
+      .find(Boolean);
+
+    const preferredLangKey = preferredLang.toLowerCase();
+    return preferredVoice
+      || voices.find((voice) => voice.localService && (voice.lang || '').toLowerCase().startsWith(preferredLangKey))
+      || voices.find((voice) => (voice.lang || '').toLowerCase().startsWith(preferredLangKey))
+      || voices.find((voice) => voice.localService && (voice.lang || '').toLowerCase().startsWith('en'))
+      || voices.find((voice) => (voice.lang || '').toLowerCase().startsWith('en'))
+      || null;
+  };
+
+  const normalizeSpeechDeliveryText = (value) => value
+    .replace(/\s*[•]\s*/g, ', ')
+    .replace(/\s*[–—]+\s*/g, ', ')
+    .replace(/\s*&\s*/g, ' and ')
+    .replace(/,\s*,+/g, ', ')
+    .replace(/\s+([,.;!?])/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const applySpeechUtteranceSettings = (utterance, profile) => {
+    utterance.rate = profile.rate;
+    utterance.pitch = profile.pitch;
+    utterance.volume = profile.volume;
+    utterance.lang = profile.lang;
+
+    const voice = resolvePreferredSpeechVoice(profile.lang);
+    if (voice) {
+      utterance.voice = voice;
+      utterance.lang = voice.lang || profile.lang;
+    }
+  };
+
   const initMerlinAssistant = () => {
     if (!document.body || document.querySelector('[data-merlin-assistant]')) {
       return;
@@ -54,25 +156,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pagePath = window.location.pathname.toLowerCase();
     const isHomePage = !pagePath.includes('/projects/') && (pagePath === '/' || pagePath.endsWith('/index.html'));
-    const homePromptKey = 'merlinAssistantHomePromptShown';
     const primaryIntroKey = 'merlinAssistantPrimaryIntroPlayed';
     const messageLimitKey = 'merlinAssistantMessageCount';
     const messageLimitMax = 10;
-    const autoOpenDelayMs = 9000;
-    const introPauseMs = 550;
+    const introPauseMs = 420;
     const introLines = [
-      "Hello, I'm Merlin, your personal assistant while you are visiting. Please let me know how I can help as you browse.",
-      'I would be happy to schedule a chat with Sir Dubs The Creator if there is anything he can assist with. I will inform him.',
+      "Hello, I'm Merlin, your personal assistant while you are visiting. Tell me how I can help while you browse.",
+      'If you would like, I can send a message to Sir Dubs The Creator or help schedule a call.',
     ];
-    const secondaryPrompt = 'How may I assist? I will send a message to Sir Dubs and he will respond shortly.';
+    const secondaryPrompt = 'Tell me how I can help. I will send a message to Sir Dubs and he will respond shortly.';
 
     const assistantNode = document.createElement('aside');
     assistantNode.className = 'merlin-assistant';
     assistantNode.dataset.merlinAssistant = 'true';
     assistantNode.innerHTML = `
-      <button type="button" class="merlin-bubble" data-merlin-bubble aria-label="Open Merlin assistant" aria-expanded="false">
+      <button type="button" class="merlin-bubble" data-merlin-bubble aria-label="Open contact panel" aria-expanded="false">
         <span class="merlin-bubble__dot" aria-hidden="true"></span>
-        <span class="merlin-bubble__label">Message Merlin</span>
+        <span class="merlin-bubble__label">Contact</span>
       </button>
 
       <section class="merlin-panel" data-merlin-panel aria-hidden="true" aria-label="Merlin assistant panel">
@@ -93,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <input class="merlin-input" type="text" name="name" placeholder="Your name" maxlength="80" required />
           <input class="merlin-input" type="tel" name="phone" placeholder="Your phone" maxlength="40" required />
           <input class="merlin-input" type="email" name="email" placeholder="Your email" maxlength="150" required />
-          <textarea class="merlin-textarea" name="message" rows="3" placeholder="How can Dubs help you?" maxlength="2000" minlength="10" required></textarea>
+          <textarea class="merlin-textarea" name="message" rows="3" placeholder="Tell Merlin how Dubs can help." maxlength="2000" minlength="10" required></textarea>
           <input class="merlin-honeypot" type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" />
           <input type="hidden" name="startedAt" value="" />
 
@@ -194,15 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resetStartedAt();
 
-    let autoOpenTimer = null;
-
-    const clearAutoOpenTimer = () => {
-      if (autoOpenTimer) {
-        window.clearTimeout(autoOpenTimer);
-        autoOpenTimer = null;
-      }
-    };
-
     const canSpeakAssistant = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
     let introSpeaking = false;
     let introPaused = false;
@@ -216,19 +307,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lower.endsWith('es')) return 'sked-jools';
         return 'sked-jool';
       })
+      .replace(/\bpiceus\b/gi, 'Pie-see-us')
+      .replace(/\bseo\/sem\b/gi, 'S E O and S E M')
+      .replace(/\bseo\b/gi, 'S E O')
+      .replace(/\bsem\b/gi, 'S E M')
+      .replace(/\bslas\b/gi, "S L A's")
+      .replace(/\bsla\b/gi, 'S L A')
+      .replace(/\blead\b/gi, 'leed')
+      .replace(/\bhipaa\b/gi, 'hip-uh')
+      .replace(/\biot\b/gi, 'I O T')
+      .replace(/\buga\b/gi, 'U G A')
+      .replace(/\buva\b/gi, 'U V A')
+      .replace(/\blifecycle\b/gi, 'life cycle')
+      .replace(/\becosystem\b/gi, 'E-co-system')
       .replace(/\bsaas\b/gi, 'sass');
-
-    const pickAssistantVoice = () => {
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
-      for (const name of preferred) {
-        const selected = voices.find((voice) => voice.name === name);
-        if (selected) {
-          return selected;
-        }
-      }
-      return voices.find((voice) => voice.lang === 'en-GB') || null;
-    };
 
     const setIdleVoiceButtonLabel = () => {
       voiceButton.textContent = primaryIntroPlayed ? 'Replay Prompt' : 'Play Voice';
@@ -293,15 +385,9 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const utteranceText = normalizeAssistantSpeech(promptLines[lineIndex]);
+        const utteranceText = normalizeSpeechDeliveryText(normalizeAssistantSpeech(promptLines[lineIndex]));
         const utterance = new SpeechSynthesisUtterance(utteranceText);
-        utterance.rate = 0.97;
-        utterance.pitch = 0.9;
-        utterance.lang = 'en-GB';
-        const voice = pickAssistantVoice();
-        if (voice) {
-          utterance.voice = voice;
-        }
+        applySpeechUtteranceSettings(utterance, assistantSpeechProfile);
 
         const onLineComplete = () => {
           if (!introSpeaking) {
@@ -347,10 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openAssistant = () => {
       setPanelOpen(true);
-      clearAutoOpenTimer();
-      if (isHomePage) {
-        sessionStorage.setItem(homePromptKey, 'true');
-      }
     };
 
     const handleContactTriggerClick = (event) => {
@@ -374,22 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger.addEventListener('click', handleContactTriggerClick);
       });
     };
-
-    const ensureNavContactLink = () => {
-      document.querySelectorAll('header nav').forEach((navNode) => {
-        if (navNode.querySelector('[data-contact-merlin]')) {
-          return;
-        }
-
-        const contactLink = document.createElement('a');
-        contactLink.href = '#contact';
-        contactLink.dataset.contactMerlin = 'true';
-        contactLink.textContent = 'Contact';
-        navNode.appendChild(contactLink);
-      });
-    };
-
-    ensureNavContactLink();
     bindContactTriggers();
 
     const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -617,18 +683,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       window.addEventListener('pagehide', () => {
-        clearAutoOpenTimer();
         stopAssistantVoice();
         stopVoiceToText();
       });
-
-      if (isHomePage && !sessionStorage.getItem(homePromptKey)) {
-        autoOpenTimer = window.setTimeout(() => {
-          sessionStorage.setItem(homePromptKey, 'true');
-          openAssistant();
-          playAssistantIntro();
-        }, autoOpenDelayMs);
-      }
     };
 
     initMerlinAssistant();
@@ -650,11 +707,268 @@ document.addEventListener('DOMContentLoaded', () => {
       button.classList.toggle('is-reading', isReading);
       const label = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
       const speakerSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
-      button.innerHTML = speakerSvg + label;
+      const speakerIconOnlySvg = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+      const isIconOnly = button.dataset.iconOnly === 'true';
+      button.innerHTML = isIconOnly ? speakerIconOnlySvg : `${speakerSvg}${label}`;
+      button.setAttribute('aria-label', label);
+      button.setAttribute('title', label);
       button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
     };
 
+    const createFollowAlongPanel = () => {
+      let panel = document.querySelector('[data-follow-along-panel]');
+      if (!panel) {
+        panel = document.createElement('aside');
+        panel.className = 'follow-along-panel';
+        panel.hidden = true;
+        panel.dataset.followAlongPanel = 'true';
+        panel.setAttribute('aria-hidden', 'true');
+        panel.innerHTML = `
+          <div class="follow-along__eyebrow">Follow Along</div>
+          <div class="follow-along__context" data-follow-along-context></div>
+          <div class="follow-along__body" data-follow-along-body></div>
+        `;
+        document.body.appendChild(panel);
+      }
+
+      return {
+        panel,
+        context: panel.querySelector('[data-follow-along-context]'),
+        body: panel.querySelector('[data-follow-along-body]'),
+      };
+    };
+
+    const followAlongPanel = createFollowAlongPanel();
+    let followAlongWords = [];
+    let activeFollowAlongWord = null;
+
+    const getFollowAlongContextLabel = (button) => {
+      const rawLabel = button?.dataset.defaultLabel || '';
+      const cleanedLabel = rawLabel
+        .replace(/^Read\s+/i, '')
+        .replace(/\s+from the beginning$/i, '')
+        .replace(/\s+aloud$/i, '')
+        .trim();
+
+      return cleanedLabel || 'Current section';
+    };
+
+    const setActiveFollowAlongWord = (charIndex) => {
+      if (followAlongWords.length === 0) {
+        return;
+      }
+
+      let nextWord = followAlongWords[0];
+      for (const entry of followAlongWords) {
+        if (charIndex < entry.start) {
+          break;
+        }
+
+        nextWord = entry;
+        if (charIndex < entry.end) {
+          break;
+        }
+      }
+
+      if (activeFollowAlongWord?.node === nextWord.node) {
+        return;
+      }
+
+      if (activeFollowAlongWord?.node) {
+        activeFollowAlongWord.node.classList.remove('is-active');
+      }
+
+      activeFollowAlongWord = nextWord;
+      activeFollowAlongWord.node.classList.add('is-active');
+      activeFollowAlongWord.node.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    };
+
+    const showFollowAlongPanel = (button, text) => {
+      if (!followAlongPanel.body) {
+        return;
+      }
+
+      followAlongPanel.context.textContent = getFollowAlongContextLabel(button);
+      followAlongPanel.body.textContent = '';
+      followAlongWords = [];
+      activeFollowAlongWord = null;
+
+      const fragment = document.createDocumentFragment();
+      const tokenPattern = /\S+|\s+/g;
+      let match;
+      while ((match = tokenPattern.exec(text))) {
+        const token = match[0];
+        if (/^\s+$/.test(token)) {
+          fragment.appendChild(document.createTextNode(token));
+          continue;
+        }
+
+        const wordNode = document.createElement('span');
+        wordNode.className = 'follow-along__word';
+        wordNode.textContent = token;
+        fragment.appendChild(wordNode);
+        followAlongWords.push({
+          start: match.index,
+          end: match.index + token.length,
+          node: wordNode,
+        });
+      }
+
+      followAlongPanel.body.appendChild(fragment);
+      followAlongPanel.panel.hidden = false;
+      followAlongPanel.panel.setAttribute('aria-hidden', 'false');
+      followAlongPanel.panel.classList.add('is-visible');
+      setActiveFollowAlongWord(0);
+    };
+
+    const hideFollowAlongPanel = () => {
+      if (!followAlongPanel.body) {
+        return;
+      }
+
+      followAlongWords = [];
+      activeFollowAlongWord = null;
+      followAlongPanel.panel.classList.remove('is-visible');
+      followAlongPanel.panel.hidden = true;
+      followAlongPanel.panel.setAttribute('aria-hidden', 'true');
+      followAlongPanel.context.textContent = '';
+      followAlongPanel.body.textContent = '';
+      followAlongPanel.body.scrollTop = 0;
+    };
+
+    const initResumeModal = () => {
+      const resumeLinks = Array.from(document.querySelectorAll('a[href*="William_Weems_Product_UX_UI_AI_Leadership_CV.pdf"]'));
+      if (resumeLinks.length === 0 || document.querySelector('[data-resume-modal]')) {
+        return;
+      }
+
+      let resumePdfUrl;
+      try {
+        resumePdfUrl = new URL(resumeLinks[0].getAttribute('href'), window.location.href);
+      } catch {
+        return;
+      }
+
+      const resumePageUrl = new URL(resumePdfUrl.href);
+      resumePageUrl.pathname = resumePageUrl.pathname.replace(/\/[^/]+\.pdf$/i, '/index.html');
+
+      const modal = document.createElement('div');
+      modal.className = 'resume-modal';
+      modal.dataset.resumeModal = 'true';
+      modal.setAttribute('aria-hidden', 'true');
+      modal.innerHTML = `
+        <div class="resume-modal__backdrop" data-resume-modal-close></div>
+        <div class="resume-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
+          <div class="resume-modal__top">
+            <div>
+              <p class="resume-modal__eyebrow">Resume</p>
+              <p class="resume-modal__title" id="resume-modal-title">William Weems</p>
+            </div>
+            <div class="resume-modal__actions">
+              <a class="resume-modal__link" data-resume-download href="${resumePdfUrl.href}" download="William_Weems_Product_UX_UI_AI_Leadership_CV.pdf">Download PDF</a>
+              <button type="button" class="resume-modal__close" data-resume-modal-close aria-label="Close resume">Close</button>
+            </div>
+          </div>
+          <iframe class="resume-modal__frame" data-resume-frame title="William Weems resume"></iframe>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const frame = modal.querySelector('[data-resume-frame]');
+      const downloadLink = modal.querySelector('[data-resume-download]');
+      const closeTargets = modal.querySelectorAll('[data-resume-modal-close]');
+      const closeButton = modal.querySelector('.resume-modal__close');
+      let previousActiveElement = null;
+      let frameLoaded = false;
+
+      const stopSiteSpeech = () => {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+
+        document.querySelectorAll('[data-read-target]').forEach((button) => {
+          setReadButtonState(button, false);
+        });
+      };
+
+      const openModal = () => {
+        previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        stopSiteSpeech();
+
+        if (downloadLink) {
+          downloadLink.href = resumePdfUrl.href;
+        }
+
+        if (frame && !frameLoaded) {
+          frame.src = resumePageUrl.href;
+          frameLoaded = true;
+        }
+
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('resume-modal-open');
+
+        window.requestAnimationFrame(() => {
+          if (!closeButton) {
+            return;
+          }
+
+          try {
+            closeButton.focus({ preventScroll: true });
+          } catch {
+            closeButton.focus();
+          }
+        });
+      };
+
+      const closeModal = () => {
+        if (!modal.classList.contains('is-open')) {
+          return;
+        }
+
+        stopSiteSpeech();
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('resume-modal-open');
+
+        if (previousActiveElement && document.contains(previousActiveElement)) {
+          try {
+            previousActiveElement.focus({ preventScroll: true });
+          } catch {
+            previousActiveElement.focus();
+          }
+        }
+      };
+
+      resumeLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+          }
+
+          event.preventDefault();
+          openModal();
+        });
+      });
+
+      closeTargets.forEach((target) => {
+        target.addEventListener('click', closeModal);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
+
+      window.addEventListener('pagehide', closeModal);
+    };
+
+    initResumeModal();
+
+    const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
     const readButtons = [];
+    const projectTitle = normalizeSpeechText(document.querySelector('.hero h1')?.textContent || 'Project');
 
     readSectionsConfig.forEach(({ sectionId, defaultLabel, activeLabel }) => {
       const section = document.getElementById(sectionId);
@@ -667,20 +981,41 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      let button = sectionTitle.querySelector('.read-trigger[data-read-target]');
+      const buttonContainer = section.querySelector('.card') || sectionTitle;
+
+      let button = buttonContainer.querySelector('.read-trigger[data-read-target]');
       if (!button) {
         button = document.createElement('button');
         button.className = 'read-trigger';
-        sectionTitle.appendChild(button);
+        buttonContainer.appendChild(button);
       }
 
       button.type = 'button';
+      button.classList.add('read-trigger--section-icon');
       button.dataset.readTarget = sectionId;
-      button.dataset.defaultLabel = defaultLabel;
-      button.dataset.activeLabel = activeLabel;
+      const sectionHeading = normalizeSpeechText(sectionTitle.querySelector('h1, h2, h3, h4')?.textContent || defaultLabel.replace(/^Read\s+/i, '').replace(/\s+Aloud$/i, '') || sectionId);
+      button.dataset.defaultLabel = `Read ${sectionHeading}`;
+      button.dataset.activeLabel = `Stop reading ${sectionHeading}`;
+      button.dataset.iconOnly = 'true';
       setReadButtonState(button, false);
       readButtons.push(button);
     });
+
+    const overviewSection = document.getElementById('overview');
+    const outcomesSection = document.getElementById('outcomes');
+    if ((overviewSection || outcomesSection) && !document.querySelector('[data-project-read-fab]')) {
+      const projectReadButton = document.createElement('button');
+      projectReadButton.type = 'button';
+      projectReadButton.className = 'project-read-fab';
+      projectReadButton.dataset.readTarget = 'project';
+      projectReadButton.dataset.defaultLabel = `Read ${projectTitle} from the beginning`;
+      projectReadButton.dataset.activeLabel = `Stop reading ${projectTitle}`;
+      projectReadButton.dataset.iconOnly = 'true';
+      projectReadButton.dataset.projectReadFab = 'true';
+      document.body.appendChild(projectReadButton);
+      setReadButtonState(projectReadButton, false);
+      readButtons.push(projectReadButton);
+    }
 
     if (readButtons.length === 0) {
       return;
@@ -701,47 +1036,113 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-    const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
-
-    const applySpeechPronunciationFixes = (value) => value
-      // Force known brand/domain pronunciations that default voices misread.
-      .replace(/\bpiceus\b/gi, 'Pie-see-us')
-      .replace(/\bcycle\b/gi, 'sigh-kull')
-      .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
-      .replace(/\bcyber\b/gi, 'sigh-burr')
-      .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
-        const lower = match.toLowerCase();
-        if (lower.endsWith('ing')) return 'sked-jooling';
-        if (lower.endsWith('ed')) return 'sked-joold';
-        if (lower.endsWith('es')) return 'sked-jools';
-        return 'sked-jool';
-      })
-      .replace(/\bsaas\b/gi, 'sass')
-      .replace(/\becosystem\b/gi, 'ee-ko-system')
-      .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
-        /services/i.test(match) ? 'my-crow services' : 'my-crow service'
-      ));
-
-    const pickVoice = () => {
-      const voices = window.speechSynthesis.getVoices();
-      // Prefer British male voices (Daniel = macOS/iOS Siri en-GB male)
-      const preferred = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
-      for (const name of preferred) {
-        const v = voices.find(v => v.name === name);
-        if (v) return v;
-      }
-      return voices.find(v => v.lang === 'en-GB') || null;
+    const speechStateNames = {
+      AL: 'Alabama',
+      AK: 'Alaska',
+      AZ: 'Arizona',
+      AR: 'Arkansas',
+      CA: 'California',
+      CO: 'Colorado',
+      CT: 'Connecticut',
+      DE: 'Delaware',
+      FL: 'Florida',
+      GA: 'Georgia',
+      HI: 'Hawaii',
+      ID: 'Idaho',
+      IL: 'Illinois',
+      IN: 'Indiana',
+      IA: 'Iowa',
+      KS: 'Kansas',
+      KY: 'Kentucky',
+      LA: 'Louisiana',
+      ME: 'Maine',
+      MD: 'Maryland',
+      MA: 'Massachusetts',
+      MI: 'Michigan',
+      MN: 'Minnesota',
+      MS: 'Mississippi',
+      MO: 'Missouri',
+      MT: 'Montana',
+      NE: 'Nebraska',
+      NV: 'Nevada',
+      NH: 'New Hampshire',
+      NJ: 'New Jersey',
+      NM: 'New Mexico',
+      NY: 'New York',
+      NC: 'North Carolina',
+      ND: 'North Dakota',
+      OH: 'Ohio',
+      OK: 'Oklahoma',
+      OR: 'Oregon',
+      PA: 'Pennsylvania',
+      RI: 'Rhode Island',
+      SC: 'South Carolina',
+      SD: 'South Dakota',
+      TN: 'Tennessee',
+      TX: 'Texas',
+      UT: 'Utah',
+      VT: 'Vermont',
+      VA: 'Virginia',
+      WA: 'Washington',
+      WV: 'West Virginia',
+      WI: 'Wisconsin',
+      WY: 'Wyoming',
+      DC: 'District of Columbia',
     };
+
+    const expandStateAbbreviationsForSpeech = (value) => value.replace(
+      /,\s*(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/gi,
+      (_, abbreviation) => `, ${speechStateNames[abbreviation.toUpperCase()] || abbreviation}`
+    );
+
+    const replaceDividerSlashesForSpeech = (value) => value.replace(
+      /(^|[\s(])([A-Za-z][A-Za-z0-9.+-]*)\s*\/\s*([A-Za-z][A-Za-z0-9.+-]*)(?=$|[\s),.:;!?])/g,
+      (_, prefix, left, right) => `${prefix}${left} and ${right}`
+    );
+
+    const applySpeechPronunciationFixes = (value) => normalizeSpeechDeliveryText(replaceDividerSlashesForSpeech(
+      expandStateAbbreviationsForSpeech(value)
+        // Force known brand/domain pronunciations that default voices misread.
+        .replace(/\bpiceus\b/gi, 'Pie-see-us')
+        .replace(/\brecords\b/gi, 'reh-cords')
+        .replace(/\bseo\/sem\b/gi, 'S E O and S E M')
+        .replace(/\bseo\b/gi, 'S E O')
+        .replace(/\bsem\b/gi, 'S E M')
+        .replace(/\bslas\b/gi, "S L A's")
+        .replace(/\bsla\b/gi, 'S L A')
+        .replace(/\blead\b/gi, 'leed')
+        .replace(/\bhipaa\b/gi, 'hip-uh')
+        .replace(/\biot\b/gi, 'I O T')
+        .replace(/\buga\b/gi, 'U G A')
+        .replace(/\buva\b/gi, 'U V A')
+        .replace(/\blive\b/gi, 'lyve')
+        .replace(/\bcycle\b/gi, 'sigh-kull')
+        .replace(/\blifecycle\b/gi, 'life cycle')
+        .replace(/\bcyber[\s-]?security\b/gi, 'sigh-burr security')
+        .replace(/\bcyber\b/gi, 'sigh-burr')
+        .replace(/\bux\/ui\b/gi, 'U X U I')
+        .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
+          const lower = match.toLowerCase();
+          if (lower.endsWith('ing')) return 'sked-jooling';
+          if (lower.endsWith('ed')) return 'sked-joold';
+          if (lower.endsWith('es')) return 'sked-jools';
+          return 'sked-jool';
+        })
+        .replace(/\bsaas\b/gi, 'sass')
+        .replace(/\becosystem\b/gi, 'E-co-system')
+        .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
+          /services/i.test(match) ? 'my-crow services' : 'my-crow service'
+        ))
+    ));
 
     const stopReadAloud = () => {
       window.speechSynthesis.cancel();
       clearReadButtonStates();
     };
 
-    const extractReadableText = (targetId) => {
-      const source = document.getElementById(targetId);
+    const extractSegmentsFromSource = (source) => {
       if (!source) {
-        return '';
+        return [];
       }
 
       const clone = source.cloneNode(true);
@@ -762,10 +1163,37 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (segments.length > 0) {
+        return segments;
+      }
+
+      const fallbackText = normalizeSpeechText(clone.textContent || '');
+      return fallbackText ? [fallbackText] : [];
+    };
+
+    const extractProjectReadableText = () => {
+      const segments = [];
+      const heroSection = Array.from(document.querySelectorAll('main.page .hero')).find((section) => section.querySelector('h1'));
+      const projectSources = [heroSection, overviewSection, outcomesSection].filter(Boolean);
+
+      projectSources.forEach((source) => {
+        segments.push(...extractSegmentsFromSource(source));
+      });
+
+      return segments.join('. ');
+    };
+
+    const extractReadableText = (targetId) => {
+      if (targetId === 'project') {
+        return extractProjectReadableText();
+      }
+
+      const source = document.getElementById(targetId);
+      const segments = extractSegmentsFromSource(source);
+      if (segments.length > 0) {
         return segments.join('. ');
       }
 
-      return normalizeSpeechText(clone.textContent || '');
+      return '';
     };
 
     const shouldCancelForNavigation = (anchor) => {
@@ -819,11 +1247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stopReadAloud();
 
         const utterance = new SpeechSynthesisUtterance(readText);
-        utterance.rate = 0.95;
-        utterance.pitch = 0.85;
-        utterance.lang = 'en-GB';
-        const voice = pickVoice();
-        if (voice) utterance.voice = voice;
+        applySpeechUtteranceSettings(utterance, readAloudSpeechProfile);
 
         utterance.onstart = () => {
           setReadButtonState(button, true);
