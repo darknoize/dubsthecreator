@@ -560,16 +560,6 @@
         height:38px;
       }
     }
-
-    .speech-word-highlight {
-      background-color: rgba(3, 157, 252, 0.2);
-      border: 1px solid #039dfc;
-      border-radius: 3px;
-      padding: 1px 2px;
-      box-shadow: 0 0 6px rgba(3, 157, 252, 0.3);
-      display: inline-block;
-      margin: 0 1px;
-    }
   </style>
 </head>
 <body>
@@ -1599,40 +1589,6 @@
         });
       };
 
-      const wrapWordsForHighlighting = (element) => {
-        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
-        const textNodes = [];
-        let node;
-        while (node = walker.nextNode()) {
-          if (node.textContent.trim()) {
-            textNodes.push(node);
-          }
-        }
-        textNodes.forEach((textNode) => {
-          const words = textNode.textContent.split(/(\s+)/);
-          const fragment = document.createDocumentFragment();
-          words.forEach((word) => {
-            if (word.trim()) {
-              const span = document.createElement('span');
-              span.className = 'speech-word';
-              span.textContent = word;
-              fragment.appendChild(span);
-            } else {
-              fragment.appendChild(document.createTextNode(word));
-            }
-          });
-          textNode.parentNode.replaceChild(fragment, textNode);
-        });
-      };
-
-      const unwrapWordsForHighlighting = (element) => {
-        const spans = element.querySelectorAll('.speech-word, .speech-word-highlight');
-        spans.forEach((span) => {
-          const textNode = document.createTextNode(span.textContent);
-          span.parentNode.replaceChild(textNode, span);
-        });
-      };
-
       let speechRequestId = 0;
 
       const stopReadAloud = () => {
@@ -1717,12 +1673,8 @@
           return;
         }
 
-        wrapWordsForHighlighting(source);
-        const wordSpans = source.querySelectorAll('.speech-word');
-
         let readText = extractReadableText(source);
         if (!readText) {
-          unwrapWordsForHighlighting(source);
           return;
         }
 
@@ -1735,35 +1687,12 @@
         const utterance = new SpeechSynthesisUtterance(readText);
         applySpeechUtteranceSettings(utterance, readAloudSpeechProfile);
 
-        let currentWordIndex = 0;
-        let highlightInterval;
-
-        const highlightNextWord = () => {
-          wordSpans.forEach((span, index) => {
-            span.classList.toggle('speech-word-highlight', index === currentWordIndex);
-          });
-          currentWordIndex = (currentWordIndex + 1) % wordSpans.length;
-        };
-
-        const estimatedTotalDuration = (readText.length / 5) / (readAloudSpeechProfile.rate * 1.2) * 1000; // rough estimate
-        const estimatedWordDuration = estimatedTotalDuration / wordSpans.length;
-
-        const resetHighlighting = () => {
-          if (highlightInterval) {
-            clearInterval(highlightInterval);
-            highlightInterval = undefined;
-          }
-          wordSpans.forEach(span => span.classList.remove('speech-word-highlight'));
-          unwrapWordsForHighlighting(source);
-        };
-
         const resetIfCurrent = () => {
           if (speechRequestId !== requestId) {
             return;
           }
 
           clearReadButtonStates();
-          resetHighlighting();
         };
 
         utterance.onstart = () => {
@@ -1773,9 +1702,6 @@
 
           clearReadButtonStates();
           setReadButtonState(button, true);
-          currentWordIndex = 0;
-          highlightNextWord();
-          highlightInterval = setInterval(highlightNextWord, estimatedWordDuration);
         };
         utterance.onend = resetIfCurrent;
         utterance.onerror = resetIfCurrent;
