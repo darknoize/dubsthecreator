@@ -1362,15 +1362,15 @@
         button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
       };
 
-      const resumeName = normalizeSpeechText(document.querySelector('.resume-name')?.textContent || 'Resume');
+      const resumeName = normalizeSpeechText(document.querySelector('.resume-name')?.textContent || 'résumé');
 
       const allReadButtons = [];
       if (readButton) {
         readButton.classList.remove('resume-hero__speak-trigger');
         readButton.classList.add('project-read-fab');
         readButton.dataset.iconOnly = 'true';
-        readButton.dataset.defaultLabel = readButton.dataset.defaultLabel || `Read ${resumeName} resume from the beginning`;
-        readButton.dataset.activeLabel = readButton.dataset.activeLabel || `Stop reading ${resumeName} resume`;
+        readButton.dataset.defaultLabel = readButton.dataset.defaultLabel || `Read ${resumeName} résumé from the beginning`;
+        readButton.dataset.activeLabel = readButton.dataset.activeLabel || `Stop reading ${resumeName} résumé`;
         setReadButtonState(readButton, false);
         allReadButtons.push(readButton);
       }
