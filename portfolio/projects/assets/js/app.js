@@ -1133,6 +1133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/\bmi(?:cro|co)[\s-]?services?\b/gi, (match) => (
           /services/i.test(match) ? 'my-crow services' : 'my-crow service'
         ))
+        .replace(/\bat&t\b/gi, 'A T & T')
     ));
 
     const stopReadAloud = () => {
