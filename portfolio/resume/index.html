@@ -488,6 +488,23 @@
       opacity:0.9;
     }
 
+    .tech-cluster{
+      margin-bottom:20px;
+    }
+
+    .tech-cluster:last-child{
+      margin-bottom:0;
+    }
+
+    .tech-cluster-title{
+      margin:0 0 12px 0;
+      color:rgba(98,208,250,0.85);
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
     .resume-role__subheading{
       margin-top:16px;
       color:rgba(255,255,255,0.5);
@@ -656,164 +673,218 @@
 
       <section class="tech-stack-section" data-read-aloud-ignore>
         <h3>Technology Stack</h3>
-        <div class="tech-stack-grid">
-          <!-- Design Tools -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/adobe-creative-suite.svg" alt="Adobe Creative Suite" onerror="this.style.display='none'"> Adobe Creative Suite</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/sketch.svg" alt="Sketch" onerror="this.style.display='none'"> Sketch</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/figma.svg" alt="Figma" onerror="this.style.display='none'"> Figma</span>
-          <span class="tech-tag">InVision</span>
-          <span class="tech-tag">Zeplin</span>
-          <span class="tech-tag">Principle</span>
+        
+        <!-- Design Tools -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Design</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/adobe-creative-suite.svg" alt="Adobe Creative Suite" onerror="this.style.display='none'"> Adobe Creative Suite</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/sketch.svg" alt="Sketch" onerror="this.style.display='none'"> Sketch</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/figma.svg" alt="Figma" onerror="this.style.display='none'"> Figma</span>
+            <span class="tech-tag">InVision</span>
+            <span class="tech-tag">Zeplin</span>
+            <span class="tech-tag">Principle</span>
+          </div>
+        </div>
 
-          <!-- Frontend Development -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/react.svg" alt="React" onerror="this.style.display='none'"> React</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/vue.svg" alt="Vue.js" onerror="this.style.display='none'"> Vue.js</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/angular.svg" alt="Angular" onerror="this.style.display='none'"> Angular</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/html5.svg" alt="HTML5" onerror="this.style.display='none'"> HTML5</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/css3.svg" alt="CSS3" onerror="this.style.display='none'"> CSS3</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/javascript.svg" alt="JavaScript" onerror="this.style.display='none'"> JavaScript</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/typescript.svg" alt="TypeScript" onerror="this.style.display='none'"> TypeScript</span>
-          <span class="tech-tag">SASS/SCSS</span>
-          <span class="tech-tag">Tailwind CSS</span>
-          <span class="tech-tag">Bootstrap</span>
-          <span class="tech-tag">Material-UI</span>
-          <span class="tech-tag">Next.js</span>
-          <span class="tech-tag">Gatsby</span>
-          <span class="tech-tag">Nuxt.js</span>
-          <span class="tech-tag">jQuery</span>
-          <span class="tech-tag">Webpack</span>
-          <span class="tech-tag">Vite</span>
+        <!-- Frontend Development -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Frontend</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/react.svg" alt="React" onerror="this.style.display='none'"> React</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/vue.svg" alt="Vue.js" onerror="this.style.display='none'"> Vue.js</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/angular.svg" alt="Angular" onerror="this.style.display='none'"> Angular</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/html5.svg" alt="HTML5" onerror="this.style.display='none'"> HTML5</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/css3.svg" alt="CSS3" onerror="this.style.display='none'"> CSS3</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/javascript.svg" alt="JavaScript" onerror="this.style.display='none'"> JavaScript</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/typescript.svg" alt="TypeScript" onerror="this.style.display='none'"> TypeScript</span>
+            <span class="tech-tag">SASS/SCSS</span>
+            <span class="tech-tag">Tailwind CSS</span>
+            <span class="tech-tag">Bootstrap</span>
+            <span class="tech-tag">Material-UI</span>
+            <span class="tech-tag">Next.js</span>
+            <span class="tech-tag">Gatsby</span>
+            <span class="tech-tag">Nuxt.js</span>
+            <span class="tech-tag">jQuery</span>
+            <span class="tech-tag">Webpack</span>
+            <span class="tech-tag">Vite</span>
+          </div>
+        </div>
 
-          <!-- Backend Development -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/python.svg" alt="Python" onerror="this.style.display='none'"> Python</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/nodejs.svg" alt="Node.js" onerror="this.style.display='none'"> Node.js</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/php.svg" alt="PHP" onerror="this.style.display='none'"> PHP</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/ruby.svg" alt="Ruby" onerror="this.style.display='none'"> Ruby</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/java.svg" alt="Java" onerror="this.style.display='none'"> Java</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/dotnet.svg" alt=".NET" onerror="this.style.display='none'"> .NET</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/csharp.svg" alt="C#" onerror="this.style.display='none'"> C#</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/go.svg" alt="Go" onerror="this.style.display='none'"> Go</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/rust.svg" alt="Rust" onerror="this.style.display='none'"> Rust</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/coldfusion.svg" alt="ColdFusion" onerror="this.style.display='none'"> ColdFusion</span>
-          <span class="tech-tag">Django</span>
-          <span class="tech-tag">Flask</span>
-          <span class="tech-tag">FastAPI</span>
-          <span class="tech-tag">Express.js</span>
-          <span class="tech-tag">Laravel</span>
-          <span class="tech-tag">Ruby on Rails</span>
-          <span class="tech-tag">Spring Boot</span>
-          <span class="tech-tag">ASP.NET</span>
-          <span class="tech-tag">GraphQL</span>
-          <span class="tech-tag">REST APIs</span>
+        <!-- Backend Development -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Backend</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/python.svg" alt="Python" onerror="this.style.display='none'"> Python</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/nodejs.svg" alt="Node.js" onerror="this.style.display='none'"> Node.js</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/php.svg" alt="PHP" onerror="this.style.display='none'"> PHP</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/ruby.svg" alt="Ruby" onerror="this.style.display='none'"> Ruby</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/java.svg" alt="Java" onerror="this.style.display='none'"> Java</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/dotnet.svg" alt=".NET" onerror="this.style.display='none'"> .NET</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/csharp.svg" alt="C#" onerror="this.style.display='none'"> C#</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/go.svg" alt="Go" onerror="this.style.display='none'"> Go</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/rust.svg" alt="Rust" onerror="this.style.display='none'"> Rust</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/coldfusion.svg" alt="ColdFusion" onerror="this.style.display='none'"> ColdFusion</span>
+            <span class="tech-tag">Django</span>
+            <span class="tech-tag">Flask</span>
+            <span class="tech-tag">FastAPI</span>
+            <span class="tech-tag">Express.js</span>
+            <span class="tech-tag">Laravel</span>
+            <span class="tech-tag">Ruby on Rails</span>
+            <span class="tech-tag">Spring Boot</span>
+            <span class="tech-tag">ASP.NET</span>
+            <span class="tech-tag">GraphQL</span>
+            <span class="tech-tag">REST APIs</span>
+          </div>
+        </div>
 
-          <!-- Databases -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/postgresql.svg" alt="PostgreSQL" onerror="this.style.display='none'"> PostgreSQL</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/mysql.svg" alt="MySQL" onerror="this.style.display='none'"> MySQL</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/mongodb.svg" alt="MongoDB" onerror="this.style.display='none'"> MongoDB</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/redis.svg" alt="Redis" onerror="this.style.display='none'"> Redis</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/sqlite.svg" alt="SQLite" onerror="this.style.display='none'"> SQLite</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/cassandra.svg" alt="Cassandra" onerror="this.style.display='none'"> Cassandra</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/couchdb.svg" alt="CouchDB" onerror="this.style.display='none'"> CouchDB</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/dynamodb.svg" alt="DynamoDB" onerror="this.style.display='none'"> DynamoDB</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/firebase.svg" alt="Firebase" onerror="this.style.display='none'"> Firebase</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/elasticsearch.svg" alt="Elasticsearch" onerror="this.style.display='none'"> Elasticsearch</span>
-          <span class="tech-tag">Oracle</span>
-          <span class="tech-tag">SQL Server</span>
-          <span class="tech-tag">MariaDB</span>
-          <span class="tech-tag">InfluxDB</span>
-          <span class="tech-tag">Neo4j</span>
+        <!-- Databases -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Databases</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/postgresql.svg" alt="PostgreSQL" onerror="this.style.display='none'"> PostgreSQL</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/mysql.svg" alt="MySQL" onerror="this.style.display='none'"> MySQL</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/mongodb.svg" alt="MongoDB" onerror="this.style.display='none'"> MongoDB</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/redis.svg" alt="Redis" onerror="this.style.display='none'"> Redis</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/sqlite.svg" alt="SQLite" onerror="this.style.display='none'"> SQLite</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/cassandra.svg" alt="Cassandra" onerror="this.style.display='none'"> Cassandra</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/couchdb.svg" alt="CouchDB" onerror="this.style.display='none'"> CouchDB</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/dynamodb.svg" alt="DynamoDB" onerror="this.style.display='none'"> DynamoDB</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/firebase.svg" alt="Firebase" onerror="this.style.display='none'"> Firebase</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/elasticsearch.svg" alt="Elasticsearch" onerror="this.style.display='none'"> Elasticsearch</span>
+            <span class="tech-tag">Oracle</span>
+            <span class="tech-tag">SQL Server</span>
+            <span class="tech-tag">MariaDB</span>
+            <span class="tech-tag">InfluxDB</span>
+            <span class="tech-tag">Neo4j</span>
+          </div>
+        </div>
 
-          <!-- CMS Systems -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/wordpress.svg" alt="WordPress" onerror="this.style.display='none'"> WordPress</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/drupal.svg" alt="Drupal" onerror="this.style.display='none'"> Drupal</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/joomla.svg" alt="Joomla" onerror="this.style.display='none'"> Joomla</span>
-          <span class="tech-tag">Contentful</span>
-          <span class="tech-tag">Strapi</span>
-          <span class="tech-tag">Ghost</span>
-          <span class="tech-tag">Squarespace</span>
-          <span class="tech-tag">Wix</span>
-          <span class="tech-tag">Shopify</span>
-          <span class="tech-tag">Magento</span>
-          <span class="tech-tag">PrestaShop</span>
+        <!-- CMS Systems -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">CMS</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/wordpress.svg" alt="WordPress" onerror="this.style.display='none'"> WordPress</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/drupal.svg" alt="Drupal" onerror="this.style.display='none'"> Drupal</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/joomla.svg" alt="Joomla" onerror="this.style.display='none'"> Joomla</span>
+            <span class="tech-tag">Contentful</span>
+            <span class="tech-tag">Strapi</span>
+            <span class="tech-tag">Ghost</span>
+            <span class="tech-tag">Squarespace</span>
+            <span class="tech-tag">Wix</span>
+            <span class="tech-tag">Shopify</span>
+            <span class="tech-tag">Magento</span>
+            <span class="tech-tag">PrestaShop</span>
+          </div>
+        </div>
 
-          <!-- Marketing & Product Development -->
-          <span class="tech-tag">Google Analytics</span>
-          <span class="tech-tag">Mixpanel</span>
-          <span class="tech-tag">Amplitude</span>
-          <span class="tech-tag">Hotjar</span>
-          <span class="tech-tag">Optimizely</span>
-          <span class="tech-tag">A/B Testing</span>
-          <span class="tech-tag">SEO/SEM</span>
-          <span class="tech-tag">Google Ads</span>
-          <span class="tech-tag">Facebook Ads</span>
-          <span class="tech-tag">HubSpot</span>
-          <span class="tech-tag">Salesforce</span>
-          <span class="tech-tag">Marketo</span>
-          <span class="tech-tag">Jira</span>
-          <span class="tech-tag">Productboard</span>
-          <span class="tech-tag">Figma (Product)</span>
-          <span class="tech-tag">Miro</span>
-          <span class="tech-tag">Notion</span>
+        <!-- Marketing & Product Development -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Marketing & Product</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag">Google Analytics</span>
+            <span class="tech-tag">Mixpanel</span>
+            <span class="tech-tag">Amplitude</span>
+            <span class="tech-tag">Hotjar</span>
+            <span class="tech-tag">Optimizely</span>
+            <span class="tech-tag">A/B Testing</span>
+            <span class="tech-tag">SEO/SEM</span>
+            <span class="tech-tag">Google Ads</span>
+            <span class="tech-tag">Facebook Ads</span>
+            <span class="tech-tag">HubSpot</span>
+            <span class="tech-tag">Salesforce</span>
+            <span class="tech-tag">Marketo</span>
+            <span class="tech-tag">Jira</span>
+            <span class="tech-tag">Productboard</span>
+            <span class="tech-tag">Figma (Product)</span>
+            <span class="tech-tag">Miro</span>
+            <span class="tech-tag">Notion</span>
+          </div>
+        </div>
 
-          <!-- AI & ML -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/tensorflow.svg" alt="TensorFlow" onerror="this.style.display='none'"> TensorFlow</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/pytorch.svg" alt="PyTorch" onerror="this.style.display='none'"> PyTorch</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/scikit-learn.svg" alt="Scikit-learn" onerror="this.style.display='none'"> Scikit-learn</span>
-          <span class="tech-tag">RAG</span>
-          <span class="tech-tag">CAG</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/openai.svg" alt="OpenAI" onerror="this.style.display='none'"> OpenAI</span>
-          <span class="tech-tag">GPT</span>
-          <span class="tech-tag">LLMs</span>
-          <span class="tech-tag">NLP</span>
-          <span class="tech-tag">Computer Vision</span>
-          <span class="tech-tag">Reinforcement Learning</span>
+        <!-- AI & ML -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">AI & ML</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/tensorflow.svg" alt="TensorFlow" onerror="this.style.display='none'"> TensorFlow</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/pytorch.svg" alt="PyTorch" onerror="this.style.display='none'"> PyTorch</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/scikit-learn.svg" alt="Scikit-learn" onerror="this.style.display='none'"> Scikit-learn</span>
+            <span class="tech-tag">RAG</span>
+            <span class="tech-tag">CAG</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/openai.svg" alt="OpenAI" onerror="this.style.display='none'"> OpenAI</span>
+            <span class="tech-tag">GPT</span>
+            <span class="tech-tag">LLMs</span>
+            <span class="tech-tag">NLP</span>
+            <span class="tech-tag">Computer Vision</span>
+            <span class="tech-tag">Reinforcement Learning</span>
+          </div>
+        </div>
 
-          <!-- DevOps & Infrastructure -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/docker.svg" alt="Docker" onerror="this.style.display='none'"> Docker</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/kubernetes.svg" alt="Kubernetes" onerror="this.style.display='none'"> Kubernetes</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/aws.svg" alt="AWS" onerror="this.style.display='none'"> AWS</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/azure.svg" alt="Azure" onerror="this.style.display='none'"> Azure</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-cloud.svg" alt="Google Cloud" onerror="this.style.display='none'"> Google Cloud</span>
-          <span class="tech-tag">Jenkins</span>
-          <span class="tech-tag">GitLab CI</span>
-          <span class="tech-tag">GitHub Actions</span>
-          <span class="tech-tag">Terraform</span>
-          <span class="tech-tag">Ansible</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/nginx.svg" alt="NGINX" onerror="this.style.display='none'"> NGINX</span>
-          <span class="tech-tag">Apache</span>
+        <!-- DevOps & Infrastructure -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">DevOps & Infrastructure</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/docker.svg" alt="Docker" onerror="this.style.display='none'"> Docker</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/kubernetes.svg" alt="Kubernetes" onerror="this.style.display='none'"> Kubernetes</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/aws.svg" alt="AWS" onerror="this.style.display='none'"> AWS</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/azure.svg" alt="Azure" onerror="this.style.display='none'"> Azure</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-cloud.svg" alt="Google Cloud" onerror="this.style.display='none'"> Google Cloud</span>
+            <span class="tech-tag">Jenkins</span>
+            <span class="tech-tag">GitLab CI</span>
+            <span class="tech-tag">GitHub Actions</span>
+            <span class="tech-tag">Terraform</span>
+            <span class="tech-tag">Ansible</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/nginx.svg" alt="NGINX" onerror="this.style.display='none'"> NGINX</span>
+            <span class="tech-tag">Apache</span>
+          </div>
+        </div>
 
-          <!-- Blockchain & Crypto -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/ethereum.svg" alt="Ethereum" onerror="this.style.display='none'"> Ethereum</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/solidity.svg" alt="Solidity" onerror="this.style.display='none'"> Solidity</span>
-          <span class="tech-tag">Tokenization</span>
-          <span class="tech-tag">Smart Contracts</span>
-          <span class="tech-tag">DeFi</span>
-          <span class="tech-tag">Web3</span>
-          <span class="tech-tag">NFTs</span>
-          <span class="tech-tag">IPFS</span>
+        <!-- Blockchain & Crypto -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Blockchain & Crypto</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/ethereum.svg" alt="Ethereum" onerror="this.style.display='none'"> Ethereum</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/solidity.svg" alt="Solidity" onerror="this.style.display='none'"> Solidity</span>
+            <span class="tech-tag">Tokenization</span>
+            <span class="tech-tag">Smart Contracts</span>
+            <span class="tech-tag">DeFi</span>
+            <span class="tech-tag">Web3</span>
+            <span class="tech-tag">NFTs</span>
+            <span class="tech-tag">IPFS</span>
+          </div>
+        </div>
 
-          <!-- Payments & Fintech -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/stripe.svg" alt="Stripe" onerror="this.style.display='none'"> Stripe</span>
-          <span class="tech-tag">Payment Processing</span>
-          <span class="tech-tag">Digital Wallets</span>
-          <span class="tech-tag">Fraud Detection</span>
-          <span class="tech-tag">PCI Compliance</span>
-          <span class="tech-tag">PayPal</span>
-          <span class="tech-tag">Braintree</span>
-          <span class="tech-tag">Square</span>
+        <!-- Payments & Fintech -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Payments & Fintech</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/stripe.svg" alt="Stripe" onerror="this.style.display='none'"> Stripe</span>
+            <span class="tech-tag">Payment Processing</span>
+            <span class="tech-tag">Digital Wallets</span>
+            <span class="tech-tag">Fraud Detection</span>
+            <span class="tech-tag">PCI Compliance</span>
+            <span class="tech-tag">PayPal</span>
+            <span class="tech-tag">Braintree</span>
+            <span class="tech-tag">Square</span>
+          </div>
+        </div>
 
-          <!-- Other Technologies -->
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-kafka.svg" alt="Apache Kafka" onerror="this.style.display='none'"> Apache Kafka</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-spark.svg" alt="Apache Spark" onerror="this.style.display='none'"> Apache Spark</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/hadoop.svg" alt="Hadoop" onerror="this.style.display='none'"> Hadoop</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/git.svg" alt="Git" onerror="this.style.display='none'"> Git</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/github.svg" alt="GitHub" onerror="this.style.display='none'"> GitHub</span>
-          <span class="tech-tag"><img src="../images/tech_icons_svg_set/vercel.svg" alt="Vercel" onerror="this.style.display='none'"> Vercel</span>
-          <span class="tech-tag">Linux</span>
-          <span class="tech-tag">macOS</span>
-          <span class="tech-tag">Windows</span>
-          <span class="tech-tag">Bash</span>
-          <span class="tech-tag">PowerShell</span>
+        <!-- Data Processing & Tools -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Data Processing</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-kafka.svg" alt="Apache Kafka" onerror="this.style.display='none'"> Apache Kafka</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-spark.svg" alt="Apache Spark" onerror="this.style.display='none'"> Apache Spark</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/hadoop.svg" alt="Hadoop" onerror="this.style.display='none'"> Hadoop</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/git.svg" alt="Git" onerror="this.style.display='none'"> Git</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/github.svg" alt="GitHub" onerror="this.style.display='none'"> GitHub</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/vercel.svg" alt="Vercel" onerror="this.style.display='none'"> Vercel</span>
+            <span class="tech-tag">Linux</span>
+            <span class="tech-tag">macOS</span>
+            <span class="tech-tag">Windows</span>
+            <span class="tech-tag">Bash</span>
+            <span class="tech-tag">PowerShell</span>
+          </div>
         </div>
       </section>
 
