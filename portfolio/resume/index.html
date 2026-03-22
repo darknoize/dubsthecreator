@@ -448,6 +448,8 @@
 
     .tech-stack-section::-webkit-scrollbar{
       width:8px;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
     .tech-stack-section::-webkit-scrollbar-track{
@@ -458,34 +460,13 @@
     .tech-stack-section::-webkit-scrollbar-thumb{
       background:rgba(98,208,250,0.3);
       border-radius:4px;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
-    .tech-stack-section::-webkit-scrollbar-button{
-      display:block;
-      height:16px;
-      width:8px;
-    }
-
-    .tech-stack-section::-webkit-scrollbar-button:start:decrement{
-      background:
-        linear-gradient(45deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%),
-        linear-gradient(-45deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%);
-      background-size:4px 4px;
-      background-position:2px 6px, 2px 2px;
-      background-repeat:no-repeat;
-    }
-
-    .tech-stack-section::-webkit-scrollbar-button:end:increment{
-      background:
-        linear-gradient(135deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%),
-        linear-gradient(45deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%);
-      background-size:4px 4px;
-      background-position:2px 2px, 2px 6px;
-      background-repeat:no-repeat;
-    }
-
-    .tech-stack-section::-webkit-scrollbar-button:hover{
-      background-color:rgba(98,208,250,0.1);
+    .tech-stack-section{
+      scrollbar-width: thin;
+      scrollbar-color: rgba(98,208,250,0.3) rgba(255,255,255,0.05);
     }
 
     .tech-tag{
@@ -900,7 +881,6 @@
             <span class="tech-tag">Digital Wallets</span>
             <span class="tech-tag">Fraud Detection</span>
             <span class="tech-tag">PCI Compliance</span>
-            <span class="tech-tag">PayPal</span>
             <span class="tech-tag">Braintree</span>
             <span class="tech-tag">Square</span>
           </div>
