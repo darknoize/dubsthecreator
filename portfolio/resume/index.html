@@ -446,18 +446,46 @@
       padding-right:8px;
     }
 
-    .tech-stack-grid::-webkit-scrollbar{
-      width:6px;
+    .tech-stack-section::-webkit-scrollbar{
+      width:8px;
     }
 
-    .tech-stack-grid::-webkit-scrollbar-track{
+    .tech-stack-section::-webkit-scrollbar-track{
       background:rgba(255,255,255,0.05);
-      border-radius:3px;
+      border-radius:4px;
     }
 
-    .tech-stack-grid::-webkit-scrollbar-thumb{
+    .tech-stack-section::-webkit-scrollbar-thumb{
       background:rgba(98,208,250,0.3);
-      border-radius:3px;
+      border-radius:4px;
+    }
+
+    .tech-stack-section::-webkit-scrollbar-button{
+      display:block;
+      height:16px;
+      width:8px;
+    }
+
+    .tech-stack-section::-webkit-scrollbar-button:start:decrement{
+      background:
+        linear-gradient(45deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%),
+        linear-gradient(-45deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%);
+      background-size:4px 4px;
+      background-position:2px 6px, 2px 2px;
+      background-repeat:no-repeat;
+    }
+
+    .tech-stack-section::-webkit-scrollbar-button:end:increment{
+      background:
+        linear-gradient(135deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%),
+        linear-gradient(45deg, transparent 0%, transparent 40%, rgba(98,208,250,0.3) 40%, rgba(98,208,250,0.3) 60%, transparent 60%, transparent 100%);
+      background-size:4px 4px;
+      background-position:2px 2px, 2px 6px;
+      background-repeat:no-repeat;
+    }
+
+    .tech-stack-section::-webkit-scrollbar-button:hover{
+      background-color:rgba(98,208,250,0.1);
     }
 
     .tech-tag{
