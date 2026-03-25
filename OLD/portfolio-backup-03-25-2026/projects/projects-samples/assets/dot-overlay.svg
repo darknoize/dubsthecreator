@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1365" height="2048" viewBox="0 0 1365 2048">
+
+  <title>Pure Vector Dot Grid</title>
+  <desc>Transparent background with scalable vector dots.</desc>
+
+  <defs>
+    <!-- Simple repeating dot pattern -->
+    <pattern id="dotPattern"
+             width="22" height="22"
+             patternUnits="userSpaceOnUse">
+      <circle cx="11.0" cy="11.0" r="1.2"
+              fill="#FFFFFF" fill-opacity="0.35"/>
+    </pattern>
+  </defs>
+
+  <!-- Transparent background by default -->
+  <rect x="0" y="0" width="1365" height="2048"
+        fill="url(#dotPattern)" />
+
+</svg>

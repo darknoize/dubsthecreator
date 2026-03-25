@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="740" height="208" viewBox="0 0 740 208">
+  <defs>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="740" height="208" rx="22" fill="rgba(255,255,255,0.035)" stroke="#FFFFFF" stroke-opacity="0.10"/>
+  <rect x="16" y="16" width="240" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.10"/>
+  <rect x="16" y="38" width="320" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.08"/>
+  <rect x="16" y="60" width="170" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.08"/>
+  <rect x="16" y="90" width="390" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.06"/>
+  <path d="M18 148 C 140 96, 290 170, 470 92 S 690 118, 720 78"
+        stroke="#3EF2D2" stroke-opacity="0.35" stroke-width="2" fill="none" filter="url(#glow)"/>
+  <path d="M18 164 C 160 126, 300 186, 470 126 S 690 146, 720 106"
+        stroke="#7AA6FF" stroke-opacity="0.28" stroke-width="2" fill="none" filter="url(#glow)"/>
+</svg>

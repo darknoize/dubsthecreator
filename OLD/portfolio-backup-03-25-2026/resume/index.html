@@ -1,0 +1,2167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>William Weems - Resume</title>
+  <link rel="icon" href="../projects/assets/img/dubs.png" type="image/png" />
+  <link rel="stylesheet" href="../projects/assets/css/styles.css" />
+  <style>
+    html{
+      min-height:100%;
+      background:#07101a;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
+      background:#07101a;
+      isolation:isolate;
+    }
+
+    .resume-bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(180deg, rgba(4, 8, 16, 0.18) 0%, rgba(4, 8, 16, 0.38) 28%, rgba(4, 8, 16, 0.72) 100%),
+        url('../images/backgrounds/background-cloud.png'),
+        url('../projects/assets/img/bg-page.png');
+      background-position:
+        center center,
+        76% top,
+        center center;
+      background-size:
+        100% 100%,
+        auto 100%,
+        cover;
+      background-repeat:no-repeat, no-repeat, no-repeat;
+      filter:saturate(1.06) brightness(0.78);
+      transform:none;
+    }
+
+    .resume-bg::before,
+    .resume-bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+    }
+
+    .resume-bg::before{
+      background:
+        radial-gradient(980px 620px at 18% 14%, rgba(98,208,250,0.12), transparent 62%),
+        radial-gradient(840px 540px at 84% 10%, rgba(255,255,255,0.08), transparent 56%);
+    }
+
+    .resume-bg::after{
+      background:
+        linear-gradient(180deg, rgba(4,8,15,0.04), rgba(4,8,15,0.16) 36%, rgba(4,8,15,0.48) 72%, rgba(4,8,15,0.76) 100%),
+        radial-gradient(1200px 960px at 50% 120%, rgba(3,7,13,0.18), rgba(3,7,13,0.9) 74%);
+    }
+
+    .resume-shell{
+      max-width:1120px;
+      margin:0 auto;
+      padding:28px 20px 72px;
+      position:relative;
+      z-index:1;
+    }
+
+    .resume-hero{
+      margin-top:12px;
+      padding:32px;
+      overflow:visible;
+    }
+
+    .resume-eyebrow{
+      color:rgba(98,208,250,0.9);
+      font-size:12px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+    }
+
+    .resume-name{
+      margin-top:12px;
+      font-size:clamp(2.4rem, 5vw, 4.2rem);
+      line-height:calc(1em + 25px);
+      letter-spacing:-0.03em;
+      font-weight:560;
+    }
+
+    .resume-roleline{
+      margin-top:14px;
+      font-size:1.04rem;
+      color:rgba(255,255,255,0.84);
+      max-width:860px;
+    }
+
+    .resume-contact-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .resume-contact-list a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.04);
+      color:rgba(255,255,255,0.84);
+      font-size:13px;
+      line-height:1;
+      text-decoration:none;
+      white-space:nowrap;
+      transition:border-color .2s ease, color .2s ease, transform .15s ease;
+    }
+
+    .resume-contact-list a svg{
+      width:14px;
+      height:14px;
+      flex-shrink:0;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.9;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      opacity:0.92;
+    }
+
+    .resume-contact-list a:hover{
+      transform:translateY(-1px);
+      border-color:rgba(98,208,250,0.45);
+      color:rgba(255,255,255,0.96);
+    }
+
+    .resume-actions{
+      display:block;
+      margin-top:0;
+    }
+
+    .resume-jump-nav{
+      position:sticky;
+      top:0;
+      z-index:4;
+      margin:18px 0 22px;
+      isolation:isolate;
+    }
+
+    .resume-jump-nav__inner{
+      padding:14px 18px 12px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:linear-gradient(180deg, rgba(10, 20, 34, 0.96), rgba(7, 14, 24, 0.93));
+      box-shadow:0 14px 30px rgba(0,0,0,0.18);
+      contain:paint;
+    }
+
+    .resume-jump-nav__label{
+      margin:0 0 10px;
+      color:rgba(98,208,250,0.88);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+    }
+
+    .resume-filters{
+      margin:0 !important;
+      padding:0 2px 4px !important;
+      gap:10px;
+      overscroll-behavior-x:contain;
+      scroll-snap-type:x proximity;
+    }
+
+    .resume-filters .tag-lrg{
+      padding:10px 14px !important;
+      border-radius:14px !important;
+      background:rgba(250, 250, 250, 0.12) !important;
+      border-color:rgba(255,255,255,0.22) !important;
+      font-size:13px !important;
+      scroll-snap-align:center;
+      transition:transform .15s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .resume-filters .tag-lrg:hover{
+      transform:translateY(-1px);
+      background:rgba(250, 250, 250, 0.18) !important;
+      border-color:rgba(98,208,250,0.42) !important;
+      box-shadow:0 10px 20px rgba(2, 12, 22, 0.16);
+    }
+
+    .resume-filters .tag-lrg.active{
+      background:#039dfc !important;
+      border-color:#039dfc !important;
+      box-shadow:0 10px 22px rgba(3,157,252,0.18);
+    }
+
+    .resume-scroll-target{
+      scroll-margin-top:132px;
+    }
+
+    .resume-section{
+      margin-top:22px;
+    }
+
+    .resume-section > .card,
+    .resume-role{
+      overflow:visible;
+    }
+
+    .resume-section .sectionTitle{
+      position:relative;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:16px;
+      padding-right:56px;
+    }
+
+    .resume-section .sectionTitle h2{
+      margin:0;
+      font-size:1.45rem;
+      font-weight:520;
+    }
+
+    .resume-summary{
+      color:rgba(255,255,255,0.84);
+      font-size:1.03rem;
+      line-height:1.82;
+    }
+
+    .resume-role{
+      position:relative;
+      margin-top:18px;
+      padding:24px;
+    }
+
+    .resume-role:first-of-type{
+      margin-top:0;
+    }
+
+    .resume-role__header{
+      position:relative;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      padding-right:56px;
+    }
+
+    .resume-role__identity{
+      display:flex;
+      align-items:flex-start;
+      gap:14px;
+      min-width:0;
+    }
+
+    .resume-role__identity-copy{
+      min-width:0;
+    }
+
+    .resume-role__project-link{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:56px;
+      height:56px;
+      flex:0 0 auto;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid rgba(98,208,250,0.28);
+      background:
+        linear-gradient(180deg, rgba(4,8,15,0.08), rgba(4,8,15,0.3)),
+        var(--project-thumb, radial-gradient(circle at 20% 20%, rgba(98,208,250,0.3), rgba(8,18,32,0.95) 72%));
+      background-position:center;
+      background-size:cover;
+      background-repeat:no-repeat;
+      color:transparent;
+      font-size:0;
+      line-height:1;
+      transition:transform .15s ease, border-color .2s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow:0 12px 28px rgba(0,0,0,0.22);
+    }
+
+    .resume-role__project-link::before,
+    .resume-role__project-link::after{
+      content:"";
+      position:absolute;
+    }
+
+    .resume-role__project-link::before{
+      inset:0;
+      background:linear-gradient(180deg, rgba(7,10,18,0.04), rgba(7,10,18,0.16) 42%, rgba(7,10,18,0.7) 100%);
+    }
+
+    .resume-role__project-link::after{
+      content:"↗";
+      top:7px;
+      right:7px;
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,0.92);
+      color:#05101b;
+      font-size:12px;
+      font-weight:800;
+      box-shadow:0 8px 18px rgba(0,0,0,0.28);
+    }
+
+    .resume-role__project-link:hover{
+      transform:translateY(-1px);
+      border-color:rgba(98,208,250,0.55);
+      box-shadow:0 18px 36px rgba(0,0,0,0.28);
+      filter:saturate(1.06) brightness(1.02);
+    }
+
+    .resume-role__project-link:focus-visible{
+      outline:none;
+      border-color:rgba(98,208,250,0.68);
+      box-shadow:0 0 0 3px rgba(98,208,250,0.24), 0 18px 36px rgba(0,0,0,0.28);
+    }
+
+    .resume-role__org{
+      margin:0;
+      font-size:1.6rem;
+      font-weight:560;
+      letter-spacing:0.01em;
+      line-height:1.1;
+    }
+
+    .resume-role__title{
+      margin-top:8px;
+      color:rgba(255,255,255,0.92);
+      font-size:1rem;
+      font-weight:700;
+    }
+
+    .resume-role__period{
+      margin:0;
+      color:rgba(255,255,255,0.56);
+      font-size:13px;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      text-align:right;
+    }
+
+    .resume-hero__speak-trigger,
+    .resume-role__speak-trigger,
+    .resume-section__speak-trigger{
+      position:absolute;
+      top:24px;
+      right:24px;
+      z-index:1;
+      width:36px;
+      min-width:36px;
+      height:36px;
+      margin:0;
+      padding:0;
+      gap:0;
+      border-radius:999px;
+      border-color:rgba(98,208,250,0.34);
+      background:rgba(10,20,34,0.9);
+      color:rgba(255,255,255,0.95);
+      box-shadow:0 12px 24px rgba(0,0,0,0.22);
+      backdrop-filter:blur(10px);
+    }
+
+    .resume-role__speak-trigger{
+      top:0;
+      right:0;
+    }
+
+    .resume-hero__speak-trigger svg,
+    .resume-role__speak-trigger svg,
+    .resume-section__speak-trigger svg{
+      width:17px;
+      height:17px;
+      margin:0 !important;
+    }
+
+    .resume-hero__speak-trigger:hover,
+    .resume-role__speak-trigger:hover,
+    .resume-section__speak-trigger:hover{
+      border-color:rgba(98,208,250,0.72);
+      box-shadow:0 0 18px rgba(98,208,250,0.2);
+    }
+
+    .resume-hero__speak-trigger.is-reading,
+    .resume-role__speak-trigger.is-reading,
+    .resume-section__speak-trigger.is-reading{
+      background:rgba(3,157,252,0.22);
+      border-color:rgba(3,157,252,0.76);
+    }
+
+    .resume-role__context{
+      margin-top:14px;
+      color:rgba(98,208,250,0.92);
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:0.03em;
+    }
+
+    .resume-role__summary{
+      margin-top:14px;
+      color:rgba(255,255,255,0.82);
+      line-height:1.82;
+    }
+
+    /* Tech Stack Section */
+    .tech-stack-section{
+      margin:32px 0 24px;
+      padding:24px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:linear-gradient(180deg, rgba(10, 20, 34, 0.96), rgba(7, 14, 24, 0.93));
+      box-shadow:0 14px 30px rgba(0,0,0,0.18);
+      height:500px;
+      overflow-y:auto;
+    }
+
+    .tech-stack-section h3{
+      margin:0 0 16px 0;
+      color:rgba(98,208,250,0.9);
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+    }
+
+    .tech-stack-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      padding-right:8px;
+    }
+
+    .tech-stack-section::-webkit-scrollbar{
+      width:8px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .tech-stack-section::-webkit-scrollbar-track{
+      background:rgba(255,255,255,0.05);
+      border-radius:4px;
+    }
+
+    .tech-stack-section::-webkit-scrollbar-thumb{
+      background:rgba(98,208,250,0.3);
+      border-radius:4px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .tech-stack-section{
+      scrollbar-width: thin;
+      scrollbar-color: rgba(98,208,250,0.3) rgba(255,255,255,0.05);
+    }
+
+    .tech-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,0.15);
+      background:rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.9);
+      font-size:13px;
+      font-weight:500;
+      white-space:nowrap;
+      transition:transform .15s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .tech-tag:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.12);
+      border-color:rgba(98,208,250,0.4);
+    }
+
+    .tech-tag img{
+      width:16px;
+      height:16px;
+      flex-shrink:0;
+      opacity:0.9;
+    }
+
+    .tech-cluster{
+      margin-bottom:20px;
+    }
+
+    .tech-cluster:last-child{
+      margin-bottom:0;
+    }
+
+    .tech-cluster-title{
+      margin:0 0 12px 0;
+      color:rgba(98,208,250,0.85);
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
+    .resume-role__subheading{
+      margin-top:16px;
+      color:rgba(255,255,255,0.5);
+      font-size:11px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+    }
+
+    .resume-list{
+      margin:14px 0 0 20px;
+      display:grid;
+      gap:10px;
+      color:rgba(255,255,255,0.74);
+    }
+
+    .resume-list li{
+      padding-left:4px;
+      line-height:1.72;
+    }
+
+    .resume-list strong{
+      color:rgba(255,255,255,0.94);
+    }
+
+    .resume-education-list{
+      display:grid;
+      gap:12px;
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+
+    .resume-education-item{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:10px;
+      padding:14px 0;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    .resume-education-item:first-child{
+      border-top:none;
+      padding-top:0;
+    }
+
+    .resume-education-school{
+      font-weight:700;
+      color:rgba(255,255,255,0.92);
+    }
+
+    .resume-education-meta{
+      color:rgba(255,255,255,0.62);
+    }
+
+    @media (max-width: 760px){
+      .resume-bg{
+        background-position:
+          center center,
+          68% top,
+          center center;
+        background-size:
+          100% 100%,
+          auto 100%,
+          cover;
+      }
+
+      .resume-jump-nav{
+        top:0;
+        margin:16px 0 20px;
+      }
+
+      .resume-jump-nav__inner{
+        padding:12px 14px 10px;
+        border-radius:18px;
+      }
+
+      .resume-filters{
+        gap:8px;
+      }
+
+      .resume-filters .tag-lrg{
+        padding:10px 12px !important;
+        font-size:12px !important;
+      }
+
+      .resume-scroll-target{
+        scroll-margin-top:122px;
+      }
+
+      .resume-shell{
+        padding:18px 14px 48px;
+      }
+
+      .resume-hero,
+      .resume-role,
+      .resume-section > .card{
+        padding:20px;
+      }
+
+      .resume-role__period{
+        text-align:left;
+      }
+
+      .resume-role__header{
+        padding-right:58px;
+      }
+
+      .resume-role__identity{
+        width:100%;
+      }
+
+      .resume-role__project-link{
+        width:48px;
+        height:48px;
+        border-radius:14px;
+      }
+
+      .resume-role__project-link::after{
+        top:6px;
+        right:6px;
+      }
+
+      .resume-contact-list{
+        gap:8px;
+      }
+
+      .resume-contact-list a{
+        width:auto;
+        justify-content:flex-start;
+        flex:0 0 auto;
+      }
+
+      .resume-hero__speak-trigger,
+      .resume-role__speak-trigger,
+      .resume-section__speak-trigger{
+        top:20px;
+        right:20px;
+        width:38px;
+        min-width:38px;
+        height:38px;
+      }
+
+      .tech-stack-section{
+        height:300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="resume-bg" aria-hidden="true"></div>
+  <main class="resume-shell">
+    <section id="resume-reader">
+      <section class="card resume-hero">
+        <p class="resume-eyebrow">Resume</p>
+        <h1 class="resume-name">William Weems</h1>
+        <p class="resume-roleline">Chief AI Officer | Product-Driven AI Platforms | Atlanta, GA</p>
+
+        <div class="resume-contact-list" aria-label="Resume contact details">
+          <a href="#" data-contact-email aria-label="Send email to William Weems"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg><span>Email William</span></a>
+          <a href="tel:+17062244104" data-contact-phone aria-label="Call William Weems at 706-224-4104"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.62a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.46-1.46a2 2 0 0 1 2.11-.45c.84.3 1.72.51 2.62.63A2 2 0 0 1 22 16.92z"></path></svg><span>Call William</span></a>
+          <a href="https://www.dubsthecreator.com" target="_blank" rel="noopener noreferrer" aria-label="Visit William Weems website"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.2 4.72"></path><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L12.8 19.28"></path></svg><span>Website</span></a>
+          <a href="https://www.linkedin.com/in/dubsthecreator" target="_blank" rel="noopener noreferrer" aria-label="Visit William Weems LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6.5" r="1.25"></circle><path d="M4.75 10v8"></path><path d="M10 18v-8"></path><path d="M10 13.5a3 3 0 0 1 6 0V18"></path></svg><span>LinkedIn</span></a>
+        </div>
+
+        <div class="resume-actions">
+          <button type="button" class="read-trigger project-read-fab" data-read-resume data-icon-only="true" aria-pressed="false">Read Resume Aloud</button>
+        </div>
+      </section>
+
+      <section class="resume-section" data-resume-anchor-label="Overview">
+        <div class="card">
+          <div class="sectionTitle">
+            <h2>Executive Summary</h2>
+          </div>
+          <p class="resume-summary">Executive technology and product leader with over two decades of experience architecting, governing, and scaling AI-driven platforms across fintech, healthcare, education, public sector, automotive, media, and enterprise environments. Specialized in multimodal, agentic, and high-assurance systems that bridge advanced AI architecture with human-centered design, regulatory compliance, and operational execution.</p>
+        </div>
+      </section>
+
+      <section class="tech-stack-section" data-read-aloud-ignore>
+        <h3>Technology Stack</h3>
+        
+        <!-- Business and Product Tools -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Business and Product Tools</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag">Jira</span>
+            <span class="tech-tag">Confluence</span>
+            <span class="tech-tag">Slack</span>
+            <span class="tech-tag">Microsoft Teams</span>
+            <span class="tech-tag">Trello</span>
+            <span class="tech-tag">Asana</span>
+            <span class="tech-tag">Miro</span>
+            <span class="tech-tag">Google Workspace</span>
+            <span class="tech-tag">Google Docs</span>
+            <span class="tech-tag">Google Sheets</span>
+            <span class="tech-tag">Google Calendar</span>
+            <span class="tech-tag">Microsoft 365</span>
+            <span class="tech-tag">Microsoft Outlook</span>
+            <span class="tech-tag">Azure</span>
+            <span class="tech-tag">Salesforce</span>
+            <span class="tech-tag">HubSpot</span>
+            <span class="tech-tag">Tableau</span>
+            <span class="tech-tag">Power BI</span>
+            <span class="tech-tag">Notion</span>
+            <span class="tech-tag">Zoom</span>
+            <span class="tech-tag">Calendly</span>
+            <span class="tech-tag">Agile</span>
+            <span class="tech-tag">Scrum</span>
+            <span class="tech-tag">Meta Business</span>
+            <span class="tech-tag">Mailchimp</span>
+            <span class="tech-tag">LinkedIn Ads</span>
+            <span class="tech-tag">Facebook Ads</span>
+            <span class="tech-tag">Instagram Ads</span>
+            <span class="tech-tag">X Ads</span>
+          </div>
+        </div>
+
+        <!-- Design Tools -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Design</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/adobe-creative-suite.svg" alt="Adobe Creative Suite" onerror="this.style.display='none'"> Adobe Creative Suite</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/sketch.svg" alt="Sketch" onerror="this.style.display='none'"> Sketch</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/figma.svg" alt="Figma" onerror="this.style.display='none'"> Figma</span>
+            <span class="tech-tag">InVision</span>
+            <span class="tech-tag">Zeplin</span>
+            <span class="tech-tag">Principle</span>
+            <span class="tech-tag">Adobe Firefly</span>
+            <span class="tech-tag">Blender</span>
+            <span class="tech-tag">After Effects</span>
+            <span class="tech-tag">Premier</span>
+          </div>
+        </div>
+
+        <!-- Multimedia Producer -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Multimedia Producer</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag">Ableton LIVE</span>
+            <span class="tech-tag">ProTools</span>
+            <span class="tech-tag">MPC</span>
+            <span class="tech-tag">WAV</span>
+            <span class="tech-tag">Serato</span>
+            <span class="tech-tag">Splice</span>
+            <span class="tech-tag">Avid</span>
+            <span class="tech-tag">FL Studio</span>
+          </div>
+        </div>
+
+        <!-- Frontend Development -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Frontend</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/react.svg" alt="React" onerror="this.style.display='none'"> React</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/vue.svg" alt="Vue.js" onerror="this.style.display='none'"> Vue.js</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/angular.svg" alt="Angular" onerror="this.style.display='none'"> Angular</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/html5.svg" alt="HTML5" onerror="this.style.display='none'"> HTML5</span>
+            <span class="tech-tag">XML</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/css3.svg" alt="CSS3" onerror="this.style.display='none'"> CSS3</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/javascript.svg" alt="JavaScript" onerror="this.style.display='none'"> JavaScript</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/typescript.svg" alt="TypeScript" onerror="this.style.display='none'"> TypeScript</span>
+            <span class="tech-tag">ES5/ES6</span>
+            <span class="tech-tag">jQuery</span>
+            <span class="tech-tag">SASS/SCSS</span>
+            <span class="tech-tag">Tailwind CSS</span>
+            <span class="tech-tag">Bootstrap</span>
+            <span class="tech-tag">Material-UI</span>
+            <span class="tech-tag">Next.js</span>
+            <span class="tech-tag">Gatsby</span>
+            <span class="tech-tag">Nuxt.js</span>
+            <span class="tech-tag">Webpack</span>
+            <span class="tech-tag">Vite</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/react-native.svg" alt="React Native" onerror="this.style.display='none'"> React Native</span>
+            <span class="tech-tag">Swift</span>
+            <span class="tech-tag">Kotlin</span>
+          </div>
+        </div>
+
+        <!-- Backend Development -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Backend</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/python.svg" alt="Python" onerror="this.style.display='none'"> Python</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/nodejs.svg" alt="Node.js" onerror="this.style.display='none'"> Node.js</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/php.svg" alt="PHP" onerror="this.style.display='none'"> PHP</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/ruby.svg" alt="Ruby" onerror="this.style.display='none'"> Ruby</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/java.svg" alt="Java" onerror="this.style.display='none'"> Java</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/dotnet.svg" alt=".NET" onerror="this.style.display='none'"> .NET</span>
+            <span class="tech-tag">XAML</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/csharp.svg" alt="C#" onerror="this.style.display='none'"> C#</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/go.svg" alt="Go" onerror="this.style.display='none'"> Go</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/rust.svg" alt="Rust" onerror="this.style.display='none'"> Rust</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/coldfusion.svg" alt="ColdFusion" onerror="this.style.display='none'"> ColdFusion</span>
+            <span class="tech-tag">Django</span>
+            <span class="tech-tag">Flask</span>
+            <span class="tech-tag">FastAPI</span>
+            <span class="tech-tag">Express.js</span>
+            <span class="tech-tag">Laravel</span>
+            <span class="tech-tag">Ruby on Rails</span>
+            <span class="tech-tag">Spring Boot</span>
+            <span class="tech-tag">ASP.NET</span>
+            <span class="tech-tag">GraphQL</span>
+            <span class="tech-tag">REST APIs</span>
+            <span class="tech-tag">Kong</span>
+            <span class="tech-tag">Istio</span>
+          </div>
+        </div>
+
+        <!-- Databases -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Databases</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/postgresql.svg" alt="PostgreSQL" onerror="this.style.display='none'"> PostgreSQL</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/mysql.svg" alt="MySQL" onerror="this.style.display='none'"> MySQL</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/mongodb.svg" alt="MongoDB" onerror="this.style.display='none'"> MongoDB</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/redis.svg" alt="Redis" onerror="this.style.display='none'"> Redis</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/sqlite.svg" alt="SQLite" onerror="this.style.display='none'"> SQLite</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/cassandra.svg" alt="Cassandra" onerror="this.style.display='none'"> Cassandra</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/couchdb.svg" alt="CouchDB" onerror="this.style.display='none'"> CouchDB</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/dynamodb.svg" alt="DynamoDB" onerror="this.style.display='none'"> DynamoDB</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/firebase.svg" alt="Firebase" onerror="this.style.display='none'"> Firebase</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/elasticsearch.svg" alt="Elasticsearch" onerror="this.style.display='none'"> Elasticsearch</span>
+            <span class="tech-tag">Oracle</span>
+            <span class="tech-tag">SQL Server</span>
+            <span class="tech-tag">MariaDB</span>
+            <span class="tech-tag">InfluxDB</span>
+            <span class="tech-tag">Neo4j</span>
+          </div>
+        </div>
+
+        <!-- CMS Systems -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">CMS</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/wordpress.svg" alt="WordPress" onerror="this.style.display='none'"> WordPress</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/drupal.svg" alt="Drupal" onerror="this.style.display='none'"> Drupal</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/joomla.svg" alt="Joomla" onerror="this.style.display='none'"> Joomla</span>
+            <span class="tech-tag">Contentful</span>
+            <span class="tech-tag">Strapi</span>
+            <span class="tech-tag">Ghost</span>
+            <span class="tech-tag">Squarespace</span>
+            <span class="tech-tag">Wix</span>
+            <span class="tech-tag">Shopify</span>
+            <span class="tech-tag">Magento</span>
+            <span class="tech-tag">PrestaShop</span>
+          </div>
+        </div>
+
+        <!-- Marketing & Product Development -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Marketing & Product</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag">Google Analytics</span>
+            <span class="tech-tag">Mixpanel</span>
+            <span class="tech-tag">Amplitude</span>
+            <span class="tech-tag">Hotjar</span>
+            <span class="tech-tag">Optimizely</span>
+            <span class="tech-tag">A/B Testing</span>
+            <span class="tech-tag">SEO/SEM</span>
+            <span class="tech-tag">Google Ads</span>
+            <span class="tech-tag">Facebook Ads</span>
+            <span class="tech-tag">HubSpot</span>
+            <span class="tech-tag">Salesforce</span>
+            <span class="tech-tag">Marketo</span>
+            <span class="tech-tag">Jira</span>
+            <span class="tech-tag">Productboard</span>
+            <span class="tech-tag">Figma (Product)</span>
+            <span class="tech-tag">Miro</span>
+            <span class="tech-tag">Notion</span>
+          </div>
+        </div>
+
+        <!-- AI & ML -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">AI & ML</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/tensorflow.svg" alt="TensorFlow" onerror="this.style.display='none'"> TensorFlow</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/pytorch.svg" alt="PyTorch" onerror="this.style.display='none'"> PyTorch</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/scikit-learn.svg" alt="Scikit-learn" onerror="this.style.display='none'"> Scikit-learn</span>
+            <span class="tech-tag">RAG</span>
+            <span class="tech-tag">CAG</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/openai.svg" alt="OpenAI" onerror="this.style.display='none'"> OpenAI</span>
+            <span class="tech-tag">Claude</span>
+            <span class="tech-tag">GPT</span>
+            <span class="tech-tag">LLMs</span>
+            <span class="tech-tag">NLP</span>
+            <span class="tech-tag">Computer Vision</span>
+            <span class="tech-tag">Reinforcement Learning</span>
+            <span class="tech-tag">GitHub Copilot</span>
+            <span class="tech-tag">OpenClaw</span>
+            <span class="tech-tag">Ollama</span>
+          </div>
+        </div>
+
+        <!-- DevOps & Infrastructure -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">DevOps & Infrastructure</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/docker.svg" alt="Docker" onerror="this.style.display='none'"> Docker</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/kubernetes.svg" alt="Kubernetes" onerror="this.style.display='none'"> Kubernetes</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/aws.svg" alt="AWS" onerror="this.style.display='none'"> AWS</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/azure.svg" alt="Azure" onerror="this.style.display='none'"> Azure</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-cloud.svg" alt="Google Cloud" onerror="this.style.display='none'"> Google Cloud</span>
+            <span class="tech-tag">Homebrew</span>
+            <span class="tech-tag">Jenkins</span>
+            <span class="tech-tag">GitLab CI</span>
+            <span class="tech-tag">GitHub Actions</span>
+            <span class="tech-tag">Terraform</span>
+            <span class="tech-tag">Ansible</span>
+            <span class="tech-tag">YAML</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/nginx.svg" alt="NGINX" onerror="this.style.display='none'"> NGINX</span>
+            <span class="tech-tag">Apache</span>
+            <span class="tech-tag">Cloudflare</span>
+            <span class="tech-tag">Fastly</span>
+            <span class="tech-tag">Akamai</span>
+            <span class="tech-tag">CloudFront</span>
+            <span class="tech-tag">CLI</span>
+            <span class="tech-tag">Pen Testing</span>
+            <span class="tech-tag">OWASP</span>
+            <span class="tech-tag">Grafana</span>
+            <span class="tech-tag">Prometheus</span>
+            <span class="tech-tag">DataDog</span>
+            <span class="tech-tag">AWS Lambda</span>
+            <span class="tech-tag">Azure Functions</span>
+            <span class="tech-tag">Vercel Functions</span>
+            <span class="tech-tag">OAuth</span>
+            <span class="tech-tag">JWT</span>
+            <span class="tech-tag">SSL/TLS</span>
+          </div>
+        </div>
+
+        <!-- Blockchain & Crypto -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Blockchain & Crypto</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/ethereum.svg" alt="Ethereum" onerror="this.style.display='none'"> Ethereum</span>
+            <span class="tech-tag">BTC</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/solidity.svg" alt="Solidity" onerror="this.style.display='none'"> Solidity</span>
+            <span class="tech-tag">Tokenization</span>
+            <span class="tech-tag">Smart Contracts</span>
+            <span class="tech-tag">DeFi</span>
+            <span class="tech-tag">Web3</span>
+            <span class="tech-tag">NFTs</span>
+            <span class="tech-tag">IPFS</span>
+          </div>
+        </div>
+
+        <!-- Payments & Fintech -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Payments & Fintech</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/stripe.svg" alt="Stripe" onerror="this.style.display='none'"> Stripe</span>
+            <span class="tech-tag">Payment Processing</span>
+            <span class="tech-tag">Digital Wallets</span>
+            <span class="tech-tag">Fraud Detection</span>
+            <span class="tech-tag">PCI Compliance</span>
+            <span class="tech-tag">Braintree</span>
+            <span class="tech-tag">Square</span>
+          </div>
+        </div>
+
+        <!-- Data Processing & Tools -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">Data Processing</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-kafka.svg" alt="Apache Kafka" onerror="this.style.display='none'"> Apache Kafka</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-spark.svg" alt="Apache Spark" onerror="this.style.display='none'"> Apache Spark</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/hadoop.svg" alt="Hadoop" onerror="this.style.display='none'"> Hadoop</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/git.svg" alt="Git" onerror="this.style.display='none'"> Git</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/github.svg" alt="GitHub" onerror="this.style.display='none'"> GitHub</span>
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/vercel.svg" alt="Vercel" onerror="this.style.display='none'"> Vercel</span>
+            <span class="tech-tag">Linux</span>
+            <span class="tech-tag">macOS</span>
+            <span class="tech-tag">Windows</span>
+            <span class="tech-tag">Bash</span>
+            <span class="tech-tag">PowerShell</span>
+          </div>
+        </div>
+
+        <!-- GeoSpatial & Mapping -->
+        <div class="tech-cluster">
+          <h4 class="tech-cluster-title">GeoSpatial</h4>
+          <div class="tech-stack-grid">
+            <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-maps.svg" alt="Google Maps" onerror="this.style.display='none'"> Google Maps API</span>
+            <span class="tech-tag">Geo Targeting</span>
+            <span class="tech-tag">GeoFence</span>
+            <span class="tech-tag">Location Tracking</span>
+            <span class="tech-tag">Geo Search</span>
+            <span class="tech-tag">Shared Locations</span>
+            <span class="tech-tag">Satellite Tracking</span>
+            <span class="tech-tag">GeoMapping</span>
+            <span class="tech-tag">Crime Mapping</span>
+            <span class="tech-tag">GIS</span>
+            <span class="tech-tag">GPS</span>
+            <span class="tech-tag">Geospatial Analysis</span>
+            <span class="tech-tag">Mapbox</span>
+            <span class="tech-tag">OpenStreetMap</span>
+            <span class="tech-tag">PostGIS</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="resume-jump-nav" data-read-aloud-ignore>
+        <div class="resume-jump-nav__inner">
+          <p class="resume-jump-nav__label">Swipe Through Experience</p>
+          <nav class="filters resume-filters" data-resume-jump-nav aria-label="Resume section navigation"></nav>
+        </div>
+      </section>
+
+      <section class="resume-section">
+        <div class="sectionTitle">
+          <h2>Professional Experience</h2>
+        </div>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/piceus/piceus-placeholder.png')" href="../projects/piceus.html" target="_top" aria-label="View PICEUS portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">PICEUS</h3>
+                <p class="resume-role__title">Founder &amp; Chief AI Officer</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | January 2019 to Present</p>
+          </div>
+          <p class="resume-role__context">Governed, multimodal, and agentic AI platform for regulated and high-risk environments</p>
+          <p class="resume-role__summary">Founded and led PICEUS as a product-driven AI platform company focused on building machine-native intelligence systems that operate safely, predictably, and at scale in regulated, high-risk, and enterprise environments. Owned platform vision through execution while aligning AI architecture, governance, security, product design, and operational integration, with builder-level accountability for deployable systems, auditability, and long-term platform durability.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Founder, Executive AI Leadership &amp; Governance:</strong> Defined end-to-end platform vision, governed AI operating model, and execution strategy across AI architecture, product, security, and operations; established decision rights, delivery cadence, controlled autonomy, auditability, privacy-by-design, zero-trust security, and policy enforcement, while aligning legal, compliance, investors, and enterprise leadership to move AI from training and testing into operational, deployable systems in regulated environments.</li>
+            <li><strong>Poly-Agent Systems &amp; Orchestration:</strong> Designed real-time, role-based poly-agent architectures enabling coordinated reasoning, bounded autonomy, and task specialization across complex workflows.</li>
+            <li><strong>Multimodal Intelligence Pipelines:</strong> Built unified pipelines combining language, vision, signal, sensor, and behavioral data to support adaptive analysis, simulation, and decision systems.</li>
+            <li><strong>Adaptive Learning &amp; Reasoning Systems:</strong> Implemented governed LLM/LRM fusion using vector and graph-based reasoning to enable continuous improvement within explicit safety and policy constraints.</li>
+            <li><strong>Product &amp; Human-Centered System Design:</strong> Led UX, interaction design, and product architecture to ensure AI systems were usable, explainable, and trustworthy for real operators.</li>
+            <li><strong>Identity, Payments &amp; Incentive Systems:</strong> Architected secure identity frameworks, digital wallets, and tokenized incentive mechanisms integrated into platform workflows.</li>
+            <li><strong>Platform Delivery &amp; Deployment:</strong> Delivered cloud-native, API-first systems supporting private cloud, edge, mobile, IoT, and hybrid enterprise deployments.</li>
+            <li><strong>Operational &amp; Enterprise Integration:</strong> Embedded AI capabilities into compliance, risk management, HR operations, communications, and executive decision workflows.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/force-helix/drive-placeholder.png')" href="../projects/force-marketing-helix.html" target="_top" aria-label="View Force Marketing portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">Force Marketing</h3>
+                <p class="resume-role__title">Product Director</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Buckhead, GA | October 2019 to March 2022</p>
+          </div>
+          <p class="resume-role__context">AI-driven automotive SaaS, inventory intelligence, and operational automation</p>
+          <p class="resume-role__summary">Led product strategy, platform architecture, and delivery for an AI-driven automotive SaaS platform used by tier-one dealer groups and automotive brands. Owned discovery through execution while aligning product design, engineering delivery, data pipelines, and operational workflows, with builder-level accountability for shipped systems, business impact, and measurable operational improvement.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Product, Platform &amp; AI Leadership:</strong> Owned product vision, scope, roadmap, and delivery for a cloud-based, AI-driven enterprise SaaS platform across web and mobile, establishing decision rights, execution cadence, and cross-functional alignment across product, engineering, design, data, and operations.</li>
+            <li><strong>AI-Driven Inventory Intelligence &amp; Automation:</strong> Architected and delivered AI-powered workflows leveraging VIN-level, behavioral, and market data to identify inventory risk, accelerate vehicle turnover, optimize pricing and merchandising, and re-architect internal operations around AI-driven automation.</li>
+            <li><strong>Enterprise SaaS Architecture &amp; Data Platforms:</strong> Led development of a scalable SaaS platform supporting large dealer networks, high data volume, and real-time decision support; defined data ingestion, normalization, and analytics pipelines enabling accurate, actionable insights across inventory, marketing, and performance metrics.</li>
+            <li><strong>UX, Adoption &amp; Trust in AI Systems:</strong> Directed UX and data-informed experience design to ensure enterprise usability, adoption, and confidence in AI-assisted decision systems.</li>
+            <li><strong>Team Building &amp; Technical Leadership:</strong> Recruited and led senior engineering and design talent, including hiring a senior engineer from Porsche to support delivery of a scalable, React-based AI platform.</li>
+            <li><strong>Go-to-Market &amp; Executive Alignment:</strong> Partnered with sales, marketing, and executive leadership to support platform rollout, customer onboarding, and enterprise adoption.</li>
+            <li><strong>Platform Performance, Security &amp; Reliability:</strong> Improved data governance, system reliability, performance, and scalability to meet enterprise expectations, operational SLAs, and compliance requirements.</li>
+            <li><strong>Industry Recognition:</strong> Platform received the NADA Award for Automotive Innovation, validating product impact, execution quality, and market differentiation.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/tripfiles/TripFiles-placeholder.png')" href="../projects/tripfiles.html" target="_top" aria-label="View TripFiles portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">TripFiles</h3>
+                <p class="resume-role__title">Senior UX/UI Designer &amp; Product Lead</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | July 2018 to October 2019</p>
+          </div>
+          <p class="resume-role__context">Private social travel platform spanning mobile, data modeling, and monetization strategy</p>
+          <p class="resume-role__summary">Led product, UX, and platform strategy for a privately funded social travel platform, initially engaged for design ownership and rapidly expanding into product leadership and commercial strategy. Owned discovery through execution while aligning UX/UI design, engineering delivery, data structures, and business modeling, with builder-level accountability for product viability, user adoption, and long-term scalability.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Product, Platform &amp; UX Leadership:</strong> Owned end-to-end product direction, UX/UI, and platform evolution, defining scope, priorities, and delivery standards across design and engineering teams.</li>
+            <li><strong>User Journey &amp; Collaboration Architecture:</strong> Defined traveler and organizer personas, trip creation flows, sharing models, and collaboration patterns supporting real-world travel planning and coordination.</li>
+            <li><strong>Data Modeling &amp; Information Architecture:</strong> Designed structured schemas for itineraries, reservations, documents, contacts, and trip artifacts, enabling durable storage, retrieval, and reuse across trips.</li>
+            <li><strong>Workflow Automation &amp; Orchestration:</strong> Implemented reminders, checklists, and time-based triggers to reduce friction across trip planning, execution, and post-travel recall.</li>
+            <li><strong>Integrations, Ingestion &amp; Consolidation Pipelines:</strong> Designed email and document-intake workflows to automatically ingest and consolidate confirmations, tickets, and receipts into unified trip records.</li>
+            <li><strong>Search, Retrieval &amp; Recall Systems:</strong> Built fast lookup and navigation patterns enabling on-the-go access to trips, segments, and critical documents during travel.</li>
+            <li><strong>Mobile-First &amp; Resilient Experience Design:</strong> Delivered responsive, mobile-optimized experiences accounting for intermittent connectivity, real-world travel constraints, and device variability.</li>
+            <li><strong>Privacy, Sharing &amp; Access Controls:</strong> Implemented permission models supporting families and group travel with controlled visibility of sensitive information.</li>
+            <li><strong>Monetization &amp; Platform Viability:</strong> Introduced monetization concepts and product flows that evolved the platform from a pure social network into a viable, revenue-generating product.</li>
+            <li><strong>Distributed Team Leadership &amp; Execution:</strong> Coordinated Atlanta-based and offshore European engineering teams, delivering developer-ready specifications and maintaining execution quality.</li>
+            <li><strong>Iterative Delivery &amp; Outcome Validation:</strong> Shipped iterative releases informed by user feedback and usage data, driving measurable improvements in retention, engagement, and task completion.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/aces/aces-primary.png')" href="../projects/aces-health.html" target="_top" aria-label="View Aces Health portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">Aces Health</h3>
+                <p class="resume-role__title">Senior UX Designer / Product Lead</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | July 2017 to December 2018</p>
+          </div>
+          <p class="resume-role__context">HIPAA-compliant healthcare, research, and digital consent platforms</p>
+          <p class="resume-role__summary">Led product strategy, UX, and platform delivery for a HIPAA-compliant healthcare and research SaaS platform serving medical, pharmaceutical, and clinical research organizations. Owned discovery through execution while aligning product design, engineering delivery, data workflows, and regulatory requirements, with builder-level accountability for patient trust, compliance, and production-ready clinical systems.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Healthcare Product &amp; Platform Leadership:</strong> Owned product vision, scope, and delivery across UX, engineering, and data teams for a regulated healthcare and research platform operating under HIPAA constraints.</li>
+            <li><strong>Digital Consent &amp; Governance Architecture:</strong> Designed and delivered a first-of-its-kind digital Safe Contract system enabling transparent patient consent, opt-in participation, auditability, and controlled data-sharing for clinical and pharmaceutical research.</li>
+            <li><strong>HIPAA-Aligned UX &amp; Data Flows:</strong> Architected privacy-aware user journeys, role-based access controls, and compliant data flows emphasizing accuracy, traceability, and regulatory adherence.</li>
+            <li><strong>Clinical Workflow Systems:</strong> Designed secure dashboards, scheduling systems, profiles, and review workflows for clinicians, researchers, and administrators operating in high-trust environments.</li>
+            <li><strong>Hardware-Integrated Health Platforms:</strong> Integrated hardware-based data capture, including smart-glasses systems used in epilepsy research and treatment, into analytics and reporting pipelines.</li>
+            <li><strong>Real-Time Research &amp; Analytics:</strong> Oversaw data collection, validation, and reporting logic supporting real-time clinical insight, monitoring, and collaborative research workflows.</li>
+            <li><strong>Medical &amp; Research Stakeholder Alignment:</strong> Worked directly with physicians, pharmaceutical partners, and research organizations to translate complex clinical, ethical, and regulatory requirements into usable systems.</li>
+            <li><strong>Trust-Centered Patient Experience:</strong> Designed patient-facing experiences that balanced clinical rigor with clarity, education, and confidence in consent and data usage.</li>
+            <li><strong>Go-to-Market Support for Regulated Platforms:</strong> Supported launch, positioning, and institutional adoption of a regulated healthcare product, aligning messaging with compliance and trust expectations.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/XBowling/bowling-placeholder.png')" href="../projects/xbowling.html" target="_top" aria-label="View related XBowling portfolio project" title="View related project: XBowling">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">Banyan Hills / Canopy</h3>
+                <p class="resume-role__title">Senior UX/UI Designer / Product &amp; Platform Lead</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | January 2018 to June 2018</p>
+          </div>
+          <p class="resume-role__context">Industrial SaaS platforms, energy systems, and consumer applications</p>
+          <p class="resume-role__summary">Led UX/UI and product design for complex, data-driven SaaS platforms spanning industrial, energy, and consumer domains. Owned discovery through execution while aligning enterprise clients, business stakeholders, and engineering teams to translate highly technical systems into usable, market-ready platforms, with builder-level accountability for accuracy, reliability, and adoption.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Enterprise &amp; Industrial Systems Leadership:</strong> Led end-to-end UX and product design across industrial SaaS platforms and consumer applications, operating within regulated, high-stakes operational environments.</li>
+            <li><strong>Energy &amp; Petroleum Platform Design:</strong> Designed UX/UI for advanced petroleum infrastructure systems supporting fuel storage, tanking, distribution, and recipe-based blend management, including ethanol and gasoline mixtures, where accuracy and reliability were mission-critical.</li>
+            <li><strong>Operational Workflow &amp; Data Modeling:</strong> Translated complex operational logic, constraints, and data models into clear workflows and interfaces usable by operators, managers, and enterprise stakeholders.</li>
+            <li><strong>Client &amp; Stakeholder Collaboration:</strong> Worked directly with enterprise clients, internal business teams, and engineering groups to define requirements, workflows, and product direction across multiple verticals.</li>
+            <li><strong>Platform Usability &amp; Adoption:</strong> Designed interfaces and interaction patterns that reduced operational error, improved efficiency, and supported real-world industrial usage.</li>
+            <li><strong>Consumer Platform Design:</strong> In parallel, designed consumer-facing SaaS products, including a national bowling and gaming platform with mobile applications supporting competition, rewards, and social engagement.</li>
+            <li><strong>Branding &amp; Go-to-Market Support:</strong> Supported branding, product positioning, and go-to-market efforts across industrial and consumer offerings.</li>
+            <li><strong>Motion, Media &amp; Experience Design:</strong> Delivered animated interfaces, marketing videos, and application assets bridging product UX and external communications.</li>
+            <li><strong>Developer-Ready Systems:</strong> Produced detailed design specifications and front-end assets enabling rapid, high-quality implementation in fast-paced SaaS environments.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div>
+              <h3 class="resume-role__org">Dev&#9734;Star</h3>
+              <p class="resume-role__title">Founder / CEO</p>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | July 2016 to June 2018</p>
+          </div>
+          <p class="resume-role__context">Design &amp; Technology Agency, providing product delivery for enterprise, industrial, and consumer platforms</p>
+          <p class="resume-role__summary">Founded and led Dev&#9734;Star as a design and technology agency operating at the intersection of product strategy, engineering, marketing systems, and hardware-adjacent platforms. Owned discovery through execution while aligning client leadership, product design, engineering delivery, and go-to-market needs, with builder-level accountability for shipped systems, execution quality, and measurable business outcomes under tight timelines.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Founder &amp; Executive Leadership:</strong> Built and led a multidisciplinary agency delivering end-to-end product, platform, and marketing systems for national and international clients across retail, industrial, sports, and enterprise sectors.</li>
+            <li><strong>Enterprise Platform Delivery:</strong> Led design and development of responsive web, mobile, and portal platforms supporting large-scale operations, campaigns, and customer engagement.</li>
+            <li><strong>Marketing Technology &amp; Analytics Systems:</strong> Designed and delivered marketing platforms integrating SEO/SEM, analytics, dashboards, attribution tracking, and digital measurement systems.</li>
+            <li><strong>Geolocation &amp; Mapping Infrastructure:</strong> Implemented large-scale geolocation and mapping systems, including Google Maps integrations tracking <abbr title="over 8,000">8,000+</abbr> locations nationwide, used to analyze distribution, sales performance, and operational reach.</li>
+            <li><strong>Data Platforms &amp; Workflow Systems:</strong> Redesigned and custom-built cloud-based data management platforms supporting enterprise workflows, reporting, and decision-making.</li>
+            <li><strong>Brand Systems &amp; Revenue Enablement:</strong> Created branded collateral, sales materials, conference assets, and printed brand systems used directly in securing enterprise partnerships, including a multi-million-dollar Starbucks partnership.</li>
+            <li><strong>Hardware-Adjacent &amp; Experiential Systems:</strong> Designed and supported product-adjacent hardware experiences, experiential marketing systems, and early production builds bridging physical and digital interaction.</li>
+            <li><strong>High-Volume Content Production:</strong> Oversaw enterprise-quality content production across digital, print, and event channels, maintaining brand consistency at scale.</li>
+            <li><strong>Team Leadership &amp; Mentorship:</strong> Led and mentored designers, developers, and strategists, ensuring delivery quality, consistency, and professional growth.</li>
+            <li><strong>Executive &amp; Client Collaboration:</strong> Worked directly with founders, CEOs, CMOs, and technical leaders to align product strategy, execution, and business outcomes under aggressive timelines.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/uva/uva-placeholder.png')" href="../projects/uva.html" target="_top" aria-label="View University of Virginia portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">University of Virginia</h3>
+                <p class="resume-role__title">Lead Technology Consultant / Platform Contributor</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Richmond, VA | July 2016 to March 2018</p>
+          </div>
+          <p class="resume-role__context">Digital storytelling, civil rights education, and archival research platforms</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for a large-scale digital storytelling and education initiative documenting the integration of Black students and teachers into formerly segregated classrooms. Owned discovery through execution while aligning content architecture, platform design, engineering delivery, media production, and institutional governance, with builder-level accountability for historical accuracy, academic adoption, and long-term sustainability.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Institutional &amp; Academic Leadership:</strong> Served as lead consultant for a multi-stakeholder, grant-supported initiative involving educators, historians, academic leadership, and funding bodies across the University of Virginia.</li>
+            <li><strong>Civil Rights Digital Storytelling Platform:</strong> Designed and delivered a living documentary platform capturing first-hand accounts from students, teachers, and community members directly involved in desegregation and the civil rights movement.</li>
+            <li><strong>Archival Content Architecture &amp; Governance:</strong> Defined content structure, metadata, and archival workflows supporting long-term preservation, curriculum use, and scholarly research.</li>
+            <li><strong>Historically Significant Media Integration:</strong> Integrated civil rights footage and archival materials donated by major media archives, including Freedom Riders documentation and materials associated with Reverend Martin Luther King Jr.'s speeches and marches.</li>
+            <li><strong>Cross-Institution Collaboration:</strong> Coordinated closely with African American Studies programs at UVA and the University of Georgia, leveraging shared leadership, contributors, and archival foundations across institutions.</li>
+            <li><strong>Media Production &amp; Editorial Leadership:</strong> Oversaw video, audio, and documentary production featuring real educators, students, and community members, ensuring narrative integrity and educational clarity.</li>
+            <li><strong>Platform Design for Education &amp; Public Use:</strong> Designed UX and navigation models supporting classroom adoption, public exploration, and historical research use cases.</li>
+            <li><strong>Stakeholder &amp; Funding Alignment:</strong> Partnered with academic leadership, investor committees, and institutional stakeholders to align platform scope, funding requirements, and long-term vision.</li>
+            <li><strong>Distribution, Reach &amp; Adoption:</strong> Delivered SEO strategy, social assets, and content distribution workflows supporting national reach, educator adoption, and public engagement.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div>
+              <h3 class="resume-role__org">DoMyOwn</h3>
+              <p class="resume-role__title">Product Design Director / Systems Architect</p>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | March 2014 to March 2017</p>
+          </div>
+          <p class="resume-role__context">E-commerce growth, platform modernization, and education-driven customer experience</p>
+          <p class="resume-role__summary">Led product, UX, and platform modernization for a high-growth e-commerce business, partnering directly with executive leadership to transform customer experience, technology infrastructure, and brand strategy. Owned discovery through execution while aligning product design, engineering, marketing, data workflows, and operational readiness, with builder-level accountability for revenue growth, customer trust, and scalable platform performance.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Product &amp; Platform Leadership:</strong> Owned platform vision, scope, and delivery across UX, engineering, marketing, and operations, with direct accountability for revenue impact and customer outcomes.</li>
+            <li><strong>Revenue Growth &amp; Business Transformation:</strong> Helped scale the business from approximately $14M to $64M in annual revenue by re-architecting the customer experience, platform systems, and education strategy.</li>
+            <li><strong>Education-Driven UX &amp; Trust Design:</strong> Designed interfaces and content systems focused on product education, safe usage, and customer confidence, expanding the addressable market beyond traditional buyers.</li>
+            <li><strong>E-Commerce Platform Modernization:</strong> Led redesign of site architecture, navigation, and workflows to improve conversion, retention, and support efficiency.</li>
+            <li><strong>Conversion Optimization &amp; Experimentation:</strong> Directed UX/UI strategy, A/B testing, and responsive design to optimize acquisition, engagement, and checkout performance.</li>
+            <li><strong>Infrastructure &amp; Operational Scale:</strong> Built and supported AWS-backed infrastructure, dynamic shipping systems, and operational tooling to enable growth and fulfillment efficiency.</li>
+            <li><strong>Compliance-Aware Merchandising:</strong> Partnered with major manufacturers, including Bayer and Monsanto, on compliant product expansion, labeling, and merchandising within regulated product categories.</li>
+            <li><strong>Cross-Functional Executive Alignment:</strong> Worked closely with leadership across marketing, operations, and engineering to align platform strategy with P&amp;L goals and long-term growth.</li>
+            <li><strong>Marketing, Content &amp; Brand Systems:</strong> Led creation of campaigns, educational content, infographics, trade-show materials, and lifecycle messaging supporting both acquisition and retention.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/nbc-olympics/rio-placeholder.png')" href="../projects/nbc-olympics.html" target="_top" aria-label="View NBC Olympics portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">NBC / Xfinity</h3>
+                <p class="resume-role__title">Lead Editorial Marketing Designer</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Buckhead, GA | July 2016 to September 2016</p>
+          </div>
+          <p class="resume-role__context">Live Olympic, CTV, and large-scale media platform experiences</p>
+          <p class="resume-role__summary">Led experience strategy, design execution, and live platform delivery for Xfinity's Olympic and connected-TV initiatives, operating within one of the largest real-time media environments in the world. Owned discovery through execution while aligning editorial content, platform design, engineering workflows, media operations, and performance requirements, with builder-level accountability for uptime, accuracy, and viewer experience during live global events.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Live Media Platform Leadership:</strong> Led design and execution across high-traffic, real-time CTV experiences supporting Olympic coverage delivered to millions of viewers globally.</li>
+            <li><strong>Editorial &amp; Experience Architecture:</strong> Designed immersive experiences including live scores, medal counts, event schedules, collections, and real-time updates within the Xfinity platform.</li>
+            <li><strong>Real-Time Content Operations:</strong> Created and managed thousands of live screens, themes, and branded components deployed across Xfinity's CTV ecosystem under live broadcast conditions.</li>
+            <li><strong>Platform Reliability &amp; Performance:</strong> Worked directly inside the Xfinity platform with media operations and engineering teams to ensure stability, performance, and zero-downtime delivery during peak viewership.</li>
+            <li><strong>Analytics-Driven Programming:</strong> Developed Top 100 music and movie collections driven by analytics and real-time performance data.</li>
+            <li><strong>Media Asset Integration &amp; Rights Management:</strong> Integrated live footage, photography, and highlight moments from elite agencies, including Getty Images, ensuring accuracy, rights compliance, and editorial quality.</li>
+            <li><strong>CMS, Metadata &amp; Discoverability:</strong> Oversaw CMS workflows, SEO tagging, metadata structures, and content organization to support discoverability and navigation at scale.</li>
+            <li><strong>Cross-Team Coordination:</strong> Collaborated across editorial, product, design, engineering, and executive teams spanning Philadelphia, Atlanta, and Rio de Janeiro to align delivery under extreme time constraints.</li>
+            <li><strong>Quality &amp; Brand Governance:</strong> Ensured brand consistency, editorial integrity, and execution quality across live and on-demand experiences during one of the world's largest media events.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/lexisnexis/lexisnexis-placeholder.png')" href="../projects/lexisnexis.html" target="_top" aria-label="View LexisNexis portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">LexisNexis</h3>
+                <p class="resume-role__title">Senior UX/UI Designer / Human Factors Engineer</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Alpharetta, GA | May 2013 to March 2014</p>
+          </div>
+          <p class="resume-role__context">Enterprise risk, fraud, identity, and intelligence platforms for regulated and government environments</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for enterprise risk and intelligence systems used by global corporations, financial institutions, and government agencies. Owned discovery through execution while aligning UX/UI, human-factors engineering, product design, engineering delivery, data workflows, and operational readiness, with builder-level accountability for shipped outcomes, measurable improvement, security, accuracy, and adoption within highly regulated, mission-critical environments.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Enterprise Risk Platform Leadership:</strong> Contributed senior-level leadership across product, design, engineering, and research teams, owning delivery quality, usability outcomes, and platform readiness for regulated deployments.</li>
+            <li><strong>Multi-Platform Unification &amp; Architecture:</strong> Played a central role in unifying three systems, two existing LexisNexis risk platforms and a newly acquired Israeli intelligence system, into a single, white-label risk and threat intelligence platform.</li>
+            <li><strong>Human Factors &amp; Decision-Critical UX:</strong> Designed interaction models and workflows optimized for analysts, investigators, and call-center operators working under time-sensitive, high-risk conditions.</li>
+            <li><strong>Identity, Permissions &amp; Secure Access Models:</strong> Designed advanced roles, permissions, and identity-verification workflows, including call-center authentication systems supporting real-time user verification.</li>
+            <li><strong>Geospatial &amp; Intelligence Interfaces:</strong> Built UX for geospatial analytics, crime mapping, parolee tracking, movement analysis, and behavioral pattern detection used by law enforcement and enterprise security teams.</li>
+            <li><strong>Data Integration &amp; Intelligence Pipelines:</strong> Coordinated data ingestion, normalization, and integration patterns across multiple intelligence sources to support accurate analysis and decision-making.</li>
+            <li><strong>Cross-Border Engineering Collaboration:</strong> Worked directly with Israeli engineering teams and aligned offshore India-based development teams to shared architectural standards and delivery requirements.</li>
+            <li><strong>Research, Validation &amp; Risk Reduction:</strong> Oversaw research efforts auditing use cases, capability overlap, and integration risk across merged platforms to reduce operational and delivery risk.</li>
+            <li><strong>Stakeholder Mediation &amp; Delivery Alignment:</strong> Acted as a trusted intermediary when product, business, and technical constraints conflicted, helping teams converge on viable, compliant solutions.</li>
+            <li><strong>Mentorship &amp; Team Enablement:</strong> Mentored junior designers and developers, strengthening platform literacy, domain understanding, and execution quality across teams.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/cardlytics/cardlytics-placeholder.png')" href="../projects/cardlytics.html" target="_top" aria-label="View Cardlytics portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">Cardlytics</h3>
+                <p class="resume-role__title">Product &amp; Data Platform Lead</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | July 2012 to May 2013</p>
+          </div>
+          <p class="resume-role__context">Transaction-based purchase intelligence and marketing platforms embedded within regulated banking environments</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for transaction-driven purchase-intelligence platforms embedded within tier-one banking applications. Owned discovery through execution while aligning product design, engineering delivery, data pipelines, and operational readiness, with builder-level accountability for shipped outcomes, financial data integrity, and measurable performance within highly regulated fintech environments.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Product &amp; Data Platform Leadership:</strong> Defined platform scope, decision rights, and operating cadence across product, design, engineering, data, and stakeholders, owning end-to-end delivery quality and measurable outcomes.</li>
+            <li><strong>Bank-Embedded Data Product Strategy:</strong> Defined product strategy for purchase-intelligence, offers, and measurement workflows operating directly inside consumer banking experiences for national and international financial institutions.</li>
+            <li><strong>Transaction-Based Segmentation &amp; Targeting:</strong> Built audience models leveraging real-time and historical transaction behavior, configurable targeting rules, and partner constraints within banking systems.</li>
+            <li><strong>Attribution, Measurement &amp; Financial Analytics:</strong> Implemented reporting and performance frameworks to evaluate campaign lift, conversion, and impact while maintaining financial accuracy and auditability.</li>
+            <li><strong>Enterprise Partner Integrations:</strong> Coordinated secure data exchange, integration requirements, and delivery alignment with banking partners and internal platform engineering teams.</li>
+            <li><strong>Privacy, Consent &amp; Data Governance:</strong> Implemented privacy-aware data handling, consent considerations, and governance controls appropriate for sensitive financial and consumer transaction datasets.</li>
+            <li><strong>UX for Marketers &amp; Banking Operators:</strong> Designed campaign setup, management, and reporting experiences that reduced operational complexity while respecting banking UX and compliance constraints.</li>
+            <li><strong>Operational Tooling &amp; Execution Quality:</strong> Built internal tooling and delivery processes supporting campaign operations, QA validation, monitoring, and execution reliability at scale.</li>
+            <li><strong>Scale, Stability &amp; Platform Reliability:</strong> Improved stability, throughput, and performance of campaign and reporting systems under increasing transaction volume and partner growth.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/red-cedar/red-cedar-placeholder.png')" href="../projects/red-cedar-michigan-state.html" target="_top" aria-label="View Red Cedar portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">Red Cedar Solutions Group</h3>
+                <p class="resume-role__title">Product Design Director</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Okemos, MI | November 2010 to July 2012</p>
+          </div>
+          <p class="resume-role__context">Statewide education systems, public-sector platforms, and secure, compliance-driven delivery</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for statewide and public-sector technology initiatives supporting education, analytics, and institutional decision-making. Owned discovery through execution while aligning product design, engineering delivery, data modeling, and operational readiness, with builder-level accountability for shipped systems, adoption, and measurable outcomes within regulated government environments.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Technology &amp; Delivery Leadership:</strong> Defined platform scope, decision rights, and operating cadence across product, design, engineering, and stakeholders, owning end-to-end delivery quality, release readiness, and measurable outcomes.</li>
+            <li><strong>Stakeholder-Centered Delivery:</strong> Partnered with program owners and operators to define needs, constraints, and success criteria, translating requirements into reliable platform improvements.</li>
+            <li><strong>Digital Platform Modernization:</strong> Improved web and platform systems to increase reliability, usability, maintainability, and operational resilience.</li>
+            <li><strong>Content &amp; Data Workflow Design:</strong> Designed workflows and tooling supporting publishing operations, data integrity, and day-to-day operational efficiency.</li>
+            <li><strong>Security, Access &amp; Compliance Controls:</strong> Applied role-based access controls and secure development practices appropriate for institutional and regulated environments.</li>
+            <li><strong>Performance, Monitoring &amp; Operations:</strong> Implemented monitoring, performance tuning, and operational dashboards to support uptime, visibility, and incident response.</li>
+            <li><strong>System Integration &amp; Automation:</strong> Integrated third-party services and internal systems to reduce manual work, improve consistency, and streamline operations.</li>
+            <li><strong>Process, Documentation &amp; Enablement:</strong> Produced documentation, runbooks, and training materials to support long-term sustainability and knowledge transfer.</li>
+            <li><strong>Continuous Improvement &amp; Iteration:</strong> Established feedback loops and iterative release cycles informed by usage data and stakeholder input.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/att/att-placeholder.png')" href="../projects/att-enterprise.html" target="_top" aria-label="View AT&T portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">AT&amp;T / Wipro</h3>
+                <p class="resume-role__title">Senior Mobile UX/UI Designer</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | January 2010 to February 2010</p>
+          </div>
+          <p class="resume-role__context">Carrier-grade mobile platform frameworks and first-generation smartphone systems</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for this initiative, owning discovery through execution while aligning product design, engineering build-out, data workflows, and operational readiness. Maintained a builder-first approach with clear accountability for shipped outcomes and measurable improvement.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Carrier-Scale Platform Leadership:</strong> Defined program scope, decision rights, and operating cadence across product, design, engineering, and offshore delivery teams, owning end-to-end delivery quality and release readiness for carrier-grade mobile platforms.</li>
+            <li><strong>Enterprise Program Delivery:</strong> Led delivery across multi-team initiatives supporting first-generation smartphone UX/UI frameworks, aligning AT&amp;T product leadership with Wipro engineering execution under tight timelines.</li>
+            <li><strong>Platform Architecture &amp; Systems Integration:</strong> Defined integration patterns between mobile OS-level UX frameworks, native applications, and carrier services to ensure consistent behavior, performance, and scalability.</li>
+            <li><strong>Process, Governance &amp; Risk Management:</strong> Implemented delivery governance, design reviews, and risk management practices to maintain execution confidence across distributed, onshore/offshore teams.</li>
+            <li><strong>Requirements Translation &amp; Technical Alignment:</strong> Translated product and business requirements into detailed interaction models, UI frameworks, and implementation documentation consumable by engineering teams.</li>
+            <li><strong>Quality Assurance &amp; Release Discipline:</strong> Coordinated design QA, implementation audits, and release readiness to ensure UX fidelity, system stability, and carrier-grade reliability.</li>
+            <li><strong>Operational Support &amp; Production Readiness:</strong> Supported production handoff with documentation, escalation paths, and validation processes appropriate for telecom environments.</li>
+            <li><strong>Vendor &amp; Partner Collaboration:</strong> Worked directly with Wipro delivery teams and AT&amp;T stakeholders to manage dependencies, timelines, and execution quality.</li>
+            <li><strong>Outcome Measurement &amp; Executive Reporting:</strong> Defined success criteria and reporting artifacts to ensure delivered frameworks met performance, usability, and platform consistency goals.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/dr-oz/Projects-Landing-Container.png')" href="../projects/dr-oz.html" target="_top" aria-label="View Dr. Oz portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">Dr. Oz</h3>
+                <p class="resume-role__title">Product &amp; UX/UI Designer</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | November 2009 to December 2009</p>
+          </div>
+          <p class="resume-role__context">Consumer health-media platforms integrating educational content, user journeys, and regulated considerations</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for consumer-facing health-media initiatives supporting educational content and engagement at scale. Owned discovery through execution while aligning product design, engineering, data workflows, and operational readiness, with builder-level accountability for shipped outcomes, platform reliability, and measurable improvement within regulated healthcare and media environments.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Product &amp; Platform Leadership:</strong> Owned platform vision, scope, decision rights, and operating cadence across product, design, engineering, and stakeholders, ensuring delivery quality from requirements through release readiness.</li>
+            <li><strong>Regulated UX, Trust &amp; Safety:</strong> Designed patient- and user-facing journeys prioritizing clarity, informed consent, and safe handling of sensitive health data in regulated environments.</li>
+            <li><strong>Data Governance &amp; Compliance:</strong> Implemented role-based access controls, audit-friendly data handling, and secure integration patterns aligned with healthcare trust and compliance expectations.</li>
+            <li><strong>Care, Education &amp; Content Workflows:</strong> Built structured workflows supporting education, guidance, and engagement across personalized, multi-step health experiences.</li>
+            <li><strong>Personalization &amp; Decision Logic:</strong> Designed segmentation models and rules-based personalization to deliver relevant guidance, content sequencing, and next-best actions.</li>
+            <li><strong>Platform Integration &amp; Lifecycle Management:</strong> Integrated content systems and operational tooling to support publishing, review, governance, and full content lifecycle management.</li>
+            <li><strong>Performance, Reliability &amp; Scale:</strong> Tuned application performance, monitoring, and uptime practices to support high-traffic, consumer-facing health platforms.</li>
+            <li><strong>Measurement &amp; Optimization:</strong> Established analytics to track engagement, completion, and drop-off across complex health journeys, informing iterative improvement.</li>
+            <li><strong>Cross-Functional Execution:</strong> Coordinated product, design, engineering, and partner stakeholders to ship compliant, user-safe releases on schedule.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/webmd/webmd.png')" href="../projects/webmd.html" target="_top" aria-label="View WebMD portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">WebMD</h3>
+                <p class="resume-role__title">Product &amp; Platform Lead</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Atlanta, GA | December 2008 to February 2009</p>
+          </div>
+          <p class="resume-role__context">Consumer health platform redesign across content systems, design governance, and performance</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for consumer-facing health initiatives at WebMD, owning discovery through execution while aligning product design, editorial systems, engineering, and operational readiness. Drove improvements across content architecture, design governance, discoverability, and site performance to support high-traffic, trust-sensitive healthcare experiences, maintaining builder-level accountability for shipped outcomes, platform reliability, and measurable user impact.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Platform Redesign Leadership:</strong> Played a key leadership role in the second-generation redesign of the WebMD platform, redefining site architecture, navigation, and content presentation during a period of rapid growth and regulatory complexity.</li>
+            <li><strong>Design Standards &amp; System Governance:</strong> Established platform-wide design standards and a centralized design bible used across UX, engineering, and content teams to improve consistency, quality, and execution speed.</li>
+            <li><strong>In-House Capability Transition:</strong> Supported the transition of creative and design operations from external agencies to in-house teams, absorbing, standardizing, and operationalizing design systems across the organization.</li>
+            <li><strong>Healthcare Content &amp; Trust-Centered UX:</strong> Directed UX/UI design for healthcare content, ensuring medical information was accessible, trustworthy, and usable for broad consumer audiences while respecting healthcare sensitivity.</li>
+            <li><strong>Advertising &amp; Revenue Systems:</strong> Designed layouts, frameworks, and UX patterns supporting large-scale healthcare advertising systems, sponsor-driven campaigns, and donor initiatives within a regulated content environment.</li>
+            <li><strong>Video &amp; Rich Media Platforms:</strong> Contributed to the evolution of video systems and rich media experiences supporting multi-million-dollar digital campaigns for major pharmaceutical brands.</li>
+            <li><strong>Searchability &amp; Content Discoverability:</strong> Improved information architecture and discoverability of medical articles and resources used by internal doctors, editorial staff, and contributors.</li>
+            <li><strong>Cross-Team Collaboration:</strong> Worked closely with product, engineering, editorial, and compliance teams to align design decisions with platform constraints, performance needs, and regulatory expectations.</li>
+            <li><strong>Mentorship &amp; Design Leadership:</strong> Served as a design lead and mentor to junior and mid-level designers, strengthening design culture and long-term professional capability within the organization.</li>
+            <li><strong>Regulated Content &amp; Trust Requirements:</strong> Supported privacy-aware, regulated-content, and usability standards to ensure health information delivery met trust, compliance, and public responsibility expectations.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/uga/uga-placeholder.png')" href="../projects/uga-college.html" target="_top" aria-label="View University of Georgia portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">University of Georgia</h3>
+                <p class="resume-role__title">Principal Web Developer</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Athens, GA | June 2002 to December 2008</p>
+          </div>
+          <p class="resume-role__context">College-wide digital infrastructure, research platforms, and academic systems</p>
+          <p class="resume-role__summary">Led platform strategy, architecture, and delivery for college-wide digital systems supporting more than 40 academic departments, owning discovery through execution while aligning product design, engineering build-out, data workflows, and operational readiness. Operated with builder-level accountability for shipped platforms, institutional adoption, and measurable impact across research, education, and public-facing academic initiatives.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Institutional Technology Leadership:</strong> Served as Principal Web Developer for the Franklin College of Arts &amp; Sciences, overseeing digital systems and standards supporting more than 40 academic departments across the arts, humanities, social sciences, and physical sciences.</li>
+            <li><strong>Founding &amp; Leadership of the Digital Library of Georgia:</strong> Founded and led the Digital Library of Georgia, a large-scale academic platform backed by significant institutional and state funding and widely used across K-12, higher education, historians, and research communities.</li>
+            <li><strong>Research Platform Architecture:</strong> Designed and delivered advanced research and visualization platforms, including neuroscience imaging systems, live brain-scan streaming, physics and microscopy environments, and marine ecosystem tracking tools.</li>
+            <li><strong>Academic Content &amp; Media Systems:</strong> Produced, managed, and governed <abbr title="over 1,000">1,000+</abbr> academic videos and podcasts, including lectures, seminars, visiting scholars, and awards programming distributed through institutional channels and iTunes U.</li>
+            <li><strong>Cross-Department &amp; Faculty Collaboration:</strong> Worked directly with faculty, department heads, researchers, and senior university leadership to define requirements, approve systems, and align technology investments with academic goals.</li>
+            <li><strong>Digital Strategy &amp; Governance:</strong> Led platform governance, standards, and technology planning across the college, ensuring consistency, sustainability, and long-term maintainability of digital systems.</li>
+            <li><strong>Large-Scale Multimedia Production:</strong> Served as lead photographer and videographer for the college, producing official multimedia assets funded directly by the Dean for academic, promotional, and archival use.</li>
+            <li><strong>Grant-Funded &amp; Cross-Institution Initiatives:</strong> Led and supported grant-funded initiatives and multi-institution collaborations, including a Trail of Tears digital mapping project in partnership with the Cherokee Nation and Western Carolina University.</li>
+            <li><strong>Budget, Committee &amp; Program Leadership:</strong> Oversaw budgets, chaired or participated in cross-department committees, approved technology investments, and supported faculty and departments with long-range digital planning.</li>
+            <li><strong>Mentorship &amp; Academic Enablement:</strong> Mentored staff, students, and PhD candidates, enabling research, teaching, and publication through reliable, scalable digital systems.</li>
+          </ul>
+        </article>
+
+        <article class="card resume-role">
+          <div class="resume-role__header">
+            <div class="resume-role__identity">
+              <a class="resume-role__project-link" style="--project-thumb:url('../projects/assets/img/projects/nc-zoo/nc-zoo-placeholder.png')" href="../projects/nc-zoo.html" target="_top" aria-label="View North Carolina Zoological Park portfolio project" title="View portfolio project">↗</a>
+              <div class="resume-role__identity-copy">
+                <h3 class="resume-role__org">North Carolina Zoological Park</h3>
+                <p class="resume-role__title">Interactive Systems Lead &amp; Webmaster</p>
+              </div>
+            </div>
+            <p class="resume-role__period">Asheboro, NC | June 1997 to June 2002</p>
+          </div>
+          <p class="resume-role__context">Public exhibits, Time Warner-backed streaming infrastructure, education platforms, and conservation technology</p>
+          <p class="resume-role__summary">Led strategy, architecture, and delivery of interactive and digital systems across one of the world's largest natural-habitat zoological parks, spanning exhibit-scale interfaces, early web platforms, live media infrastructure, and conservation technology. Built the zoo's first web and multimedia systems, helped establish Time Warner-backed fiber-optic and camera infrastructure for streaming internal exhibits, and aligned public education, research, and operations around durable digital platforms with long-term institutional impact.</p>
+          <p class="resume-role__subheading">Responsibilities &amp; Contributions</p>
+          <ul class="resume-list">
+            <li><strong>Institutional &amp; Systems Leadership:</strong> Served as Interactive Systems Lead and later the first Webmaster for one of the world's largest natural-habitat zoological parks, operating across public education, conservation research, infrastructure, and donor-supported initiatives.</li>
+            <li><strong>Exhibit-Scale Interactive Systems:</strong> Designed large-scale, life-size interactive systems for animal exhibits, including touch-screen interfaces, themed environments, and educational experiences supporting public learning and conservation awareness.</li>
+            <li><strong>Early Digital Infrastructure &amp; Web Platforms:</strong> Built and operated the zoo's first web, e-commerce, multimedia, and educational platforms at institutional scale, receiving advanced training and equipment to establish its first digital presence.</li>
+            <li><strong>Pioneering Live Streaming &amp; Fiber Networks:</strong> Partnered directly with Time Warner on more than $1 million in fiber-optic infrastructure and live camera systems spanning the zoo, enabling internal exhibit streaming and making the NC Zoo one of the first institutions to stream animal habitats to the public and media.</li>
+            <li><strong>Education, Media &amp; Public Outreach:</strong> Produced behind-the-scenes video and educational content distributed to schools, morning news programs, and public outreach channels.</li>
+            <li><strong>Conservation Technology &amp; Field Research:</strong> Designed and supported satellite-based tracking and geomapping systems for endangered species research, including elephants, red wolves, and other large mammals.</li>
+            <li><strong>Research &amp; Bio-Acoustic Analysis:</strong> Conducted early research into animal communication frequencies, recording and analyzing bio-acoustic data to support behavioral and mating studies.</li>
+            <li><strong>Operational &amp; Public Systems Design:</strong> Led design and technical systems for tram vehicles, park infrastructure, and state-regulated public systems used by large daily visitor populations.</li>
+            <li><strong>Cross-Disciplinary Collaboration:</strong> Worked directly with exhibit designers, veterinarians, researchers, conservation teams, and international partners on education and field research initiatives.</li>
+            <li><strong>Sustainability &amp; Knowledge Transfer:</strong> Supported donor relations, grant-funded programs, and NC Zoo Society initiatives while producing documentation and systems that outlasted individual contributors.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="resume-section" data-resume-anchor-label="Education">
+        <div class="card">
+          <div class="sectionTitle">
+            <h2>Education</h2>
+          </div>
+          <ul class="resume-education-list">
+            <li class="resume-education-item">
+              <span class="resume-education-school">University of Georgia</span>
+              <span class="resume-education-meta">Continued Education | 2002-2008</span>
+            </li>
+            <li class="resume-education-item">
+              <span class="resume-education-school">Adobe Learning Center</span>
+              <span class="resume-education-meta">Adobe Creative Systems &amp; ColdFusion | 1997-2002</span>
+            </li>
+            <li class="resume-education-item">
+              <span class="resume-education-school">New Horizons</span>
+              <span class="resume-education-meta">Advanced Computer Languages &amp; Business | 1997-2002</span>
+            </li>
+            <li class="resume-education-item">
+              <span class="resume-education-school">Art Institute of Atlanta</span>
+              <span class="resume-education-meta">Digital Design | 1995</span>
+            </li>
+            <li class="resume-education-item">
+              <span class="resume-education-school">Bessemer Tech</span>
+              <span class="resume-education-meta">Communications | 1992</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const resumeRoot = document.getElementById('resume-reader');
+      const readButton = document.querySelector('[data-read-resume]');
+      const resumeJumpNav = document.querySelector('[data-resume-jump-nav]');
+      const decodeContactValue = (codes) => String.fromCharCode(...codes);
+      const routeContactLink = (href) => {
+        if (!href) {
+          return;
+        }
+
+        try {
+          if (window.top && window.top !== window) {
+            window.top.location.href = href;
+            return;
+          }
+        } catch {
+          // Fall through to the current window when top-level navigation is unavailable.
+        }
+
+        window.location.href = href;
+      };
+
+      const initResumeContactLinks = () => {
+        const emailLink = document.querySelector('[data-contact-email]');
+        const phoneLink = document.querySelector('[data-contact-phone]');
+        const emailAddress = decodeContactValue([
+          119, 105, 108, 108, 105, 97, 109, 46, 119, 101, 101, 109, 115,
+          64, 103, 109, 97, 105, 108, 46, 99, 111, 109,
+        ]);
+
+        if (emailLink) {
+          emailLink.href = `mailto:${emailAddress}`;
+        }
+
+        [emailLink, phoneLink].filter(Boolean).forEach((link) => {
+          link.addEventListener('click', (event) => {
+            if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+              return;
+            }
+
+            const href = link.getAttribute('href') || '';
+            if (!/^(mailto:|tel:)/i.test(href)) {
+              return;
+            }
+
+            event.preventDefault();
+            routeContactLink(href);
+          });
+        });
+      };
+
+      initResumeContactLinks();
+
+      const centerFilterTag = (filterRow, tag, behavior = 'auto') => {
+        if (!filterRow || !tag) {
+          return;
+        }
+
+        const maxScrollLeft = filterRow.scrollWidth - filterRow.clientWidth;
+        const targetLeft = tag.offsetLeft - (filterRow.clientWidth - tag.offsetWidth) / 2;
+        const nextScrollLeft = Math.min(Math.max(targetLeft, 0), Math.max(maxScrollLeft, 0));
+
+        filterRow.scrollTo({
+          left: nextScrollLeft,
+          behavior,
+        });
+      };
+
+      const initResumeJumpNav = () => {
+        if (!resumeRoot || !resumeJumpNav) {
+          return;
+        }
+
+        const idCounts = new Map();
+        const normalizeLabel = (value) => value.replace(/\s+/g, ' ').trim();
+        const createId = (label) => {
+          const base = normalizeLabel(label)
+            .toLowerCase()
+            .replace(/&/g, ' and ')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '') || 'resume-section';
+
+          const count = (idCounts.get(base) || 0) + 1;
+          idCounts.set(base, count);
+          return count === 1 ? `resume-${base}` : `resume-${base}-${count}`;
+        };
+
+        const targets = Array.from(resumeRoot.querySelectorAll('[data-resume-anchor-label], .resume-role'))
+          .map((element) => {
+            const explicitLabel = element.getAttribute('data-resume-anchor-label');
+            const roleLabel = element.querySelector('.resume-role__org')?.textContent || '';
+            const label = normalizeLabel(explicitLabel || roleLabel);
+
+            if (!label) {
+              return null;
+            }
+
+            if (!element.id) {
+              element.id = createId(label);
+            }
+
+            element.classList.add('resume-scroll-target');
+
+            return {
+              element,
+              id: element.id,
+              label,
+            };
+          })
+          .filter(Boolean);
+
+        if (!targets.length) {
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        targets.forEach((target, index) => {
+          const link = document.createElement('a');
+          link.className = `tag-lrg${index === 0 ? ' active' : ''}`;
+          link.href = `#${target.id}`;
+          link.dataset.resumeJump = target.id;
+          link.textContent = target.label;
+          link.setAttribute('aria-label', `Jump to ${target.label}`);
+          fragment.appendChild(link);
+        });
+
+        resumeJumpNav.innerHTML = '';
+        resumeJumpNav.appendChild(fragment);
+
+        const chips = Array.from(resumeJumpNav.querySelectorAll('.tag-lrg'));
+        const chipById = new Map(chips.map((chip) => [chip.dataset.resumeJump || '', chip]));
+        let activeId = chips[0]?.dataset.resumeJump || '';
+
+        const setActiveChip = (nextId, behavior = 'auto') => {
+          if (!nextId) {
+            return;
+          }
+
+          if (activeId === nextId && behavior === 'auto') {
+            return;
+          }
+
+          const targetChip = chipById.get(nextId);
+          if (!targetChip) {
+            return;
+          }
+
+          activeId = nextId;
+          chips.forEach((chip) => {
+            chip.classList.toggle('active', chip === targetChip);
+          });
+          centerFilterTag(resumeJumpNav, targetChip, behavior);
+        };
+
+        const navWrapper = resumeJumpNav.closest('.resume-jump-nav');
+        const getStickyOffset = () => Math.round((navWrapper?.offsetHeight || 0) + 26);
+        const setActiveChipFromLayout = () => {
+          const stickyOffset = getStickyOffset();
+          let nextId = targets[0].id;
+
+          for (const target of targets) {
+            if (target.element.getBoundingClientRect().top <= stickyOffset) {
+              nextId = target.id;
+            } else {
+              break;
+            }
+          }
+
+          setActiveChip(nextId, 'auto');
+        };
+
+        chips.forEach((chip) => {
+          chip.addEventListener('click', (event) => {
+            const target = document.getElementById(chip.dataset.resumeJump || '');
+            if (!target) {
+              return;
+            }
+
+            event.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setActiveChip(target.id, 'smooth');
+          });
+
+          chip.addEventListener('focus', () => {
+            if (!chip.matches(':focus-visible')) {
+              return;
+            }
+
+            centerFilterTag(resumeJumpNav, chip, 'smooth');
+          });
+        });
+
+        let observer = null;
+        const createObserver = () => {
+          if (observer) {
+            observer.disconnect();
+          }
+
+          const stickyOffset = getStickyOffset();
+          observer = new IntersectionObserver(
+            (entries) => {
+              const visibleEntries = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((left, right) => Math.abs(left.boundingClientRect.top - stickyOffset) - Math.abs(right.boundingClientRect.top - stickyOffset));
+
+              const nextEntry = visibleEntries[0];
+              if (nextEntry?.target?.id) {
+                setActiveChip(nextEntry.target.id, 'auto');
+              }
+            },
+            {
+              root:null,
+              rootMargin:`-${stickyOffset}px 0px -55% 0px`,
+              threshold:[0, 0.1, 0.25, 0.5, 0.75, 1],
+            }
+          );
+
+          targets.forEach((target) => {
+            observer.observe(target.element);
+          });
+        };
+
+        requestAnimationFrame(() => {
+          const initialHash = window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : '';
+          const hashTarget = initialHash ? document.getElementById(initialHash) : null;
+
+          if (hashTarget) {
+            hashTarget.scrollIntoView({ behavior: 'auto', block: 'start' });
+            setActiveChip(hashTarget.id, 'auto');
+          } else {
+            setActiveChipFromLayout();
+          }
+
+          createObserver();
+        });
+
+        window.addEventListener('resize', () => {
+          createObserver();
+          setActiveChipFromLayout();
+        });
+      };
+
+      initResumeJumpNav();
+
+      if (!resumeRoot) {
+        return;
+      }
+
+      const canSpeak = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+      const speakerSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+      const speakerIconOnlySvg = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a6 6 0 0 1 0 8.07M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+      const normalizeSpeechText = (value) => value.replace(/\s+/g, ' ').trim();
+
+      const setReadButtonState = (button, isReading) => {
+        if (!button) {
+          return;
+        }
+
+        button.classList.toggle('is-reading', isReading);
+        const label = isReading ? button.dataset.activeLabel : button.dataset.defaultLabel;
+        button.innerHTML = button.dataset.iconOnly === 'true' ? speakerIconOnlySvg : `${speakerSvg}${label}`;
+        button.setAttribute('aria-label', label);
+        button.setAttribute('title', label);
+        button.setAttribute('aria-pressed', isReading ? 'true' : 'false');
+      };
+
+      const resumeName = normalizeSpeechText(document.querySelector('.resume-name')?.textContent || 'résumé');
+
+      const allReadButtons = [];
+      if (readButton) {
+        readButton.classList.remove('resume-hero__speak-trigger');
+        readButton.classList.add('project-read-fab');
+        readButton.dataset.iconOnly = 'true';
+        readButton.dataset.defaultLabel = readButton.dataset.defaultLabel || `Read ${resumeName} résumé from the beginning`;
+        readButton.dataset.activeLabel = readButton.dataset.activeLabel || `Stop reading ${resumeName} résumé`;
+        setReadButtonState(readButton, false);
+        allReadButtons.push(readButton);
+      }
+
+      const sectionReadButtons = Array.from(resumeRoot.querySelectorAll('.resume-section > .card')).map((card, index) => {
+        const sectionTitle = card.querySelector('.sectionTitle');
+        if (!sectionTitle) {
+          return null;
+        }
+
+        let button = card.querySelector('[data-read-section]');
+        if (!button) {
+          button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'read-trigger resume-section__speak-trigger';
+          button.dataset.readSection = 'true';
+          button.dataset.iconOnly = 'true';
+          card.appendChild(button);
+        }
+
+        const sectionLabel = normalizeSpeechText(sectionTitle.querySelector('h1, h2, h3, h4')?.textContent || `Section ${index + 1}`);
+        button.dataset.defaultLabel = `Read ${sectionLabel}`;
+        button.dataset.activeLabel = `Stop reading ${sectionLabel}`;
+        setReadButtonState(button, false);
+        allReadButtons.push(button);
+
+        return {
+          button,
+          card,
+        };
+      }).filter(Boolean);
+
+      const roleReadButtons = Array.from(resumeRoot.querySelectorAll('.resume-role')).map((role, index) => {
+        const roleHeader = role.querySelector('.resume-role__header') || role;
+        let button = role.querySelector('[data-read-role]');
+        if (!button) {
+          button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'read-trigger resume-role__speak-trigger';
+          button.dataset.readRole = 'true';
+          button.dataset.iconOnly = 'true';
+          roleHeader.appendChild(button);
+        } else if (button.parentElement !== roleHeader) {
+          roleHeader.appendChild(button);
+        }
+
+        const orgName = normalizeSpeechText(role.querySelector('.resume-role__org')?.textContent || `Experience ${index + 1}`);
+        button.dataset.defaultLabel = `Read ${orgName} aloud`;
+        button.dataset.activeLabel = `Stop reading ${orgName}`;
+        setReadButtonState(button, false);
+        allReadButtons.push(button);
+
+        return {
+          button,
+          role,
+        };
+      });
+
+      if (allReadButtons.length === 0) {
+        return;
+      }
+
+      const speechStateNames = {
+        AL: 'Alabama',
+        AK: 'Alaska',
+        AZ: 'Arizona',
+        AR: 'Arkansas',
+        CA: 'California',
+        CO: 'Colorado',
+        CT: 'Connecticut',
+        DE: 'Delaware',
+        FL: 'Florida',
+        GA: 'Georgia',
+        HI: 'Hawaii',
+        ID: 'Idaho',
+        IL: 'Illinois',
+        IN: 'Indiana',
+        IA: 'Iowa',
+        KS: 'Kansas',
+        KY: 'Kentucky',
+        LA: 'Louisiana',
+        ME: 'Maine',
+        MD: 'Maryland',
+        MA: 'Massachusetts',
+        MI: 'Michigan',
+        MN: 'Minnesota',
+        MS: 'Mississippi',
+        MO: 'Missouri',
+        MT: 'Montana',
+        NE: 'Nebraska',
+        NV: 'Nevada',
+        NH: 'New Hampshire',
+        NJ: 'New Jersey',
+        NM: 'New Mexico',
+        NY: 'New York',
+        NC: 'North Carolina',
+        ND: 'North Dakota',
+        OH: 'Ohio',
+        OK: 'Oklahoma',
+        OR: 'Oregon',
+        PA: 'Pennsylvania',
+        RI: 'Rhode Island',
+        SC: 'South Carolina',
+        SD: 'South Dakota',
+        TN: 'Tennessee',
+        TX: 'Texas',
+        UT: 'Utah',
+        VT: 'Vermont',
+        VA: 'Virginia',
+        WA: 'Washington',
+        WV: 'West Virginia',
+        WI: 'Wisconsin',
+        WY: 'Wyoming',
+        DC: 'District of Columbia',
+      };
+
+      const expandStateAbbreviationsForSpeech = (value) => value.replace(
+        /,\s*(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/gi,
+        (_, abbreviation) => `, ${speechStateNames[abbreviation.toUpperCase()] || abbreviation}`
+      );
+
+      const replaceDividerSlashesForSpeech = (value) => value.replace(
+        /(^|[\s(])([A-Za-z][A-Za-z0-9.+-]*)\s*\/\s*([A-Za-z][A-Za-z0-9.+-]*)(?=$|[\s),.:;!?])/g,
+        (_, prefix, left, right) => `${prefix}${left} and ${right}`
+      );
+
+      const preferredSpeechVoiceNames = ['Daniel', 'Arthur', 'Oliver', 'Malcolm', 'James'];
+      const readAloudSpeechProfile = {
+        lang: 'en-GB',
+        rate: 0.95,
+        pitch: 0.85,
+        volume: 1,
+      };
+
+      const normalizeSpeechVoiceKey = (voice) => `${voice?.name || ''} ${voice?.voiceURI || ''} ${voice?.lang || ''}`.toLowerCase();
+
+      const resolvePreferredSpeechVoice = (preferredLang = 'en-GB') => {
+        const voices = window.speechSynthesis.getVoices();
+        if (!Array.isArray(voices) || voices.length === 0) {
+          return null;
+        }
+
+        const preferredVoice = preferredSpeechVoiceNames
+          .map((name) => name.toLowerCase())
+          .map((nameKey) => voices.find((voice) => normalizeSpeechVoiceKey(voice).includes(nameKey)))
+          .find(Boolean);
+
+        const preferredLangKey = preferredLang.toLowerCase();
+        return preferredVoice
+          || voices.find((voice) => voice.localService && (voice.lang || '').toLowerCase().startsWith(preferredLangKey))
+          || voices.find((voice) => (voice.lang || '').toLowerCase().startsWith(preferredLangKey))
+          || voices.find((voice) => voice.localService && (voice.lang || '').toLowerCase().startsWith('en'))
+          || voices.find((voice) => (voice.lang || '').toLowerCase().startsWith('en'))
+          || null;
+      };
+
+      const normalizeSpeechDeliveryText = (value) => value
+        .replace(/\s*[•]\s*/g, ', ')
+        .replace(/\s*[–—]+\s*/g, ', ')
+        .replace(/\s*&\s*/g, ' and ')
+        .replace(/,\s*,+/g, ', ')
+        .replace(/\s+([,.;!?])/g, '$1')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      const applySpeechUtteranceSettings = (utterance, profile) => {
+        utterance.rate = profile.rate;
+        utterance.pitch = profile.pitch;
+        utterance.volume = profile.volume;
+        utterance.lang = profile.lang;
+
+        const voice = resolvePreferredSpeechVoice(profile.lang);
+        if (voice) {
+          utterance.voice = voice;
+          utterance.lang = voice.lang || profile.lang;
+        }
+      };
+
+      const applySpeechPronunciationFixes = (value) => normalizeSpeechDeliveryText(replaceDividerSlashesForSpeech(
+        expandStateAbbreviationsForSpeech(value)
+          .replace(/\bresume\b/gi, 'reh zoo may')
+          .replace(/\bto\s+present\b/gi, 'to pre-zent')
+          .replace(/\brecords\b/gi, 'reh-cords')
+          .replace(/\bseo\/sem\b/gi, 'S E O and S E M')
+          .replace(/\bseo\b/gi, 'S E O')
+          .replace(/\bsem\b/gi, 'S E M')
+          .replace(/\bslas\b/gi, "S L A's")
+          .replace(/\bsla\b/gi, 'S L A')
+          .replace(/\blead\b/gi, 'leed')
+          .replace(/\bhipaa\b/gi, 'hip-uh')
+          .replace(/\biot\b/gi, 'I O T')
+          .replace(/\buga\b/gi, 'U G A')
+          .replace(/\buva\b/gi, 'U V A')
+          .replace(/\blifecycle\b/gi, 'life cycle')
+          .replace(/\becosystem\b/gi, 'E-co-system')
+          .replace(/\blive\b/gi, 'lyve')
+          .replace(/\bsaas\b/gi, 'sass')
+          .replace(/\bpiceus\b/gi, 'pi see us')
+          .replace(/\bporsche\b/gi, 'por-shuh')
+          .replace(/\bcardlytics\b/gi, 'Card lytics')
+          .replace(/\bdr\.?\s*oz\b/gi, 'Doctor Oz')
+          .replace(/\bat&t\b/gi, 'A T & T')
+          .replace(/\bnbc\b/gi, 'N B C')
+          .replace(/\bnada\b/gi, 'N A D A')
+          .replace(/\bux\/ui\b/gi, 'U X U I')
+          .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
+            const lower = match.toLowerCase();
+            if (lower.endsWith('ing')) return 'sked-jooling';
+            if (lower.endsWith('ed')) return 'sked-joold';
+            if (lower.endsWith('es')) return 'sked-jools';
+            return 'sked-jool';
+          })
+      ));
+
+      const clearReadButtonStates = () => {
+        allReadButtons.forEach((button) => {
+          setReadButtonState(button, false);
+        });
+      };
+
+      let speechRequestId = 0;
+
+      const stopReadAloud = () => {
+        speechRequestId += 1;
+        window.speechSynthesis.cancel();
+        clearReadButtonStates();
+      };
+
+      const extractRoleReadableText = (source) => {
+        if (!source) {
+          return '';
+        }
+
+        const clone = source.cloneNode(true);
+        clone.querySelectorAll('[data-read-resume], [data-read-role], [data-read-section], [data-read-aloud-ignore], script, style, [aria-hidden="true"]').forEach((element) => {
+          element.remove();
+        });
+
+        const segments = [];
+        [
+          '.resume-role__org',
+          '.resume-role__title',
+          '.resume-role__period',
+          '.resume-role__context',
+          '.resume-role__summary',
+          '.resume-role__subheading',
+          '.resume-list li',
+        ].forEach((selector) => {
+          clone.querySelectorAll(selector).forEach((element) => {
+            const text = normalizeSpeechText(element.textContent || '');
+            if (text) {
+              segments.push(text);
+            }
+          });
+        });
+
+        return segments.join('. ');
+      };
+
+      const extractReadableText = (source) => {
+        if (!source) {
+          return '';
+        }
+
+        if (source.classList?.contains('resume-role')) {
+          const roleText = extractRoleReadableText(source);
+          if (roleText) {
+            return roleText;
+          }
+        }
+
+        const clone = source.cloneNode(true);
+        clone.querySelectorAll('[data-read-resume], [data-read-role], [data-read-section], [data-read-aloud-ignore], script, style, [aria-hidden="true"]').forEach((element) => {
+          element.remove();
+        });
+
+        const segments = [];
+        clone.querySelectorAll('h1, h2, h3, h4, p, li').forEach((element) => {
+          const text = normalizeSpeechText(element.textContent || '');
+          if (text) {
+            segments.push(text);
+          }
+        });
+
+        return segments.join('. ');
+      };
+
+      if (!canSpeak) {
+        allReadButtons.forEach((button) => {
+          button.disabled = true;
+          button.title = 'Read aloud is not supported in this browser.';
+          button.setAttribute('aria-label', 'Read aloud unavailable');
+        });
+        return;
+      }
+
+      clearReadButtonStates();
+
+      const readFromSource = (button, source) => {
+        if (button.classList.contains('is-reading')) {
+          stopReadAloud();
+          return;
+        }
+
+        let readText = extractReadableText(source);
+        if (!readText) {
+          return;
+        }
+
+        readText = applySpeechPronunciationFixes(readText);
+        const requestId = speechRequestId + 1;
+        speechRequestId = requestId;
+        window.speechSynthesis.cancel();
+        clearReadButtonStates();
+
+        const utterance = new SpeechSynthesisUtterance(readText);
+        applySpeechUtteranceSettings(utterance, readAloudSpeechProfile);
+
+        const resetIfCurrent = () => {
+          if (speechRequestId !== requestId) {
+            return;
+          }
+
+          clearReadButtonStates();
+        };
+
+        utterance.onstart = () => {
+          if (speechRequestId !== requestId) {
+            return;
+          }
+
+          clearReadButtonStates();
+          setReadButtonState(button, true);
+        };
+        utterance.onend = resetIfCurrent;
+        utterance.onerror = resetIfCurrent;
+
+        window.speechSynthesis.speak(utterance);
+      };
+
+      if (readButton) {
+        readButton.addEventListener('click', () => {
+          readFromSource(readButton, resumeRoot);
+        });
+      }
+
+      sectionReadButtons.forEach(({ button, card }) => {
+        button.addEventListener('click', () => {
+          readFromSource(button, card);
+        });
+      });
+
+      roleReadButtons.forEach(({ button, role }) => {
+        button.addEventListener('click', () => {
+          readFromSource(button, role);
+        });
+      });
+
+      window.addEventListener('beforeunload', stopReadAloud);
+      window.addEventListener('pagehide', stopReadAloud);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopReadAloud();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

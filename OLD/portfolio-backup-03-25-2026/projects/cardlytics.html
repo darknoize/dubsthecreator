@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Will Weems — CardLytics</title>
+  <link rel="icon" href="assets/img/dubs.png" type="image/png" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root{
+      --phone-max-w: 460px;
+      --phone-w: min(92vw, var(--phone-max-w));
+      --phone-h: min(90vh, calc(var(--phone-w) * 2.1667));
+      --bezel: clamp(10px, 2.2vw, 14px);
+      --radius: clamp(34px, 6vw, 44px);
+    }
+
+    .iphone-shell{
+      display:grid;
+      gap:12px;
+      place-items:center;
+      width:100%;
+    }
+
+    .iphone-frame{
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-width: var(--phone-max-w);
+      aspect-ratio: 9 / 19.5;
+      border-radius: var(--radius);
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: var(--bezel);
+    }
+
+    .iphone-frame::before{
+      content:"";
+      position:absolute;
+      inset: calc(var(--bezel) * 0.55);
+      border-radius: calc(var(--radius) - 6px);
+      border: 1px solid rgba(255,255,255,.10);
+      pointer-events:none;
+    }
+
+    .iphone-notch{
+      position:absolute;
+      top: var(--bezel);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52%;
+      height: clamp(26px, 4.5vh, 30px);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 0 0 18px 18px;
+      backdrop-filter: blur(8px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      z-index: 5;
+    }
+
+    .speaker{
+      width: clamp(56px, 12vw, 70px);
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+    }
+
+    .camera{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(98,208,250,.35);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .screen-viewport{
+      position:absolute;
+      inset: var(--bezel);
+      border-radius: calc(var(--radius) - 10px);
+      background: #0a0f1f;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-gutter: stable;
+    }
+
+    .screen-viewport::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius: calc(var(--radius) - 10px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    .screen-image{
+      display:block;
+      width:100%;
+      height:auto;
+      user-select:none;
+      -webkit-user-drag:none;
+      image-rendering:auto;
+    }
+
+    .screen-viewport::-webkit-scrollbar{ width: 10px; }
+    .screen-viewport::-webkit-scrollbar-track{
+      background: rgba(255,255,255,.05);
+      border-radius: 999px;
+      margin: 14px;
+    }
+
+    .screen-viewport::-webkit-scrollbar-thumb{
+      background: rgba(98,208,250,.35);
+      border: 2px solid rgba(0,0,0,.35);
+      border-radius: 999px;
+    }
+
+    .screen-viewport{ scrollbar-width: thin; scrollbar-color: rgba(98,208,250,.35) rgba(255,255,255,.06); }
+
+    .scroll-btn{
+      position:absolute;
+      right: calc(var(--bezel) + 4px);
+      z-index: 6;
+      width: clamp(32px, 6vw, 36px);
+      height: clamp(32px, 6vw, 36px);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      color: rgba(233,238,252,.92);
+      backdrop-filter: blur(10px);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    .scroll-btn:hover{ background: rgba(0,0,0,.5); transform: translateY(-1px); }
+    .scroll-btn:active{ transform: translateY(0px) scale(.98); }
+
+    .scroll-btn.up{ top: calc(var(--bezel) + 56px); }
+    .scroll-btn.down{ bottom: calc(var(--bezel) + 40px); }
+
+    .home-indicator{
+      position:absolute;
+      left:50%;
+      bottom: calc(var(--bezel) + 4px);
+      transform:translateX(-50%);
+      width: 38%;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.20);
+      z-index: 6;
+    }
+
+    .hint{
+      margin:0;
+      font-size: 13px;
+      color: var(--muted);
+      text-align:center;
+      max-width: 56ch;
+    }
+
+    @media (max-width: 980px){
+      .overview-content[style]{
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:stretch !important;
+      }
+
+      .overview-content > *{
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0;
+      }
+
+      .overview-content .iphone-frame{
+        width:100% !important;
+        max-width:100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="bg" aria-hidden="true"></div>
+
+    <div class="container">
+    <header>
+      <div class="brand">
+        <span class="ring" aria-hidden="true"></span>
+        <span>WILL WEEMS</span>
+      </div>
+      <nav>
+        <a href="../index.html">Portfolio</a>
+        <a href="https://www.linkedin.com/in/dubsthecreator" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="../resume/William_Weems_Product_UX_UI_AI_Leadership_CV.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <div class="filters">
+          <a href="../index.html" class="tag-lrg">All</a>
+          <a href="ai-governance.html" class="tag-lrg">AI Governance</a>
+          <a href="automotive.html" class="tag-lrg">Automotive</a>
+          <a href="gaming.html" class="tag-lrg">Gaming</a>
+          <a href="fintech.html" class="tag-lrg active">FinTech</a>
+          <a href="web3-blockchain.html" class="tag-lrg">Web3 & Blockchain</a>
+          <a href="enterprise-systems.html" class="tag-lrg">Enterprise Systems</a>
+          <a href="cybersecurity.html" class="tag-lrg">Cybersecurity</a>
+          <a href="sports-tech.html" class="tag-lrg">Sports Tech</a>
+          <a href="entertainment.html" class="tag-lrg">Entertainment</a>
+          <a href="travel.html" class="tag-lrg">Travel</a>
+          <a href="healthcare.html" class="tag-lrg">Healthcare</a>
+          <a href="education.html" class="tag-lrg">Education</a>
+          <a href="science.html" class="tag-lrg">Science</a>
+      </div>
+    </section>
+    <section class="hero">
+      <div class="kicker">All Work / FinTech</div>
+      <h1>CardLytics</h1>
+      <p>Transaction Based Analytics Platform</p>
+    </section>
+
+    <h2 id="work" class="section-title">CardLytics Project</h2>
+
+    <section class="project-gallery" aria-label="Project gallery">
+        <div class="card gallery-card" data-gallery>
+          <div class="gallery-main">
+            <button class="gbtn" type="button" aria-label="Previous image" data-prev>‹</button>
+
+            <div class="gallery-viewport" aria-label="Gallery image viewport">
+              <img data-gallery-main src="assets/img/projects/cardlytics/cardlytics.png" alt="CardLytics project image 1" />
+            </div>
+
+            <button class="gbtn" type="button" aria-label="Next image" data-next>›</button>
+          </div>
+
+          <div class="gallery-thumbs" aria-label="Gallery thumbnails">
+            </button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-2.png" aria-label="Open image 1"><img src="assets/img/projects/cardlytics/cardlytics-2.png" alt="Thumbnail 1"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-3.png" aria-label="Open image 2"><img src="assets/img/projects/cardlytics/cardlytics-3.png" alt="Thumbnail 2"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-4.png" aria-label="Open image 3"><img src="assets/img/projects/cardlytics/cardlytics-4.png" alt="Thumbnail 3"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-5.png" aria-label="Open image 4"><img src="assets/img/projects/cardlytics/cardlytics-5.png" alt="Thumbnail 4"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-placeholder.png" aria-label="Open image 5"><img src="assets/img/projects/cardlytics/cardlytics-placeholder.png" alt="Thumbnail 5"/><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/cardlytics/cardlytics-8.png" aria-label="Open image 6"><img src="assets/img/projects/cardlytics/cardlytics-8.png" alt="Thumbnail 6"/></button>
+          </div>
+
+          <div style="margin-top:10px; color: rgba(255,255,255,0.55); font-size: 10px; text-align: center; text-align: center;">
+            Tip: Tap the main image or any thumbnail to view full size. <br> Rotate your phone horizontally for a larger view of wide images.
+          </div>
+        </div>
+      </section>
+
+    <section id="overview">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Overview</h2>
+        <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Transaction Based Analytics Platform Development Outcomes</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
+            <p style="margin-bottom: 1em;">Architected comprehensive transaction-based analytics platform providing real-time transaction insights and fraud detection capabilities.</p>
+            <p style="margin-bottom: 1em;">Developed machine learning models for advanced risk assessment and customer segmentation.</p>
+            <p style="margin-bottom: 1em;">Implemented scalable data processing pipeline handling billions of transactions daily.</p>
+            <p style="margin-bottom: 1em;">The platform enables financial institutions to gain deep insights into transaction patterns, detect fraudulent activities in real-time, and make data-driven decisions for risk management and customer engagement.</p>
+            <p style="margin-bottom: 1em;">Advanced analytics provide predictive modeling for credit scoring and personalized financial services.</p>
+            <p style="margin-bottom: 1em;">Led product, UX/UI, and data platform design for transaction-based purchase intelligence systems embedded within tier-one banking applications.</p>
+            <p style="margin-bottom: 1em;">Architected end-to-end data pipelines and product workflows leveraging real-time and historical transaction data to power audience segmentation, targeted offers, and performance measurement.</p>
+            <p style="margin-bottom: 1em;">Designed privacy-aware, compliant systems operating within regulated financial environments, aligning product, engineering, and banking partners to deliver secure, scalable solutions.</p>
+            <p style="margin-bottom: 1em;">Built marketer and operator-facing tools for campaign creation, management, and reporting, translating complex financial data into usable, actionable interfaces within constrained banking ecosystems.</p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <!-- Scrollable viewport -->
+                <div class="screen-viewport" id="viewport-overview" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageOverview"
+                    class="screen-image"
+                    src="assets/img/projects/cardlytics/cardlytics-06.png"
+                    alt="CardLytics overview mobile screen"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- Overlay controls (kept minimal) -->
+                <button class="scroll-btn up" type="button" id="mobileScrollUpOverview" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownOverview" aria-label="Scroll down">▼</button>
+
+                <!-- iPhone home indicator -->
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint" style="font-size: 10px;">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser, this scales.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcomes">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Outcomes</h2>
+        <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Key Results and Achievements</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
+        <p style="margin-bottom: 1em;">Delivered a scalable fintech platform that enabled real-time transaction intelligence, improving targeting accuracy, campaign performance, and financial attribution within banking environments.</p>
+        <p style="margin-bottom: 1em;">Increased operational efficiency and reduced complexity through intuitive UX and automated workflows while maintaining strict data integrity, privacy, and compliance standards.</p>
+        <p style="margin-bottom: 1em;">Strengthened platform reliability and throughput under high transaction volumes, supporting global banking partners and driving measurable financial impact.</p>
+        <p style="margin-bottom: 1em;">Established a durable foundation for transaction-based marketing and analytics systems embedded directly within consumer financial experiences.</p>
+        <p style="margin-bottom: 1em;">Platform adopted by major banks and credit card companies worldwide.</p>
+        <p style="margin-bottom: 1em;">Achieved industry-leading performance metrics for real-time analytics.</p>
+        <p style="margin-bottom: 1em;">Established new standards for card transaction intelligence and risk management.</p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+      <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+        <div class="iphone-notch" aria-hidden="true">
+          <div class="speaker"></div>
+          <div class="camera"></div>
+        </div>
+
+        <!-- Scrollable viewport -->
+        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
+          <img
+            id="screenImage"
+            class="screen-image"
+            src="assets/img/projects/cardlytics/cardlytics.png"
+            alt="Scrollable screen mock"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Overlay controls (kept minimal) -->
+        <button class="scroll-btn up" type="button" id="mobileScrollUp" aria-label="Scroll up">▲</button>
+        <button class="scroll-btn down" type="button" id="mobileScrollDown" aria-label="Scroll down">▼</button>
+
+        <!-- iPhone home indicator -->
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+
+      <p class="hint" style="font-size: 10px;">
+        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+      </p>
+    </div>
+    </div>
+        </div>
+    </section>
+
+    <div class="grid">
+      <div class="card" data-tags="fintech">
+        <div class="card__label">FinTech</div>
+        <div class="card__title">Transaction Insights</div>
+        <p class="card__desc">Real-Time Analysis • Spending Patterns • Financial Intelligence</p>
+        <div class="card__tags">
+          <span class="tag">Analytics</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="analytics">
+        <div class="card__label">Analytics</div>
+        <div class="card__title">Fraud Detection</div>
+        <p class="card__desc">Machine Learning Systems • Real-Time Detection • Fraud Prevention</p>
+        <div class="card__tags">
+          <span class="tag">Monitoring</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="fintech">
+        <div class="card__label">Transactions</div>
+        <div class="card__title">Risk Assessment</div>
+        <p class="card__desc">Risk Scoring • Credit Decisioning • Behavior Analysis</p>
+        <div class="card__tags">
+          <span class="tag">Transactions</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="analytics">
+        <div class="card__label">Analytics</div>
+        <div class="card__title">Customer Segmentation</div>
+        <p class="card__desc">Automated Segmentation • Personalized Offers • Product Recommendations</p>
+        <div class="card__tags">
+          <span class="tag">Analytics</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal" data-modal aria-hidden="true">
+    <div class="modal-backdrop" data-modal-backdrop></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <div class="modal-top">
+        <div class="modal-title">CardLytics • Image Viewer</div>
+        <button class="modal-close" type="button" aria-label="Close" data-modal-close>✕</button>
+      </div>
+      <div class="modal-body">
+        <button class="gbtn" type="button" aria-label="Previous image" data-modal-prev>‹</button>
+        <img data-modal-img src="assets/img/projects/cardlytics/cardlytics_01.png" alt="Expanded image" />
+        <button class="gbtn" type="button" aria-label="Next image" data-modal-next>›</button>
+      </div>
+    </div>
+  </div>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/gallery.js"></script>
+    <script src="assets/js/scroll.js"></script>
+</main>
+</body>
+</html>

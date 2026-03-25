@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Will Weems — PICEUS Project</title>
+  <link rel="icon" href="assets/img/dubs.png" type="image/png" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="bg" aria-hidden="true"></div>
+
+    <div class="container">
+
+      <h2 id="work" class="section-title">PICEUS Project</h2>
+
+      <section class="project-gallery" aria-label="Project gallery">
+        <div class="card gallery-card" data-gallery>
+          <div class="gallery-main">
+            <button class="gbtn" type="button" aria-label="Previous image" data-prev>‹</button>
+
+            <div class="gallery-viewport" aria-label="Gallery image viewport">
+              <img data-gallery-main src="assets/img/projects/piceus/piceus_01.png" alt="PICEUS project image 1" />
+            </div>
+
+            <button class="gbtn" type="button" aria-label="Next image" data-next>›</button>
+          </div>
+
+          <div class="gallery-thumbs" aria-label="Gallery thumbnails">
+            <button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/piceus/piceus_01.png" aria-label="Open image 1"><img src="assets/img/projects/piceus/piceus_01.png" alt="Thumbnail 1"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/piceus/piceus_02.png" aria-label="Open image 2"><img src="assets/img/projects/piceus/piceus_02.png" alt="Thumbnail 2"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/piceus/piceus_03.png" aria-label="Open image 3"><img src="assets/img/projects/piceus/piceus_03.png" alt="Thumbnail 3"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/piceus/piceus_04.png" aria-label="Open image 4"><img src="assets/img/projects/piceus/piceus_04.png" alt="Thumbnail 4"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/piceus/piceus_05.png" aria-label="Open image 5"><img src="assets/img/projects/piceus/piceus_05.png" alt="Thumbnail 5"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/piceus/piceus_06.png" aria-label="Open image 6"><img src="assets/img/projects/piceus/piceus_06.png" alt="Thumbnail 6"/></button>
+          </div>
+
+          <div style="margin-top:10px; color: rgba(255,255,255,0.55); font-size: 10px; text-align: center;">
+            Tip: Tap the main image or any thumbnail to view full size. <br> Rotate your phone horizontally for a larger view of wide images.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal" data-modal aria-hidden="true">
+    <div class="modal-backdrop" data-modal-backdrop></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <div class="modal-top">
+        <div class="modal-title">PICEUS • Image Viewer</div>
+        <button class="modal-close" type="button" aria-label="Close" data-modal-close>✕</button>
+      </div>
+      <div class="modal-body">
+        <button class="gbtn" type="button" aria-label="Previous image" data-modal-prev>‹</button>
+        <img data-modal-img src="assets/img/projects/piceus/piceus_01.png" alt="Expanded image" />
+        <button class="gbtn" type="button" aria-label="Next image" data-modal-next>›</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/gallery.js"></script>
+</body>
+</html>
