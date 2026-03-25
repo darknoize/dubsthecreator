@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Will Weems — Force Marketing/Helix Technologies</title>
+  <link rel="icon" href="assets/img/dubs.png" type="image/png" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root{
+
+  /* You can override these per-embed */
+  --phone-max-w: 460px;            /* cap on desktop */
+  --phone-w: min(92vw, var(--phone-max-w));
+  --phone-h: min(90vh, calc(var(--phone-w) * 2.1667)); /* 19.5/9 ≈ 2.1667 */
+  --bezel: clamp(10px, 2.2vw, 14px);
+  --radius: clamp(34px, 6vw, 44px);
+}
+
+/* --- Layout --- */
+.stage{
+  min-height:100%;
+  display:grid;
+  place-items:center;
+  padding:clamp(14px, 3vw, 28px);
+}
+
+.iphone-shell{
+  display:grid;
+  gap:12px;
+  place-items:center;
+  width:100%;
+}
+
+/* --- iPhone frame (RESPONSIVE) --- */
+/*
+  Embed tips:
+  - To make it fill a parent container: set the parent width, then override:
+    .iphone-shell { --phone-w: 100%; --phone-h: 100%; }
+  - To force a specific height: set --phone-h and it will compute width via aspect-ratio.
+*/
+.iphone-frame{
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-width: var(--phone-max-w);
+  aspect-ratio: 9 / 19.5;
+  border-radius: var(--radius);
+  position:relative;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  padding: var(--bezel);          /* bezel */
+}
+
+/* inner bezel */
+.iphone-frame::before{
+  content:"";
+  position:absolute;
+  inset: calc(var(--bezel) * 0.55);
+  border-radius: calc(var(--radius) - 6px);
+  border: 1px solid rgba(255,255,255,.10);
+  pointer-events:none;
+}
+
+/* Notch */
+.iphone-notch{
+  position:absolute;
+  top: var(--bezel);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  height: clamp(26px, 4.5vh, 30px);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 0 0 18px 18px;
+  backdrop-filter: blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  z-index: 5;
+}
+.speaker{
+  width: clamp(56px, 12vw, 70px);
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+}
+.camera{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(98,208,250,.35);
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+/* Scrollable screen */
+.screen-viewport{
+  position:absolute;
+  inset: var(--bezel); /* match padding */
+  border-radius: calc(var(--radius) - 10px);
+  background: #0a0f1f;
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+/* Optional: slight inner line */
+.screen-viewport::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius: calc(var(--radius) - 10px);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* The tall image */
+.screen-image{
+  display:block;
+  width:100%;
+  height:auto;
+  user-select:none;
+  -webkit-user-drag:none;
+  image-rendering:auto;
+}
+
+/* Scrollbar styling (Chromium/WebKit + Firefox) */
+.screen-viewport::-webkit-scrollbar{ width: 10px; }
+.screen-viewport::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.05);
+  border-radius: 999px;
+  margin: 14px;
+}
+.screen-viewport::-webkit-scrollbar-thumb{
+  background: rgba(98,208,250,.35);
+  border: 2px solid rgba(0,0,0,.35);
+  border-radius: 999px;
+}
+.screen-viewport{ scrollbar-width: thin; scrollbar-color: rgba(98,208,250,.35) rgba(255,255,255,.06); }
+
+/* Scroll buttons */
+.scroll-btn{
+  position:absolute;
+  right: calc(var(--bezel) + 4px);
+  z-index: 6;
+  width: clamp(32px, 6vw, 36px);
+  height: clamp(32px, 6vw, 36px);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.35);
+  color: rgba(233,238,252,.92);
+  backdrop-filter: blur(10px);
+  cursor:pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+.scroll-btn:hover{ background: rgba(0,0,0,.5); transform: translateY(-1px); }
+.scroll-btn:active{ transform: translateY(0px) scale(.98); }
+
+.scroll-btn.up{ top: calc(var(--bezel) + 56px); }
+.scroll-btn.down{ bottom: calc(var(--bezel) + 40px); }
+
+.home-indicator{
+  position:absolute;
+  left:50%;
+  bottom: calc(var(--bezel) + 4px);
+  transform:translateX(-50%);
+  width: 38%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.20);
+  z-index: 6;
+}
+
+/* Hint text */
+.hint{
+  margin:0;
+  font-size: 13px;
+  color: var(--muted);
+  text-align:center;
+  max-width: 56ch;
+}
+
+/* Utility: full-bleed embed example */
+.embed-fill{
+  width:100%;
+  height:100%;
+}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="bg" aria-hidden="true"></div>
+
+    <div class="container">
+    <header>
+      <div class="brand">
+        <span class="ring" aria-hidden="true"></span>
+        <span>WILL WEEMS</span>
+      </div>
+      <nav>
+        <a href="../index.html">Portfolio</a>
+        <a href="https://www.linkedin.com/in/dubsthecreator" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="../resume/index.html">Resume</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <div class="filters">
+          <a href="../index.html" class="tag-lrg">All</a>
+          <a href="ai-governance.html" class="tag-lrg">AI Governance</a>
+          <a href="automotive.html" class="tag-lrg">Automotive</a>
+          <a href="gaming.html" class="tag-lrg">Gaming</a>
+          <a href="fintech.html" class="tag-lrg">FinTech</a>
+          <a href="web3-blockchain.html" class="tag-lrg">Web3 & Blockchain</a>
+          <a href="enterprise-systems.html" class="tag-lrg">Enterprise Systems</a>
+          <a href="cybersecurity.html" class="tag-lrg">Cybersecurity</a>
+          <a href="sports-tech.html" class="tag-lrg">Sports Tech</a>
+          <a href="entertainment.html" class="tag-lrg">Entertainment</a>
+          <a href="travel.html" class="tag-lrg">Travel</a>
+          <a href="healthcare.html" class="tag-lrg active">Healthcare</a>
+          <a href="education.html" class="tag-lrg">Education</a>
+          <a href="science.html" class="tag-lrg">Science</a>
+      </div>
+    </section>
+    <section class="hero">
+      <div class="kicker">All Work / AI Governance & Marketing</div>
+      <h1>Dr. Oz</h1>
+      <p>Healthcare Platform</p>
+    </section>
+
+    <h2 id="work" class="section-title">Dr.Oz and ShareCare Helthcare Platform</h2>
+
+    <section class="project-gallery" aria-label="Project gallery">
+        <div class="card gallery-card" data-gallery>
+          <div class="gallery-main">
+            <button class="gbtn" type="button" aria-label="Previous image" data-prev>‹</button>
+
+            <div class="gallery-viewport" aria-label="Gallery image viewport">
+              <img data-gallery-main src="assets/img/projects/dr-oz/Dr-Oz-Devices.png" alt="Force Marketing/Helix Technologies project image 1" />
+            </div>
+
+            <button class="gbtn" type="button" aria-label="Next image" data-next>›</button>
+          </div>
+
+          <div class="gallery-thumbs" aria-label="Gallery thumbnails">
+            <button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/dr-oz/Dr-Oz-Devices.png" aria-label="Open image 1"><img src="assets/img/projects/dr-oz/Dr-Oz-Devices.png" alt="Thumbnail 1"/></button><!--<button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/force-helix/Drive-Helix-11.png" aria-label="Open image 2"><img src="assets/img/projects/force-helix/Drive-Helix-11.png" alt="Thumbnail 2"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/force-helix/Drive-Helix-12.png" aria-label="Open image 3"><img src="assets/img/projects/force-helix/Drive-Helix-12.png" alt="Thumbnail 3"/></button><button class="thumbbtn" type="button" data-thumb data-full="assets/img/projects/force-helix/Drive-Helix-Web.png" aria-label="Open image 4"><img src="assets/img/projects/force-helix/Drive-Helix-Web.png" alt="Thumbnail 4"/></button>-->
+          </div>
+
+          <div style="margin-top:10px; color: rgba(255,255,255,0.55); font-size: 10px; text-align: center;">
+            Tip: Tap the main image or any thumbnail to view full size. <br> Rotate your phone horizontally for a larger view of wide images.
+          </div>
+        </div>
+      </section>
+
+    <section id="overview">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Overview</h2>
+        <p style="margin-bottom: 1em; font-size: 18px; font-weight: 700;">Health Media Platform</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div style="flex: 1;">
+            <div class="overview-text">
+              <p style="margin-bottom: 1em;">Led the design and delivery of consumer-facing health-media platforms spanning mobile, web, applications, editorial content, and broadcast-aligned experiences. Contributed across product, UX/UI, and content systems supporting digital experiences, magazine-style layouts, and TV-scheduled programming integrations, ensuring consistency across channels and formats.</p>
+              <p style="margin-bottom: 1em;">Designed user journeys focused on clarity, trust, and compliant handling of sensitive health data, while building structured workflows for educational content, guidance, and engagement across multi-step experiences. Implemented role-based access controls, secure data patterns, and governance frameworks aligned with healthcare and media standards.</p>
+              <p style="margin-bottom: 1em;">Worked across product, engineering, editorial, and production teams to align platform design, content delivery, and operational workflows, supporting scalable publishing systems and high-traffic consumer environments. Established analytics and performance practices to optimize engagement, improve user flow, and ensure reliability across integrated digital and media platforms.</p>
+              <p style="margin-bottom: 1em;">Led product strategy, UX/UI design, and platform delivery for consumer-facing health-media initiatives within a regulated environment, supporting large-scale educational content and patient engagement experiences.</p>
+              <p style="margin-bottom: 1em;">Owned the full product lifecycle—from discovery through release—aligning design, engineering, data, and compliance workflows to deliver secure, high-performing, and user-centered health platforms.</p>
+              <p style="margin-bottom: 1em;">Designed and implemented structured user journeys that balanced clarity, trust, and regulatory requirements, ensuring safe handling of sensitive health data while delivering intuitive, accessible experiences.</p>
+              <p style="margin-bottom: 1em;">Built scalable systems for content delivery, personalization, and engagement, enabling dynamic, multi-step health education flows tailored to individual user needs.</p>
+              <p style="margin-bottom: 1em;">Operated with builder-level accountability across platform architecture, governance, and execution—establishing a foundation for reliable, compliant, and measurable digital health experiences.</p>
+            </div>
+           <!--<div class="tech-stack-block">
+              <h3>Tech Stack</h3>
+              <ul class="tech-list">
+                <li><img src="../images/tech_icons_svg_set/python.svg" alt="Python"> Python</li>
+                <li><img src="../images/tech_icons_svg_set/tensorflow.svg" alt="TensorFlow"> TensorFlow</li>
+                <li><img src="../images/tech_icons_svg_set/apache-spark.svg" alt="Apache Spark"> Apache Spark</li>
+                <li><img src="../images/tech_icons_svg_set/kafka.svg" alt="Kafka"> Kafka</li>
+                <li><img src="../images/tech_icons_svg_set/postgresql.svg" alt="PostgreSQL"> PostgreSQL</li>
+                <li><img src="../images/tech_icons_svg_set/docker.svg" alt="Docker"> Docker</li>
+                <li><img src="../images/tech_icons_svg_set/kubernetes.svg" alt="Kubernetes"> Kubernetes</li>
+              </ul>
+            </div>-->
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <!-- Scrollable viewport -->
+                <div class="screen-viewport" id="viewport-overview" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageOverview"
+                    class="screen-image"
+                    src="assets/img/projects/dr-oz/Dr-Oz-Wireframes.png"
+                    alt="Scrollable screen mock"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- Overlay controls (kept minimal) -->
+                <button class="scroll-btn up" type="button" id="mobileScrollUpOverview" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownOverview" aria-label="Scroll down">▼</button>
+
+                <!-- iPhone home indicator -->
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint" style="font-size: 10px !important;">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   <section id="outcomes">
+      <div class="card">
+        <div class="sectionTitle">
+        <h2>Outcomes</h2>
+        <p style="font-size: 18px; font-weight: 700; margin-bottom: 1em;">Key Results and Achievements</p>
+      </div>
+        <div class="overview-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div class="overview-text" style="flex: 1;">
+             <p style="margin-bottom: 1em;">Delivered a scalable, compliant platform that improved user engagement and trust through clear, guided experiences and personalized content.</p>
+             <p style="margin-bottom: 1em;">Established secure data governance and operational workflows, increased platform reliability and performance, and enabled data-driven optimization through analytics, resulting in measurable improvements in user progression and overall platform effectiveness.</p>
+             <p style="margin-bottom: 1em;">Delivered a unified health-media platform that integrated mobile, web, application, and broadcast-aligned content experiences, improving user engagement and consistency across channels.</p>
+             <p style="margin-bottom: 1em;">Enhanced trust and usability through clear, compliant user journeys and secure data handling practices.</p>
+             <p style="margin-bottom: 1em;">Enabled scalable content delivery and publishing workflows supporting high-volume traffic and multi-format media distribution.</p>
+             <p style="margin-bottom: 1em;">Improved performance, reliability, and user flow through data-driven optimization, resulting in a more effective and cohesive platform for health education and audience engagement.</p>
+          </div>
+          <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+      <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+        <div class="iphone-notch" aria-hidden="true">
+          <div class="speaker"></div>
+          <div class="camera"></div>
+        </div>
+
+        <!-- Scrollable viewport -->
+        <div class="screen-viewport" id="viewport" tabindex="0" aria-label="Scrollable content">
+          <img
+            id="screenImage"
+            class="screen-image"
+            src="assets/img/projects/dr-oz/Dr-Oz-Articles.png"
+            alt="Scrollable screen mock"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Overlay controls (kept minimal) -->
+        <button class="scroll-btn up" type="button" id="mobileScrollUp" aria-label="Scroll up">▲</button>
+        <button class="scroll-btn down" type="button" id="mobileScrollDown" aria-label="Scroll down">▼</button>
+
+        <!-- iPhone home indicator -->
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+      <p class="hint" style="font-size: 10px !important;">
+        Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+      </p>
+    </div>
+          </div>
+        </div>
+    </section>
+
+    <div class="grid">
+      <div class="card" data-tags="healthcare">
+        <div class="card__label">Healthcare</div>
+        <div class="card__title">Wellness Content</div>
+        <p class="card__desc">Content Library • Health Guidance • Recipe Collections</p>
+        <div class="card__tags">
+          <span class="tag">Healthcare</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="wellness">
+        <div class="card__label">Wellness</div>
+        <div class="card__title">Preventive Care</div>
+        <p class="card__desc">Prevention Tools • Disease Detection • Health Resources</p>
+        <div class="card__tags">
+          <span class="tag">Wellness</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="healthcare">
+        <div class="card__label">Healthcare</div>
+        <div class="card__title">Community Engagement</div>
+        <p class="card__desc">Community Forums • Expert Q&A • Health Discussions</p>
+        <div class="card__tags">
+          <span class="tag">Healthcare</span>
+        </div>
+      </div>
+
+      <div class="card" data-tags="wellness">
+        <div class="card__label">Wellness</div>
+        <div class="card__title">Personalized Health Plans</div>
+        <p class="card__desc">AI Personalization • Health Profiling • Wellness Planning</p>
+        <div class="card__tags">
+          <span class="tag">Wellness</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<section id="examples" style="margin-top: 50px;">
+      <div class="card">
+        <div class="sectionTitle">
+          <h2>Examples</h2>
+          <p>Interactive Screenshots of Force Marketing/Helix Features</p>
+        </div>
+        <div class="examples-content" style="display: flex; gap: 20px; align-items: flex-start;">
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <h2>Predictive Analytics Dashboard</h2>
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <div class="screen-viewport" id="viewport-examples-left" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageExamplesLeft"
+                    class="screen-image"
+                    src="assets/img/projects/force-helix/Drive-Helix-08.png"
+                    alt="Scrollable screen mock"
+                    draggable="false"
+                  />
+                </div>
+
+                <button class="scroll-btn up" type="button" id="mobileScrollUpExamplesLeft" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownExamplesLeft" aria-label="Scroll down">▼</button>
+
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+              </p>
+            </div>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <h2>Campaign Management Interface</h2>
+            <div class="iphone-shell" aria-label="iPhone preview" style="height: 100%; position: relative;">
+              <div class="iphone-frame" role="group" aria-label="Scrollable screen" style="width: 400px; height: auto; aspect-ratio: 9 / 12;">
+                <div class="iphone-notch" aria-hidden="true">
+                  <div class="speaker"></div>
+                  <div class="camera"></div>
+                </div>
+
+                <div class="screen-viewport" id="viewport-examples-right" tabindex="0" aria-label="Scrollable content">
+                  <img
+                    id="screenImageExamplesRight"
+                    class="screen-image"
+                    src="assets/img/projects/force-helix/Drive-Helix-09.png"
+                    alt="Scrollable screen mock"
+                    draggable="false"
+                  />
+                </div>
+
+                <button class="scroll-btn up" type="button" id="mobileScrollUpExamplesRight" aria-label="Scroll up">▲</button>
+                <button class="scroll-btn down" type="button" id="mobileScrollDownExamplesRight" aria-label="Scroll down">▼</button>
+
+                <div class="home-indicator" aria-hidden="true"></div>
+              </div>
+
+              <p class="hint">
+                Drag / mousewheel / trackpad / touch-scroll inside the screen. Use ▲▼ for smooth stepping. Resize your browser—this scales.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>-->
+
+
+  </div>
+
+  <div class="modal" data-modal aria-hidden="true">
+    <div class="modal-backdrop" data-modal-backdrop></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <div class="modal-top">
+        <div class="modal-title">Dr. Oz Platform • Image Viewer</div>
+        <button class="modal-close" type="button" aria-label="Close" data-modal-close>✕</button>
+      </div>
+      <div class="modal-body">
+        <button class="gbtn" type="button" aria-label="Previous image" data-modal-prev>‹</button>
+        <img data-modal-img src="assets/img/projects/dr-oz/Projects-Landing-Container.png" alt="Expanded image" />
+        <button class="gbtn" type="button" aria-label="Next image" data-modal-next>›</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/gallery.js"></script>
+  <script src="assets/js/scroll.js"></script>
+</main>
+</body>
+</html>
