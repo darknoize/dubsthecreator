@@ -1,56 +1,112 @@
-(() => {
+// Scroll button functionality for iPhone preview
+window.scrollInit = function() {
+  // ...existing code...
+  console.log('scroll.js loaded');
+
+  // Outcomes phone
+  const upBtn = document.getElementById('mobileScrollUp');
+  const downBtn = document.getElementById('mobileScrollDown');
   const viewport = document.getElementById('viewport');
-  const btnUp = document.getElementById('mobileScrollUp');
-  const btnDown = document.getElementById('mobileScrollDown');
 
-  // Responsive step: ~8% of visible screen, clamped to sane bounds
-  function stepPx(){
-    const v = viewport.clientHeight || 600;
-    return Math.max(64, Math.min(140, Math.round(v * 0.08)));
-  }
+  console.log('Outcomes elements:', upBtn, downBtn, viewport);
 
-  function scrollByStep(dir){
-    viewport.scrollBy({ top: stepPx() * dir, left: 0, behavior: 'smooth' });
-  }
-
-  btnUp.addEventListener('click', () => scrollByStep(-1));
-  btnDown.addEventListener('click', () => scrollByStep(1));
-
-  // Hold-to-scroll behavior
-  let holdTimer = null;
-  function startHold(dir){
-    stopHold();
-    holdTimer = setInterval(() => {
-      viewport.scrollBy({ top: 18 * dir, left: 0, behavior: 'auto' });
-    }, 16); // ~60fps
-  }
-  function stopHold(){
-    if (holdTimer) clearInterval(holdTimer);
-    holdTimer = null;
-  }
-
-  [[-1, btnUp], [1, btnDown]].forEach(([dir, el]) => {
-    el.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      startHold(dir);
+  if (upBtn && downBtn && viewport) {
+    console.log('Adding listeners for outcomes');
+    upBtn.addEventListener('click', () => {
+      viewport.scrollBy({ top: -200, behavior: 'smooth' });
     });
-  });
 
-  ['pointerup','pointercancel','pointerleave'].forEach(evt => {
-    btnUp.addEventListener(evt, stopHold);
-    btnDown.addEventListener(evt, stopHold);
-  });
+    downBtn.addEventListener('click', () => {
+      viewport.scrollBy({ top: 200, behavior: 'smooth' });
+    });
 
-  // Keyboard support when viewport focused
-  viewport.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); scrollByStep(1); }
-    if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); scrollByStep(-1); }
-    if (e.key === 'Home') { e.preventDefault(); viewport.scrollTo({ top: 0, behavior: 'smooth' }); }
-    if (e.key === 'End') { e.preventDefault(); viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' }); }
-  });
+    // Optional: pointer events for touch devices
+    upBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewport.scrollBy({ top: -200, behavior: 'smooth' });
+    });
 
-  const img = document.getElementById('screenImage');
-  img.addEventListener('error', () => {
-    console.warn('Missing image asset at assets/screen.png. Replace it with your tall screenshot.');
-  });
-})();
+    downBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewport.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+  }
+
+  // Overview phone
+  const upBtnOverview = document.getElementById('mobileScrollUpOverview');
+  const downBtnOverview = document.getElementById('mobileScrollDownOverview');
+  const viewportOverview = document.getElementById('viewport-overview');
+
+  if (upBtnOverview && downBtnOverview && viewportOverview) {
+    upBtnOverview.addEventListener('click', () => {
+      viewportOverview.scrollBy({ top: -200, behavior: 'smooth' });
+    });
+
+    downBtnOverview.addEventListener('click', () => {
+      viewportOverview.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+
+    // Optional: pointer events for touch devices
+    upBtnOverview.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewportOverview.scrollBy({ top: -200, behavior: 'smooth' });
+    });
+
+    downBtnOverview.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewportOverview.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+  }
+
+  // Examples left phone
+  const upBtnExamplesLeft = document.getElementById('mobileScrollUpExamplesLeft');
+  const downBtnExamplesLeft = document.getElementById('mobileScrollDownExamplesLeft');
+  const viewportExamplesLeft = document.getElementById('viewport-examples-left');
+
+  if (upBtnExamplesLeft && downBtnExamplesLeft && viewportExamplesLeft) {
+    upBtnExamplesLeft.addEventListener('click', () => {
+      viewportExamplesLeft.scrollBy({ top: -200, behavior: 'smooth' });
+    });
+
+    downBtnExamplesLeft.addEventListener('click', () => {
+      viewportExamplesLeft.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+
+    upBtnExamplesLeft.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewportExamplesLeft.scrollBy({ top: -200, behavior: 'smooth' });
+    });
+
+    downBtnExamplesLeft.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewportExamplesLeft.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+  }
+
+  // Examples right phone
+  const upBtnExamplesRight = document.getElementById('mobileScrollUpExamplesRight');
+  const downBtnExamplesRight = document.getElementById('mobileScrollDownExamplesRight');
+  const viewportExamplesRight = document.getElementById('viewport-examples-right');
+
+  if (upBtnExamplesRight && downBtnExamplesRight && viewportExamplesRight) {
+    upBtnExamplesRight.addEventListener('click', () => {
+      viewportExamplesRight.scrollBy({ top: -200, behavior: 'smooth' });
+    });
+
+    downBtnExamplesRight.addEventListener('click', () => {
+      viewportExamplesRight.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+
+    upBtnExamplesRight.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewportExamplesRight.scrollBy({ top: -200, behavior: 'smooth' });
+    });
+
+    downBtnExamplesRight.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      viewportExamplesRight.scrollBy({ top: 200, behavior: 'smooth' });
+    });
+  }
+};
+// Run on initial load
+document.addEventListener('DOMContentLoaded', window.scrollInit);
