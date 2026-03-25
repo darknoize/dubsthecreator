@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>William Weems - Resume</title>
-  <link rel="icon" href="../projects/assets/img/dubs.png" type="image/png" />
   <link rel="stylesheet" href="../projects/assets/css/styles.css" />
   <style>
     html{
@@ -143,31 +142,6 @@
     .resume-actions{
       display:block;
       margin-top:0;
-    }
-
-    .project-download-fab{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:12px 20px;
-      border-radius:12px;
-      border:1px solid rgba(98,208,250,0.28);
-      background:linear-gradient(180deg, rgba(4,8,15,0.08), rgba(4,8,15,0.3));
-      color:rgba(255,255,255,0.9);
-      font-size:14px;
-      font-weight:500;
-      text-decoration:none;
-      white-space:nowrap;
-      transition:transform .15s ease, border-color .2s ease, box-shadow .2s ease, filter .2s ease;
-      box-shadow:0 12px 28px rgba(0,0,0,0.22);
-      margin-left:12px;
-    }
-
-    .project-download-fab:hover{
-      transform:translateY(-1px);
-      border-color:rgba(98,208,250,0.5);
-      box-shadow:0 16px 32px rgba(0,0,0,0.28);
     }
 
     .resume-jump-nav{
@@ -443,102 +417,6 @@
       line-height:1.82;
     }
 
-    /* Tech Stack Section */
-    .tech-stack-section{
-      margin:32px 0 24px;
-      padding:24px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.1);
-      background:linear-gradient(180deg, rgba(10, 20, 34, 0.96), rgba(7, 14, 24, 0.93));
-      box-shadow:0 14px 30px rgba(0,0,0,0.18);
-      height:500px;
-      overflow-y:auto;
-    }
-
-    .tech-stack-section h3{
-      margin:0 0 16px 0;
-      color:rgba(98,208,250,0.9);
-      font-size:14px;
-      font-weight:700;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-    }
-
-    .tech-stack-grid{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      padding-right:8px;
-    }
-
-    .tech-stack-section::-webkit-scrollbar{
-      width:8px;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    .tech-stack-section::-webkit-scrollbar-track{
-      background:rgba(255,255,255,0.05);
-      border-radius:4px;
-    }
-
-    .tech-stack-section::-webkit-scrollbar-thumb{
-      background:rgba(98,208,250,0.3);
-      border-radius:4px;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    .tech-stack-section{
-      scrollbar-width: thin;
-      scrollbar-color: rgba(98,208,250,0.3) rgba(255,255,255,0.05);
-    }
-
-    .tech-tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,0.15);
-      background:rgba(255,255,255,0.06);
-      color:rgba(255,255,255,0.9);
-      font-size:13px;
-      font-weight:500;
-      white-space:nowrap;
-      transition:transform .15s ease, background .2s ease, border-color .2s ease;
-    }
-
-    .tech-tag:hover{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,0.12);
-      border-color:rgba(98,208,250,0.4);
-    }
-
-    .tech-tag img{
-      width:16px;
-      height:16px;
-      flex-shrink:0;
-      opacity:0.9;
-    }
-
-    .tech-cluster{
-      margin-bottom:20px;
-    }
-
-    .tech-cluster:last-child{
-      margin-bottom:0;
-    }
-
-    .tech-cluster-title{
-      margin:0 0 12px 0;
-      color:rgba(98,208,250,0.85);
-      font-size:13px;
-      font-weight:600;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-
     .resume-role__subheading{
       margin-top:16px;
       color:rgba(255,255,255,0.5);
@@ -592,147 +470,6 @@
 
     .resume-education-meta{
       color:rgba(255,255,255,0.62);
-    }
-
-    /* Projects Grid */
-    .projects-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
-      gap:20px;
-      margin-top:20px;
-    }
-
-    .project-card{
-      display:block;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:12px;
-      overflow:hidden;
-      text-decoration:none;
-      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-    }
-
-    .project-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(98,208,250,0.3);
-      box-shadow:0 8px 24px rgba(0,0,0,0.2);
-    }
-
-    .project-card__thumb{
-      height:160px;
-      background-size:cover;
-      background-position:center;
-      background-color:rgba(255,255,255,0.05);
-    }
-
-    .project-card__content{
-      padding:16px;
-    }
-
-    .project-card__content h3{
-      margin:0 0 8px 0;
-      font-size:1.1rem;
-      font-weight:600;
-      color:rgba(255,255,255,0.95);
-    }
-
-    .project-card__content p{
-      margin:0 0 4px 0;
-      font-size:0.9rem;
-      color:rgba(98,208,250,0.9);
-      font-weight:500;
-    }
-
-    .project-card__content p:last-child{
-      color:rgba(255,255,255,0.7);
-      font-weight:400;
-    }
-
-    /* Modal Styles */
-    .modal{
-      position:fixed;
-      inset:0;
-      z-index:1000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      opacity:0;
-      visibility:hidden;
-      transition:opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .modal[aria-hidden="false"]{
-      opacity:1;
-      visibility:visible;
-    }
-
-    .modal-backdrop{
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,0.8);
-    }
-
-    .modal-dialog{
-      position:relative;
-      z-index:1;
-      max-width:500px;
-      width:90%;
-      max-height:90vh;
-      background:linear-gradient(180deg, rgba(10, 20, 34, 0.96), rgba(7, 14, 24, 0.93));
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:16px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.3);
-      overflow:hidden;
-    }
-
-    .modal-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:20px 24px;
-      border-bottom:1px solid rgba(255,255,255,0.1);
-    }
-
-    .modal-title{
-      color:rgba(98,208,250,0.9);
-      font-size:18px;
-      font-weight:600;
-    }
-
-    .modal-close{
-      background:none;
-      border:none;
-      color:rgba(255,255,255,0.7);
-      font-size:24px;
-      cursor:pointer;
-      padding:4px;
-      border-radius:4px;
-      transition:color 0.2s ease;
-    }
-
-    .modal-close:hover{
-      color:rgba(255,255,255,0.9);
-      background:rgba(255,255,255,0.1);
-    }
-
-    .modal-body{
-      padding:24px;
-      color:rgba(255,255,255,0.9);
-    }
-
-    .download-link{
-      display:inline-block;
-      padding:12px 24px;
-      background:#039dfc;
-      color:white;
-      text-decoration:none;
-      border-radius:8px;
-      font-weight:500;
-      transition:background 0.2s ease;
-    }
-
-    .download-link:hover{
-      background:#0288d1;
     }
 
     @media (max-width: 760px){
@@ -822,10 +559,6 @@
         min-width:38px;
         height:38px;
       }
-
-      .tech-stack-section{
-        height:300px;
-      }
     }
   </style>
 </head>
@@ -843,11 +576,17 @@
           <a href="tel:+17062244104" data-contact-phone aria-label="Call William Weems at 706-224-4104"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.62a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.46-1.46a2 2 0 0 1 2.11-.45c.84.3 1.72.51 2.62.63A2 2 0 0 1 22 16.92z"></path></svg><span>Call William</span></a>
           <a href="https://www.dubsthecreator.com" target="_blank" rel="noopener noreferrer" aria-label="Visit William Weems website"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.2 4.72"></path><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L12.8 19.28"></path></svg><span>Website</span></a>
           <a href="https://www.linkedin.com/in/dubsthecreator" target="_blank" rel="noopener noreferrer" aria-label="Visit William Weems LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6.5" r="1.25"></circle><path d="M4.75 10v8"></path><path d="M10 18v-8"></path><path d="M10 13.5a3 3 0 0 1 6 0V18"></path></svg><span>LinkedIn</span></a>
-          <a href="#" data-open-modal="resume-download" aria-label="Download William Weems Resume PDF"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10,9 9,9 8,9"></polyline></svg><span>Download CV</span></a>
         </div>
 
         <div class="resume-actions">
           <button type="button" class="read-trigger project-read-fab" data-read-resume data-icon-only="true" aria-pressed="false">Read Resume Aloud</button>
+        </div>
+      </section>
+
+      <section class="resume-jump-nav" data-read-aloud-ignore>
+        <div class="resume-jump-nav__inner">
+          <p class="resume-jump-nav__label">Swipe Through Experience</p>
+          <nav class="filters resume-filters" data-resume-jump-nav aria-label="Resume section navigation"></nav>
         </div>
       </section>
 
@@ -857,337 +596,6 @@
             <h2>Executive Summary</h2>
           </div>
           <p class="resume-summary">Executive technology and product leader with over two decades of experience architecting, governing, and scaling AI-driven platforms across fintech, healthcare, education, public sector, automotive, media, and enterprise environments. Specialized in multimodal, agentic, and high-assurance systems that bridge advanced AI architecture with human-centered design, regulatory compliance, and operational execution.</p>
-        </div>
-      </section>
-
-      <section class="tech-stack-section" data-read-aloud-ignore>
-        <h3>Technology Stack</h3>
-        
-        <!-- Business and Product Tools -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Business and Product Tools</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag">Jira</span>
-            <span class="tech-tag">Confluence</span>
-            <span class="tech-tag">Slack</span>
-            <span class="tech-tag">Microsoft Teams</span>
-            <span class="tech-tag">Trello</span>
-            <span class="tech-tag">Asana</span>
-            <span class="tech-tag">Miro</span>
-            <span class="tech-tag">Google Workspace</span>
-            <span class="tech-tag">Google Docs</span>
-            <span class="tech-tag">Google Sheets</span>
-            <span class="tech-tag">Google Calendar</span>
-            <span class="tech-tag">Microsoft 365</span>
-            <span class="tech-tag">Microsoft Outlook</span>
-            <span class="tech-tag">Azure</span>
-            <span class="tech-tag">Salesforce</span>
-            <span class="tech-tag">HubSpot</span>
-            <span class="tech-tag">Tableau</span>
-            <span class="tech-tag">Power BI</span>
-            <span class="tech-tag">Notion</span>
-            <span class="tech-tag">Zoom</span>
-            <span class="tech-tag">Calendly</span>
-            <span class="tech-tag">Agile</span>
-            <span class="tech-tag">Scrum</span>
-            <span class="tech-tag">Meta Business</span>
-            <span class="tech-tag">Mailchimp</span>
-            <span class="tech-tag">LinkedIn Ads</span>
-            <span class="tech-tag">Facebook Ads</span>
-            <span class="tech-tag">Instagram Ads</span>
-            <span class="tech-tag">X Ads</span>
-          </div>
-        </div>
-
-        <!-- Design Tools -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Design</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/adobe-creative-suite.svg" alt="Adobe Creative Suite" onerror="this.style.display='none'"> Adobe Creative Suite</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/sketch.svg" alt="Sketch" onerror="this.style.display='none'"> Sketch</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/figma.svg" alt="Figma" onerror="this.style.display='none'"> Figma</span>
-            <span class="tech-tag">InVision</span>
-            <span class="tech-tag">Zeplin</span>
-            <span class="tech-tag">Principle</span>
-            <span class="tech-tag">Adobe Firefly</span>
-            <span class="tech-tag">Blender</span>
-            <span class="tech-tag">After Effects</span>
-            <span class="tech-tag">Premier</span>
-          </div>
-        </div>
-
-        <!-- Multimedia Producer -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Multimedia Producer</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag">Ableton LIVE</span>
-            <span class="tech-tag">ProTools</span>
-            <span class="tech-tag">MPC</span>
-            <span class="tech-tag">WAV</span>
-            <span class="tech-tag">Serato</span>
-            <span class="tech-tag">Splice</span>
-            <span class="tech-tag">Avid</span>
-            <span class="tech-tag">FL Studio</span>
-          </div>
-        </div>
-
-        <!-- Frontend Development -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Frontend</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/react.svg" alt="React" onerror="this.style.display='none'"> React</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/vue.svg" alt="Vue.js" onerror="this.style.display='none'"> Vue.js</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/angular.svg" alt="Angular" onerror="this.style.display='none'"> Angular</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/html5.svg" alt="HTML5" onerror="this.style.display='none'"> HTML5</span>
-            <span class="tech-tag">XML</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/css3.svg" alt="CSS3" onerror="this.style.display='none'"> CSS3</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/javascript.svg" alt="JavaScript" onerror="this.style.display='none'"> JavaScript</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/typescript.svg" alt="TypeScript" onerror="this.style.display='none'"> TypeScript</span>
-            <span class="tech-tag">ES5/ES6</span>
-            <span class="tech-tag">jQuery</span>
-            <span class="tech-tag">SASS/SCSS</span>
-            <span class="tech-tag">Tailwind CSS</span>
-            <span class="tech-tag">Bootstrap</span>
-            <span class="tech-tag">Material-UI</span>
-            <span class="tech-tag">Next.js</span>
-            <span class="tech-tag">Gatsby</span>
-            <span class="tech-tag">Nuxt.js</span>
-            <span class="tech-tag">Webpack</span>
-            <span class="tech-tag">Vite</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/react-native.svg" alt="React Native" onerror="this.style.display='none'"> React Native</span>
-            <span class="tech-tag">Swift</span>
-            <span class="tech-tag">Kotlin</span>
-          </div>
-        </div>
-
-        <!-- Backend Development -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Backend</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/python.svg" alt="Python" onerror="this.style.display='none'"> Python</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/nodejs.svg" alt="Node.js" onerror="this.style.display='none'"> Node.js</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/php.svg" alt="PHP" onerror="this.style.display='none'"> PHP</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/ruby.svg" alt="Ruby" onerror="this.style.display='none'"> Ruby</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/java.svg" alt="Java" onerror="this.style.display='none'"> Java</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/dotnet.svg" alt=".NET" onerror="this.style.display='none'"> .NET</span>
-            <span class="tech-tag">XAML</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/csharp.svg" alt="C#" onerror="this.style.display='none'"> C#</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/go.svg" alt="Go" onerror="this.style.display='none'"> Go</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/rust.svg" alt="Rust" onerror="this.style.display='none'"> Rust</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/coldfusion.svg" alt="ColdFusion" onerror="this.style.display='none'"> ColdFusion</span>
-            <span class="tech-tag">Django</span>
-            <span class="tech-tag">Flask</span>
-            <span class="tech-tag">FastAPI</span>
-            <span class="tech-tag">Express.js</span>
-            <span class="tech-tag">Laravel</span>
-            <span class="tech-tag">Ruby on Rails</span>
-            <span class="tech-tag">Spring Boot</span>
-            <span class="tech-tag">ASP.NET</span>
-            <span class="tech-tag">GraphQL</span>
-            <span class="tech-tag">REST APIs</span>
-            <span class="tech-tag">Kong</span>
-            <span class="tech-tag">Istio</span>
-          </div>
-        </div>
-
-        <!-- Databases -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Databases</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/postgresql.svg" alt="PostgreSQL" onerror="this.style.display='none'"> PostgreSQL</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/mysql.svg" alt="MySQL" onerror="this.style.display='none'"> MySQL</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/mongodb.svg" alt="MongoDB" onerror="this.style.display='none'"> MongoDB</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/redis.svg" alt="Redis" onerror="this.style.display='none'"> Redis</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/sqlite.svg" alt="SQLite" onerror="this.style.display='none'"> SQLite</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/cassandra.svg" alt="Cassandra" onerror="this.style.display='none'"> Cassandra</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/couchdb.svg" alt="CouchDB" onerror="this.style.display='none'"> CouchDB</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/dynamodb.svg" alt="DynamoDB" onerror="this.style.display='none'"> DynamoDB</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/firebase.svg" alt="Firebase" onerror="this.style.display='none'"> Firebase</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/elasticsearch.svg" alt="Elasticsearch" onerror="this.style.display='none'"> Elasticsearch</span>
-            <span class="tech-tag">Oracle</span>
-            <span class="tech-tag">SQL Server</span>
-            <span class="tech-tag">MariaDB</span>
-            <span class="tech-tag">InfluxDB</span>
-            <span class="tech-tag">Neo4j</span>
-          </div>
-        </div>
-
-        <!-- CMS Systems -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">CMS</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/wordpress.svg" alt="WordPress" onerror="this.style.display='none'"> WordPress</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/drupal.svg" alt="Drupal" onerror="this.style.display='none'"> Drupal</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/joomla.svg" alt="Joomla" onerror="this.style.display='none'"> Joomla</span>
-            <span class="tech-tag">Contentful</span>
-            <span class="tech-tag">Strapi</span>
-            <span class="tech-tag">Ghost</span>
-            <span class="tech-tag">Squarespace</span>
-            <span class="tech-tag">Wix</span>
-            <span class="tech-tag">Shopify</span>
-            <span class="tech-tag">Magento</span>
-            <span class="tech-tag">PrestaShop</span>
-          </div>
-        </div>
-
-        <!-- Marketing & Product Development -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Marketing & Product</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag">Google Analytics</span>
-            <span class="tech-tag">Mixpanel</span>
-            <span class="tech-tag">Amplitude</span>
-            <span class="tech-tag">Hotjar</span>
-            <span class="tech-tag">Optimizely</span>
-            <span class="tech-tag">A/B Testing</span>
-            <span class="tech-tag">SEO/SEM</span>
-            <span class="tech-tag">Google Ads</span>
-            <span class="tech-tag">Facebook Ads</span>
-            <span class="tech-tag">HubSpot</span>
-            <span class="tech-tag">Salesforce</span>
-            <span class="tech-tag">Marketo</span>
-            <span class="tech-tag">Jira</span>
-            <span class="tech-tag">Productboard</span>
-            <span class="tech-tag">Figma (Product)</span>
-            <span class="tech-tag">Miro</span>
-            <span class="tech-tag">Notion</span>
-          </div>
-        </div>
-
-        <!-- AI & ML -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">AI & ML</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/tensorflow.svg" alt="TensorFlow" onerror="this.style.display='none'"> TensorFlow</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/pytorch.svg" alt="PyTorch" onerror="this.style.display='none'"> PyTorch</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/scikit-learn.svg" alt="Scikit-learn" onerror="this.style.display='none'"> Scikit-learn</span>
-            <span class="tech-tag">RAG</span>
-            <span class="tech-tag">CAG</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/openai.svg" alt="OpenAI" onerror="this.style.display='none'"> OpenAI</span>
-            <span class="tech-tag">Claude</span>
-            <span class="tech-tag">GPT</span>
-            <span class="tech-tag">LLMs</span>
-            <span class="tech-tag">NLP</span>
-            <span class="tech-tag">Computer Vision</span>
-            <span class="tech-tag">Reinforcement Learning</span>
-            <span class="tech-tag">GitHub Copilot</span>
-            <span class="tech-tag">OpenClaw</span>
-            <span class="tech-tag">Ollama</span>
-          </div>
-        </div>
-
-        <!-- DevOps & Infrastructure -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">DevOps & Infrastructure</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/docker.svg" alt="Docker" onerror="this.style.display='none'"> Docker</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/kubernetes.svg" alt="Kubernetes" onerror="this.style.display='none'"> Kubernetes</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/aws.svg" alt="AWS" onerror="this.style.display='none'"> AWS</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/azure.svg" alt="Azure" onerror="this.style.display='none'"> Azure</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-cloud.svg" alt="Google Cloud" onerror="this.style.display='none'"> Google Cloud</span>
-            <span class="tech-tag">Homebrew</span>
-            <span class="tech-tag">Jenkins</span>
-            <span class="tech-tag">GitLab CI</span>
-            <span class="tech-tag">GitHub Actions</span>
-            <span class="tech-tag">Terraform</span>
-            <span class="tech-tag">Ansible</span>
-            <span class="tech-tag">YAML</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/nginx.svg" alt="NGINX" onerror="this.style.display='none'"> NGINX</span>
-            <span class="tech-tag">Apache</span>
-            <span class="tech-tag">Cloudflare</span>
-            <span class="tech-tag">Fastly</span>
-            <span class="tech-tag">Akamai</span>
-            <span class="tech-tag">CloudFront</span>
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">Pen Testing</span>
-            <span class="tech-tag">OWASP</span>
-            <span class="tech-tag">Grafana</span>
-            <span class="tech-tag">Prometheus</span>
-            <span class="tech-tag">DataDog</span>
-            <span class="tech-tag">AWS Lambda</span>
-            <span class="tech-tag">Azure Functions</span>
-            <span class="tech-tag">Vercel Functions</span>
-            <span class="tech-tag">OAuth</span>
-            <span class="tech-tag">JWT</span>
-            <span class="tech-tag">SSL/TLS</span>
-          </div>
-        </div>
-
-        <!-- Blockchain & Crypto -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Blockchain & Crypto</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/ethereum.svg" alt="Ethereum" onerror="this.style.display='none'"> Ethereum</span>
-            <span class="tech-tag">BTC</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/solidity.svg" alt="Solidity" onerror="this.style.display='none'"> Solidity</span>
-            <span class="tech-tag">Tokenization</span>
-            <span class="tech-tag">Smart Contracts</span>
-            <span class="tech-tag">DeFi</span>
-            <span class="tech-tag">Web3</span>
-            <span class="tech-tag">NFTs</span>
-            <span class="tech-tag">IPFS</span>
-          </div>
-        </div>
-
-        <!-- Payments & Fintech -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Payments & Fintech</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/stripe.svg" alt="Stripe" onerror="this.style.display='none'"> Stripe</span>
-            <span class="tech-tag">Payment Processing</span>
-            <span class="tech-tag">Digital Wallets</span>
-            <span class="tech-tag">Fraud Detection</span>
-            <span class="tech-tag">PCI Compliance</span>
-            <span class="tech-tag">Braintree</span>
-            <span class="tech-tag">Square</span>
-          </div>
-        </div>
-
-        <!-- Data Processing & Tools -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">Data Processing</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-kafka.svg" alt="Apache Kafka" onerror="this.style.display='none'"> Apache Kafka</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/apache-spark.svg" alt="Apache Spark" onerror="this.style.display='none'"> Apache Spark</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/hadoop.svg" alt="Hadoop" onerror="this.style.display='none'"> Hadoop</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/git.svg" alt="Git" onerror="this.style.display='none'"> Git</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/github.svg" alt="GitHub" onerror="this.style.display='none'"> GitHub</span>
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/vercel.svg" alt="Vercel" onerror="this.style.display='none'"> Vercel</span>
-            <span class="tech-tag">Linux</span>
-            <span class="tech-tag">macOS</span>
-            <span class="tech-tag">Windows</span>
-            <span class="tech-tag">Bash</span>
-            <span class="tech-tag">PowerShell</span>
-          </div>
-        </div>
-
-        <!-- GeoSpatial & Mapping -->
-        <div class="tech-cluster">
-          <h4 class="tech-cluster-title">GeoSpatial</h4>
-          <div class="tech-stack-grid">
-            <span class="tech-tag"><img src="../images/tech_icons_svg_set/google-maps.svg" alt="Google Maps" onerror="this.style.display='none'"> Google Maps API</span>
-            <span class="tech-tag">Geo Targeting</span>
-            <span class="tech-tag">GeoFence</span>
-            <span class="tech-tag">Location Tracking</span>
-            <span class="tech-tag">Geo Search</span>
-            <span class="tech-tag">Shared Locations</span>
-            <span class="tech-tag">Satellite Tracking</span>
-            <span class="tech-tag">GeoMapping</span>
-            <span class="tech-tag">Crime Mapping</span>
-            <span class="tech-tag">GIS</span>
-            <span class="tech-tag">GPS</span>
-            <span class="tech-tag">Geospatial Analysis</span>
-            <span class="tech-tag">Mapbox</span>
-            <span class="tech-tag">OpenStreetMap</span>
-            <span class="tech-tag">PostGIS</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="resume-jump-nav" data-read-aloud-ignore>
-        <div class="resume-jump-nav__inner">
-          <p class="resume-jump-nav__label">Swipe Through Experience</p>
-          <nav class="filters resume-filters" data-resume-jump-nav aria-label="Resume section navigation"></nav>
         </div>
       </section>
 
@@ -1346,7 +754,7 @@
             <li><strong>Founder &amp; Executive Leadership:</strong> Built and led a multidisciplinary agency delivering end-to-end product, platform, and marketing systems for national and international clients across retail, industrial, sports, and enterprise sectors.</li>
             <li><strong>Enterprise Platform Delivery:</strong> Led design and development of responsive web, mobile, and portal platforms supporting large-scale operations, campaigns, and customer engagement.</li>
             <li><strong>Marketing Technology &amp; Analytics Systems:</strong> Designed and delivered marketing platforms integrating SEO/SEM, analytics, dashboards, attribution tracking, and digital measurement systems.</li>
-            <li><strong>Geolocation &amp; Mapping Infrastructure:</strong> Implemented large-scale geolocation and mapping systems, including Google Maps integrations tracking <abbr title="over 8,000">8,000+</abbr> locations nationwide, used to analyze distribution, sales performance, and operational reach.</li>
+            <li><strong>Geolocation &amp; Mapping Infrastructure:</strong> Implemented large-scale geolocation and mapping systems, including Google Maps integrations tracking 8,000+ locations nationwide, used to analyze distribution, sales performance, and operational reach.</li>
             <li><strong>Data Platforms &amp; Workflow Systems:</strong> Redesigned and custom-built cloud-based data management platforms supporting enterprise workflows, reporting, and decision-making.</li>
             <li><strong>Brand Systems &amp; Revenue Enablement:</strong> Created branded collateral, sales materials, conference assets, and printed brand systems used directly in securing enterprise partnerships, including a multi-million-dollar Starbucks partnership.</li>
             <li><strong>Hardware-Adjacent &amp; Experiential Systems:</strong> Designed and supported product-adjacent hardware experiences, experiential marketing systems, and early production builds bridging physical and digital interaction.</li>
@@ -1616,7 +1024,7 @@
             <li><strong>Institutional Technology Leadership:</strong> Served as Principal Web Developer for the Franklin College of Arts &amp; Sciences, overseeing digital systems and standards supporting more than 40 academic departments across the arts, humanities, social sciences, and physical sciences.</li>
             <li><strong>Founding &amp; Leadership of the Digital Library of Georgia:</strong> Founded and led the Digital Library of Georgia, a large-scale academic platform backed by significant institutional and state funding and widely used across K-12, higher education, historians, and research communities.</li>
             <li><strong>Research Platform Architecture:</strong> Designed and delivered advanced research and visualization platforms, including neuroscience imaging systems, live brain-scan streaming, physics and microscopy environments, and marine ecosystem tracking tools.</li>
-            <li><strong>Academic Content &amp; Media Systems:</strong> Produced, managed, and governed <abbr title="over 1,000">1,000+</abbr> academic videos and podcasts, including lectures, seminars, visiting scholars, and awards programming distributed through institutional channels and iTunes U.</li>
+            <li><strong>Academic Content &amp; Media Systems:</strong> Produced, managed, and governed 1,000+ academic videos and podcasts, including lectures, seminars, visiting scholars, and awards programming distributed through institutional channels and iTunes U.</li>
             <li><strong>Cross-Department &amp; Faculty Collaboration:</strong> Worked directly with faculty, department heads, researchers, and senior university leadership to define requirements, approve systems, and align technology investments with academic goals.</li>
             <li><strong>Digital Strategy &amp; Governance:</strong> Led platform governance, standards, and technology planning across the college, ensuring consistency, sustainability, and long-term maintainability of digital systems.</li>
             <li><strong>Large-Scale Multimedia Production:</strong> Served as lead photographer and videographer for the college, producing official multimedia assets funded directly by the Dean for academic, promotional, and archival use.</li>
@@ -2161,12 +1569,9 @@
           .replace(/\blive\b/gi, 'lyve')
           .replace(/\bsaas\b/gi, 'sass')
           .replace(/\bpiceus\b/gi, 'pi see us')
-          .replace(/\bporsche\b/gi, 'por-shuh')
           .replace(/\bcardlytics\b/gi, 'Card lytics')
           .replace(/\bdr\.?\s*oz\b/gi, 'Doctor Oz')
-          .replace(/\bat&t\b/gi, 'A T & T')
           .replace(/\bnbc\b/gi, 'N B C')
-          .replace(/\bnada\b/gi, 'N A D A')
           .replace(/\bux\/ui\b/gi, 'U X U I')
           .replace(/\bschedul(e|ed|es|ing)\b/gi, (match) => {
             const lower = match.toLowerCase();
@@ -2330,56 +1735,5 @@
       });
     });
   </script>
-
-  <script>
-    // Modal functionality
-    document.addEventListener('DOMContentLoaded', () => {
-      const downloadButton = document.querySelector('[data-open-modal="resume-download"]');
-      const modal = document.querySelector('[data-modal="resume-download"]');
-      const closeButton = modal.querySelector('[data-modal-close]');
-      const backdrop = modal.querySelector('[data-modal-backdrop]');
-
-      const openModal = () => {
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      };
-
-      const closeModal = () => {
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      };
-
-      downloadButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal();
-      });
-      closeButton.addEventListener('click', closeModal);
-      backdrop.addEventListener('click', closeModal);
-
-      // Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
-          closeModal();
-        }
-      });
-    });
-  </script>
-
-  <!-- Resume Download Modal -->
-  <div class="modal" data-modal="resume-download" aria-hidden="true">
-    <div class="modal-backdrop" data-modal-backdrop></div>
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Resume Download">
-      <div class="modal-top">
-        <div class="modal-title">Download Resume</div>
-        <button class="modal-close" type="button" aria-label="Close" data-modal-close>✕</button>
-      </div>
-      <div class="modal-body">
-        <iframe src="William_Weems_Product_UX_UI_AI_Leadership_CV.pdf" width="100%" height="600px" style="border: none;"></iframe>
-        <p>You can download William Weems' resume as a PDF file.</p>
-        <a href="William_Weems_Product_UX_UI_AI_Leadership_CV.pdf" download class="download-link">Download PDF</a>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
