@@ -40,6 +40,14 @@ Thumbs.db
 *.tmp
 .vercel
 
+# Large backup archives (not needed for deployment)
+portfolio 2.zip
+portfolio-backup-*.zip
+
+# Captured live-page snapshots (not source files)
+deployed_index.html
+local_index.html
+
 # OS generated files
 *.pid
 *.seed
