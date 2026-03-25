@@ -594,6 +594,60 @@
       color:rgba(255,255,255,0.62);
     }
 
+    /* Projects Grid */
+    .projects-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+      gap:20px;
+      margin-top:20px;
+    }
+
+    .project-card{
+      display:block;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;
+      overflow:hidden;
+      text-decoration:none;
+      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .project-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(98,208,250,0.3);
+      box-shadow:0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .project-card__thumb{
+      height:160px;
+      background-size:cover;
+      background-position:center;
+      background-color:rgba(255,255,255,0.05);
+    }
+
+    .project-card__content{
+      padding:16px;
+    }
+
+    .project-card__content h3{
+      margin:0 0 8px 0;
+      font-size:1.1rem;
+      font-weight:600;
+      color:rgba(255,255,255,0.95);
+    }
+
+    .project-card__content p{
+      margin:0 0 4px 0;
+      font-size:0.9rem;
+      color:rgba(98,208,250,0.9);
+      font-weight:500;
+    }
+
+    .project-card__content p:last-child{
+      color:rgba(255,255,255,0.7);
+      font-weight:400;
+    }
+
     /* Modal Styles */
     .modal{
       position:fixed;
@@ -1126,6 +1180,152 @@
             <span class="tech-tag">Mapbox</span>
             <span class="tech-tag">OpenStreetMap</span>
             <span class="tech-tag">PostGIS</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="resume-section" data-resume-anchor-label="Projects">
+        <div class="card">
+          <div class="sectionTitle">
+            <h2>Key Projects</h2>
+          </div>
+          <div class="projects-grid">
+            <a href="../projects/piceus.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/piceus/piceus-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>PICEUS</h3>
+                <p>Machine-Native Governance Platform</p>
+                <p>Unified orchestration for regulated + decentralized ecosystems.</p>
+              </div>
+            </a>
+            <a href="../projects/aces-health.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/aces/aces-primary.png')"></div>
+              <div class="project-card__content">
+                <h3>MediChain AI</h3>
+                <p>Healthcare Intelligence Platform</p>
+                <p>AI-powered healthcare management and patient care optimization.</p>
+              </div>
+            </a>
+            <a href="../projects/force-marketing-helix.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/force-helix/drive-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>Force Marketing</h3>
+                <p>AI-Driven Automotive SaaS</p>
+                <p>Inventory intelligence and operational automation platform.</p>
+              </div>
+            </a>
+            <a href="../projects/tripfiles.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/tripfiles/TripFiles-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>TripFiles</h3>
+                <p>Travel Document Management</p>
+                <p>Secure travel document storage and management system.</p>
+              </div>
+            </a>
+            <a href="../projects/xbowling.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/XBowling/bowling-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>X Bowling</h3>
+                <p>Sports Entertainment Platform</p>
+                <p>Interactive bowling and sports entertainment system.</p>
+              </div>
+            </a>
+            <a href="../projects/uva.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/uva/uva-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>University of Virginia</h3>
+                <p>Educational Platform</p>
+                <p>Advanced educational technology and learning systems.</p>
+              </div>
+            </a>
+            <a href="../projects/dr-oz.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/dr-oz/dr-oz-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>Dr. Oz Platform</h3>
+                <p>Health & Wellness Platform</p>
+                <p>Health information and wellness management system.</p>
+              </div>
+            </a>
+            <a href="../projects/webmd.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/webmd/webmd-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>WebMD</h3>
+                <p>Medical Information Platform</p>
+                <p>Comprehensive medical information and health resources.</p>
+              </div>
+            </a>
+            <a href="../projects/lexisnexis.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/lexisnexis/lexisnexis-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>LexisNexis</h3>
+                <p>Legal Research Platform</p>
+                <p>Advanced legal research and information services.</p>
+              </div>
+            </a>
+            <a href="../projects/nbc-olympics.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/nbc-olympics/nbc-olympics-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>NBC Olympics</h3>
+                <p>Sports Broadcasting Platform</p>
+                <p>Olympic games broadcasting and digital media platform.</p>
+              </div>
+            </a>
+            <a href="../projects/nc-zoo.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/nc-zoo/nc-zoo-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>NC Zoo</h3>
+                <p>Conservation & Education Platform</p>
+                <p>Zoological park management and educational programs.</p>
+              </div>
+            </a>
+            <a href="../projects/uga-college.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/uga/uga-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>UGA College</h3>
+                <p>Educational Institution Platform</p>
+                <p>University management and student services system.</p>
+              </div>
+            </a>
+            <a href="../projects/red-cedar-michigan-state.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/red-cedar/red-cedar-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>Red Cedar Michigan State</h3>
+                <p>University Platform</p>
+                <p>Michigan State University systems and services.</p>
+              </div>
+            </a>
+            <a href="../projects/att-enterprise.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/att/att-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>AT&T Enterprise</h3>
+                <p>Enterprise Communications</p>
+                <p>Enterprise-level communication and networking solutions.</p>
+              </div>
+            </a>
+            <a href="../projects/cardlytics.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/cardlytics/cardlytics-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>Cardlytics</h3>
+                <p>Financial Marketing Platform</p>
+                <p>Data-driven financial marketing and analytics platform.</p>
+              </div>
+            </a>
+            <a href="../projects/gamemax.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/gamemax/gamemax-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>GameMax</h3>
+                <p>Gaming Platform</p>
+                <p>Advanced gaming and entertainment platform.</p>
+              </div>
+            </a>
+            <a href="../projects/ping.html" class="project-card">
+              <div class="project-card__thumb" style="background-image: url('../projects/assets/img/projects/ping/ping-placeholder.png')"></div>
+              <div class="project-card__content">
+                <h3>Ping</h3>
+                <p>Technology Platform</p>
+                <p>Innovative technology solutions and services.</p>
+              </div>
+            </a>
           </div>
         </div>
       </section>
@@ -2320,6 +2520,7 @@
         <button class="modal-close" type="button" aria-label="Close" data-modal-close>✕</button>
       </div>
       <div class="modal-body">
+        <iframe src="William_Weems_Product_UX_UI_AI_Leadership_CV.pdf" width="100%" height="600px" style="border: none;"></iframe>
         <p>You can download William Weems' resume as a PDF file.</p>
         <a href="William_Weems_Product_UX_UI_AI_Leadership_CV.pdf" download class="download-link">Download PDF</a>
       </div>
