@@ -1,5 +1,4 @@
 {
-  "rootDirectory": "portfolio",
   "headers": [
     {
       "source": "/(.*)",
