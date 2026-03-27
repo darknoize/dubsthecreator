@@ -286,7 +286,7 @@ const buildSenderReceiptHtml = ({ name }) => {
             <tr>
               <td style="padding:22px 24px; font-size:16px; line-height:1.8; color:rgba(255,255,255,0.82);">
                 <div style="margin-bottom:12px; color:#f5f7fb; font-weight:600;">${escapeHtml(name)}, your message is in queue.</div>
-                <div>Thank you for reaching out through the portfolio. Sir Dubs will review your note and respond shortly.</div>
+                <div>Thank you for reaching out through the portfolio. Dubs will review your note and respond shortly.</div>
               </td>
             </tr>
           </table>
@@ -641,9 +641,9 @@ module.exports = async (req, res) => {
     '',
     'Responder note: use Reply to respond directly to the sender.',
   ].join('\n');
-  const senderReceiptSubject = 'Thank you for reaching out to Sir Dubs';
+  const senderReceiptSubject = 'Thank you for reaching out to Dubs';
   const senderReceiptText = [
-    'Thank you for reaching out. Sir Dubs will respond shortly.',
+    'Thank you for reaching out. Dubs will respond shortly.',
     '',
     'May you have the most beautiful day,',
     '',

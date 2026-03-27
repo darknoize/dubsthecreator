@@ -162,9 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const introPauseMs = 420;
     const introLines = [
       "Hello, I'm Merlin, your personal assistant while you are visiting. Tell me how I can help while you browse.",
-      'If you would like, I can send a message to Sir Dubs The Creator or help schedule a call.',
+      'If you would like, I can send a message to Dubs or help schedule a call.',
     ];
-    const secondaryPrompt = 'Tell me how I can help. I will send a message to Sir Dubs and he will respond shortly.';
+    const secondaryPrompt = 'Tell me how I can help. I will send a message to Dubs and he will respond shortly.';
 
     const assistantNode = document.createElement('aside');
     assistantNode.className = 'merlin-assistant';
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="merlin-panel__header">
           <div class="merlin-panel__title-wrap">
             <p class="merlin-panel__title">Merlin Assistant</p>
-            <p class="merlin-panel__subtitle">Leave Sir Dubs The Creator a message</p>
+            <p class="merlin-panel__subtitle">Leave Dubs a message</p>
           </div>
           <div class="merlin-panel__actions">
             <button type="button" class="merlin-action-btn" data-merlin-voice>Pause Voice</button>
@@ -650,12 +650,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         appendMessage(message, 'user');
-        appendMessage('Thank you. Merlin has delivered your note to Sir Dubs The Creator.', 'bot');
+        appendMessage('Thank you. Merlin has delivered your note to Dubs.', 'bot');
         formNode.reset();
         resetStartedAt();
         setStoredMessageCount(getStoredMessageCount() + 1);
         syncMessageLimitState();
-        setStatus('Sent. Merlin delivered your message to Sir Dubs The Creator.', 'success');
+        setStatus('Sent. Merlin delivered your message to Dubs.', 'success');
       } catch (error) {
         setStatus(error.message || 'Unable to send message right now. Please try again.', 'error');
       } finally {
