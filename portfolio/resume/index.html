@@ -2095,6 +2095,70 @@
 
       clearReadButtonStates();
 
+      const splitSpeechIntoChunks = (text, maxLength = 700) => {
+        const normalizedText = normalizeSpeechText(text);
+        if (!normalizedText) {
+          return [];
+        }
+
+        const sentenceParts = normalizedText.split(/(?<=[.!?])\s+/).filter(Boolean);
+        if (sentenceParts.length === 0) {
+          return [normalizedText];
+        }
+
+        const chunks = [];
+        let currentChunk = '';
+
+        const pushCurrentChunk = () => {
+          const value = normalizeSpeechText(currentChunk);
+          if (value) {
+            chunks.push(value);
+          }
+          currentChunk = '';
+        };
+
+        sentenceParts.forEach((sentence) => {
+          const candidate = currentChunk ? `${currentChunk} ${sentence}` : sentence;
+          if (candidate.length <= maxLength) {
+            currentChunk = candidate;
+            return;
+          }
+
+          if (currentChunk) {
+            pushCurrentChunk();
+          }
+
+          if (sentence.length <= maxLength) {
+            currentChunk = sentence;
+            return;
+          }
+
+          const words = sentence.split(/\s+/).filter(Boolean);
+          let wordChunk = '';
+          words.forEach((word) => {
+            const wordCandidate = wordChunk ? `${wordChunk} ${word}` : word;
+            if (wordCandidate.length <= maxLength) {
+              wordChunk = wordCandidate;
+              return;
+            }
+
+            const splitValue = normalizeSpeechText(wordChunk);
+            if (splitValue) {
+              chunks.push(splitValue);
+            }
+            wordChunk = word;
+          });
+
+          const trailingWordChunk = normalizeSpeechText(wordChunk);
+          if (trailingWordChunk) {
+            chunks.push(trailingWordChunk);
+          }
+        });
+
+        pushCurrentChunk();
+        return chunks;
+      };
+
       const readFromSource = (button, source) => {
         if (button.classList.contains('is-reading')) {
           stopReadAloud();
@@ -2107,13 +2171,15 @@
         }
 
         readText = applySpeechPronunciationFixes(readText);
+        const speechChunks = splitSpeechIntoChunks(readText);
+        if (speechChunks.length === 0) {
+          return;
+        }
+
         const requestId = speechRequestId + 1;
         speechRequestId = requestId;
         window.speechSynthesis.cancel();
         clearReadButtonStates();
-
-        const utterance = new SpeechSynthesisUtterance(readText);
-        applySpeechUtteranceSettings(utterance, readAloudSpeechProfile);
 
         const resetIfCurrent = () => {
           if (speechRequestId !== requestId) {
@@ -2123,18 +2189,43 @@
           clearReadButtonStates();
         };
 
-        utterance.onstart = () => {
+        let chunkIndex = 0;
+        const speakNextChunk = () => {
           if (speechRequestId !== requestId) {
             return;
           }
 
-          clearReadButtonStates();
-          setReadButtonState(button, true);
-        };
-        utterance.onend = resetIfCurrent;
-        utterance.onerror = resetIfCurrent;
+          if (chunkIndex >= speechChunks.length) {
+            resetIfCurrent();
+            return;
+          }
 
-        window.speechSynthesis.speak(utterance);
+          const utterance = new SpeechSynthesisUtterance(speechChunks[chunkIndex]);
+          applySpeechUtteranceSettings(utterance, readAloudSpeechProfile);
+
+          utterance.onstart = () => {
+            if (speechRequestId !== requestId) {
+              return;
+            }
+
+            clearReadButtonStates();
+            setReadButtonState(button, true);
+          };
+
+          utterance.onend = () => {
+            if (speechRequestId !== requestId) {
+              return;
+            }
+
+            chunkIndex += 1;
+            speakNextChunk();
+          };
+
+          utterance.onerror = resetIfCurrent;
+          window.speechSynthesis.speak(utterance);
+        };
+
+        speakNextChunk();
       };
 
       if (readButton) {

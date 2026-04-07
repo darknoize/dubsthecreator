@@ -182,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="merlin-panel__subtitle">Leave Dubs a message</p>
           </div>
           <div class="merlin-panel__actions">
-            <button type="button" class="merlin-action-btn" data-merlin-voice>Pause Voice</button>
             <button type="button" class="merlin-action-btn" data-merlin-close aria-label="Close assistant">Close</button>
           </div>
         </div>
@@ -218,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = assistantNode.querySelector('[data-merlin-submit]');
     const statusNode = assistantNode.querySelector('[data-merlin-status]');
 
-    if (!bubbleButton || !panelNode || !closeButton || !voiceButton || !messagesNode || !formNode || !micButton || !submitButton || !statusNode) {
+    if (!bubbleButton || !panelNode || !closeButton || !messagesNode || !formNode || !micButton || !submitButton || !statusNode) {
       return;
     }
 
@@ -323,6 +322,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/\bsaas\b/gi, 'sass');
 
     const setIdleVoiceButtonLabel = () => {
+      if (!voiceButton) {
+        return;
+      }
       voiceButton.textContent = primaryIntroPlayed ? 'Replay Prompt' : 'Play Voice';
     };
 
@@ -367,7 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       stopAssistantVoice();
       introSpeaking = true;
-      voiceButton.textContent = 'Pause Voice';
+      if (voiceButton) {
+        voiceButton.textContent = 'Pause Voice';
+      }
 
       const promptLines = primaryIntroPlayed ? [secondaryPrompt] : introLines;
 
@@ -416,12 +420,14 @@ document.addEventListener('DOMContentLoaded', () => {
       speakNextLine();
     };
 
-    if (!canSpeakAssistant) {
-      voiceButton.disabled = true;
-      voiceButton.textContent = 'Voice Unavailable';
-      voiceButton.title = 'Voice playback is not supported in this browser.';
-    } else {
-      setIdleVoiceButtonLabel();
+    if (voiceButton) {
+      if (!canSpeakAssistant) {
+        voiceButton.disabled = true;
+        voiceButton.textContent = 'Voice Unavailable';
+        voiceButton.title = 'Voice playback is not supported in this browser.';
+      } else {
+        setIdleVoiceButtonLabel();
+      }
     }
 
     const closeAssistant = () => {
@@ -440,9 +446,6 @@ document.addEventListener('DOMContentLoaded', () => {
       event.stopPropagation();
 
       openAssistant();
-      if (isHomePage && !primaryIntroPlayed) {
-        playAssistantIntro();
-      }
     };
 
     const bindContactTriggers = () => {
@@ -535,41 +538,40 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       openAssistant();
-      if (isHomePage && !primaryIntroPlayed) {
-        playAssistantIntro();
-      }
     });
 
     closeButton.addEventListener('click', () => {
       closeAssistant();
     });
 
-    voiceButton.addEventListener('click', () => {
-      if (!canSpeakAssistant) {
-        return;
-      }
+    if (voiceButton) {
+      voiceButton.addEventListener('click', () => {
+        if (!canSpeakAssistant) {
+          return;
+        }
 
-      if (!introSpeaking) {
-        playAssistantIntro();
-        return;
-      }
+        if (!introSpeaking) {
+          playAssistantIntro();
+          return;
+        }
 
-      if (!introPaused && window.speechSynthesis.speaking) {
-        window.speechSynthesis.pause();
-        introPaused = true;
-        voiceButton.textContent = 'Resume Voice';
-        return;
-      }
+        if (!introPaused && window.speechSynthesis.speaking) {
+          window.speechSynthesis.pause();
+          introPaused = true;
+          voiceButton.textContent = 'Resume Voice';
+          return;
+        }
 
-      if (introPaused) {
-        window.speechSynthesis.resume();
-        introPaused = false;
-        voiceButton.textContent = 'Pause Voice';
-        return;
-      }
+        if (introPaused) {
+          window.speechSynthesis.resume();
+          introPaused = false;
+          voiceButton.textContent = 'Pause Voice';
+          return;
+        }
 
-      stopAssistantVoice();
-    });
+        stopAssistantVoice();
+      });
+    }
 
     micButton.addEventListener('click', () => {
       if (!recognition) {
